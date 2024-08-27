@@ -1,0 +1,28 @@
+class AppIconName {
+  static const _iconsPath = "assets/icons/";
+
+  final String name;
+
+  const AppIconName(this.name);
+
+  // the icons:
+  static get add => const AppIconName("${_iconsPath}add.png");
+  static get article => const AppIconName("${_iconsPath}article.png");
+  static get backButton => const AppIconName("${_iconsPath}back_button.png");
+  static get checkout => const AppIconName("${_iconsPath}checkout.png");
+  static get history => const AppIconName("${_iconsPath}history.png");
+  static get home => const AppIconName("${_iconsPath}home.png");
+  static get info => const AppIconName("${_iconsPath}info.png");
+  static get location => const AppIconName("${_iconsPath}location.png");
+  static get locationv2 => const AppIconName("${_iconsPath}location_v2.png");
+  static get map => const AppIconName("${_iconsPath}map.png");
+  static get notification => const AppIconName("${_iconsPath}notification.png");
+  static get profile => const AppIconName("${_iconsPath}profile.png");
+  static get scan => const AppIconName("${_iconsPath}scan.png");
+  static get score => const AppIconName("${_iconsPath}score.png");
+  static get trash => const AppIconName("${_iconsPath}trash.png");
+  static get filter => const AppIconName("${_iconsPath}filter.png");
+  static get cursor => const AppIconName("${_iconsPath}cursor.png");
+  static get markermap => const AppIconName("${_iconsPath}markermap.png");
+  static get heatmap => const AppIconName("${_iconsPath}heatmap.png");
+}

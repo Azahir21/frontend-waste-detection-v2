@@ -2,31 +2,32 @@ import 'package:frontend_waste_management/app/data/models/predict_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:get/get.dart';
+import 'package:latlong2/latlong.dart';
 
 class CheckoutController extends GetxController {
   //TODO: Implement CheckoutController
   late Predict predict;
-  final RxDouble? longitude = null;
-  final RxDouble? latitude = null;
-  final RxString? address = null;
+  final address = Rxn<String>();
+  late LatLng initial;
+  late LatLng? fixedLocation;
 
   @override
   void onInit() async {
     super.onInit();
     predict = Get.arguments;
-    if (!predict.fromCamera!) {
-      longitude?.value = predict.longitude!;
-      latitude?.value = predict.latitude!;
-      address?.value = predict.address!;
-      predict.longitude = null;
-      predict.latitude = null;
-      predict.address = null;
+    initial = LatLng(predict.latitude!, predict.longitude!);
+    fixedLocation = null;
+    print(fixedLocation);
+    if (predict.fromCamera!) {
+      address.value = predict.address!;
+      fixedLocation = LatLng(predict.latitude!, predict.longitude!);
+      print(fixedLocation);
     }
   }
 
   Future<void> postImageData() async {
     try {
-      if (predict.longitude == null || predict.latitude == null) {
+      if (fixedLocation == null) {
         Get.snackbar('Some thing error', 'Location not found.');
         return;
       }
@@ -39,8 +40,8 @@ class CheckoutController extends GetxController {
         UrlConstants.userSampah,
         {
           "address": predict.address,
-          "longitude": predict.longitude,
-          "latitude": predict.latitude,
+          "longitude": fixedLocation!.longitude,
+          "latitude": fixedLocation!.latitude,
           "point": predict.subtotalpoint,
           "image": predict.encodedImages,
           "filename": predict.fileName,

@@ -26,7 +26,7 @@ class PreviewPage extends StatelessWidget {
               decoration: BoxDecoration(
                 image: DecorationImage(
                   image: _getImageProvider(),
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),

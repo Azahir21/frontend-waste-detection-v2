@@ -1,6 +1,9 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:frontend_waste_management/app/data/services/location_handler.dart';
 import 'package:frontend_waste_management/app/modules/checkout/controllers/checkout_controller.dart';
 import 'package:frontend_waste_management/app/modules/checkout/views/Item_tiles.dart';
 import 'package:frontend_waste_management/app/modules/upload_image/views/preview_page.dart';
@@ -9,10 +12,14 @@ import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/centered_text_button.dart';
 import 'package:frontend_waste_management/app/widgets/horizontal_gap.dart';
 import 'package:frontend_waste_management/app/widgets/icon_button.dart';
+import 'package:frontend_waste_management/app/widgets/text_button.dart';
 import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:get/get.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:get/state_manager.dart';
+import 'package:latlng_picker/latlng_picker.dart';
 
 class SmallScreenCheckoutView extends GetView<CheckoutController> {
   const SmallScreenCheckoutView({super.key});
@@ -109,25 +116,42 @@ class SmallScreenCheckoutView extends GetView<CheckoutController> {
                                     ],
                                   ),
                                   VerticalGap.formMedium(),
-                                  Visibility(
-                                    visible: controller.predict.address != null,
-                                    replacement: Column(
-                                      children: [
-                                        AppText.labelTinyDefault(
-                                            "Lokasi belum ditentukan",
-                                            context: context),
-                                        VerticalGap.formSmall(),
-                                        CenteredTextButton.primary(
-                                            label: "Tentukan lokasi",
-                                            onTap: () {},
-                                            context: context),
-                                      ],
-                                    ),
-                                    child: AppText.labelSmallDefault(
-                                      controller.predict.address ?? "",
-                                      textOverflow: TextOverflow.ellipsis,
-                                      maxLines: 4,
-                                      context: context,
+                                  Obx(
+                                    () => Visibility(
+                                      visible: controller.address.value != null,
+                                      replacement: Column(
+                                        children: [
+                                          AppText.labelTinyDefault(
+                                              "Lokasi belum ditentukan",
+                                              context: context),
+                                          VerticalGap.formSmall(),
+                                          CenteredTextButton.primary(
+                                              label: "Tentukan lokasi",
+                                              onTap: () {
+                                                Get.dialog(
+                                                  pickLocation(
+                                                      context,
+                                                      size.height * 0.5,
+                                                      size.width * 0.8),
+                                                );
+                                              },
+                                              context: context),
+                                        ],
+                                      ),
+                                      child: GestureDetector(
+                                        onTap: () => Get.dialog(
+                                          pickLocation(
+                                              context,
+                                              size.height * 0.5,
+                                              size.width * 0.8),
+                                        ),
+                                        child: AppText.labelSmallDefault(
+                                          controller.address.value ?? "",
+                                          textOverflow: TextOverflow.ellipsis,
+                                          maxLines: 4,
+                                          context: context,
+                                        ),
+                                      ),
                                     ),
                                   )
                                 ],
@@ -232,6 +256,38 @@ class SmallScreenCheckoutView extends GetView<CheckoutController> {
             Get.back();
           },
           child: const Text("OK"),
+        ),
+      ],
+    );
+  }
+
+  Widget pickLocation(BuildContext context, double height, double width) {
+    return AlertDialog(
+      title: AppText.labelSmallEmphasis("Location", context: context),
+      content: SizedBox(
+        height: height,
+        width: width,
+        child: LatLngPicker(
+          options: MapOptions(
+            initialCenter: controller.fixedLocation ?? controller.initial,
+            initialZoom: 13.0,
+          ),
+          onConfirm: (p0) async {
+            controller.fixedLocation = p0[0];
+            controller.address.value = await getAddressFromLatLng(p0[0]);
+            Get.back();
+          },
+        ),
+      ),
+      actions: [
+        Center(
+          child: CustomTextButton.secondary(
+            text: "Batal",
+            onPressed: () {
+              Get.back();
+            },
+            context: context,
+          ),
         ),
       ],
     );

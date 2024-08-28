@@ -70,6 +70,9 @@ class _SmallScreenMapsViewState extends State<SmallScreenMapsView> {
                       // 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
                       // "https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg",
                       // retinaMode: true,
+                      tileProvider: CancellableNetworkTileProvider(
+                        silenceExceptions: true,
+                      ),
                     ),
                     Obx(
                       () => Visibility(

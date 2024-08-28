@@ -36,152 +36,171 @@ class SmallScreenHomeView extends GetView<HomeController> {
                     child: CircularProgressIndicator(),
                   ),
                 ),
-                child: SingleChildScrollView(
-                  child: Padding(
-                    padding: const EdgeInsets.all(32.0),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        VerticalGap.formBig(),
-                        Container(
-                          width: double.infinity,
-                          height: size.height * 0.2,
-                          decoration: BoxDecoration(
-                            color: color.backgroundActionIconPrimary,
-                            borderRadius: BorderRadius.circular(23.0),
-                            image: const DecorationImage(
-                              image:
-                                  AssetImage('assets/images/score_board.png'),
-                              fit: BoxFit.cover,
+                child: Obx(
+                  () => Visibility(
+                    visible: !controller.loadingAI.value,
+                    replacement: Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            height: 50,
+                            width: 50,
+                            child: CircularProgressIndicator(
+                              color: Theme.of(context).appColors.iconDefault,
+                              strokeWidth: 10,
+                              backgroundColor: Colors.grey[200],
+                              strokeCap: StrokeCap.round,
                             ),
                           ),
-                          child: Padding(
-                            padding: const EdgeInsets.only(left: 32),
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
+                          VerticalGap.formBig(),
+                          AppText.labelDefaultEmphasis("Menunggu",
+                              context: context),
+                          VerticalGap.formSmall(),
+                          AppText.labelSmallDefault(
+                              "Sedang memproses dengan AI",
+                              context: context),
+                        ],
+                      ),
+                    ),
+                    child: SingleChildScrollView(
+                      child: Padding(
+                        padding: const EdgeInsets.all(32.0),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            VerticalGap.formBig(),
+                            Container(
+                              width: double.infinity,
+                              height: size.height * 0.2,
+                              decoration: BoxDecoration(
+                                color: color.backgroundActionIconPrimary,
+                                borderRadius: BorderRadius.circular(23.0),
+                                image: const DecorationImage(
+                                  image: AssetImage(
+                                      'assets/images/score_board.png'),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                              child: Padding(
+                                padding: const EdgeInsets.only(left: 32),
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    AppIcon.custom(
-                                        appIconName: AppIconName.score,
-                                        context: context),
-                                    HorizontalGap.formSmall(),
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                    Row(
                                       children: [
-                                        AppText.labelTinyDefault("Poin",
+                                        AppIcon.custom(
+                                            appIconName: AppIconName.score,
                                             context: context),
-                                        AppText.labelSmallEmphasis(
-                                            controller.point.value.toString(),
-                                            context: context)
+                                        HorizontalGap.formSmall(),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            AppText.labelTinyDefault("Poin",
+                                                context: context),
+                                            AppText.labelSmallEmphasis(
+                                                controller.point.value
+                                                    .toString(),
+                                                context: context)
+                                          ],
+                                        ),
                                       ],
                                     ),
+                                    VerticalGap.formHuge(),
+                                    AppText.labelDefaultEmphasis(
+                                        controller.username,
+                                        context: context)
                                   ],
                                 ),
-                                VerticalGap.formHuge(),
-                                AppText.labelDefaultEmphasis(
-                                    controller.username,
-                                    context: context)
+                              ),
+                            ),
+                            VerticalGap.formBig(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  children: [
+                                    CustomIconButton.primary(
+                                      iconName: AppIconName.map,
+                                      onTap: () {
+                                        Get.toNamed('/maps');
+                                      },
+                                      context: context,
+                                      height: 60,
+                                      width: 60,
+                                    ),
+                                    VerticalGap.formSmall(),
+                                    AppText.labelSmallEmphasis("Peta",
+                                        context: context),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    CustomIconButton.primary(
+                                      iconName: AppIconName.scan,
+                                      onTap: () async {
+                                        await controller.getImageFromCamera();
+                                      },
+                                      context: context,
+                                      height: 60,
+                                      width: 60,
+                                    ),
+                                    VerticalGap.formSmall(),
+                                    AppText.labelSmallEmphasis("Kamera",
+                                        context: context),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    CustomIconButton.primary(
+                                      iconName: AppIconName.add,
+                                      onTap: () async {
+                                        await controller.getImageFromGallery();
+                                      },
+                                      context: context,
+                                      height: 60,
+                                      width: 60,
+                                    ),
+                                    VerticalGap.formSmall(),
+                                    AppText.labelSmallEmphasis("Gallery",
+                                        context: context),
+                                  ],
+                                ),
+                                Column(
+                                  children: [
+                                    CustomIconButton.primary(
+                                      iconName: AppIconName.info,
+                                      onTap: () async {},
+                                      context: context,
+                                      height: 60,
+                                      width: 60,
+                                    ),
+                                    VerticalGap.formSmall(),
+                                    AppText.labelSmallEmphasis("Info",
+                                        context: context),
+                                  ],
+                                ),
                               ],
                             ),
-                          ),
-                        ),
-                        VerticalGap.formBig(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Column(
-                              children: [
-                                CustomIconButton.primary(
-                                  iconName: AppIconName.map,
-                                  onTap: () {
-                                    Get.toNamed('/maps');
-                                  },
-                                  context: context,
-                                  height: 60,
-                                  width: 60,
-                                ),
-                                VerticalGap.formSmall(),
-                                AppText.labelSmallEmphasis("Peta",
-                                    context: context),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                CustomIconButton.primary(
-                                  iconName: AppIconName.add,
-                                  onTap: () async {
-                                    await availableCameras().then((value) {
-                                      Get.toNamed('/upload-image',
-                                          arguments: value);
-                                    });
-                                  },
-                                  context: context,
-                                  height: 60,
-                                  width: 60,
-                                ),
-                                VerticalGap.formSmall(),
-                                AppText.labelSmallEmphasis("Kamera",
-                                    context: context),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                CustomIconButton.primary(
-                                  iconName: AppIconName.add,
-                                  onTap: () async {
-                                    await availableCameras().then((value) {
-                                      Get.toNamed('/upload-image',
-                                          arguments: value);
-                                    });
-                                  },
-                                  context: context,
-                                  height: 60,
-                                  width: 60,
-                                ),
-                                VerticalGap.formSmall(),
-                                AppText.labelSmallEmphasis("Gallery",
-                                    context: context),
-                              ],
-                            ),
-                            Column(
-                              children: [
-                                CustomIconButton.primary(
-                                  iconName: AppIconName.add,
-                                  onTap: () async {
-                                    await availableCameras().then((value) {
-                                      Get.toNamed('/upload-image',
-                                          arguments: value);
-                                    });
-                                  },
-                                  context: context,
-                                  height: 60,
-                                  width: 60,
-                                ),
-                                VerticalGap.formSmall(),
-                                AppText.labelSmallEmphasis("Statistik",
-                                    context: context),
-                              ],
+                            VerticalGap.formBig(),
+                            AppText.labelDefaultEmphasis("Artikel",
+                                context: context),
+                            VerticalGap.formMedium(),
+                            ListView.builder(
+                              itemCount: controller.articles.length,
+                              shrinkWrap: true,
+                              physics: const NeverScrollableScrollPhysics(),
+                              itemBuilder: (context, index) {
+                                return ArticleTiles(
+                                  article: controller.articles[index],
+                                );
+                              },
                             ),
                           ],
                         ),
-                        VerticalGap.formBig(),
-                        AppText.labelDefaultEmphasis("Artikel",
-                            context: context),
-                        VerticalGap.formMedium(),
-                        ListView.builder(
-                          itemCount: controller.articles.length,
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemBuilder: (context, index) {
-                            return ArticleTiles(
-                              article: controller.articles[index],
-                            );
-                          },
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ),

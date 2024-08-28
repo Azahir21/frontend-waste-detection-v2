@@ -53,15 +53,14 @@ class UploadImageController extends GetxController {
       await cameraController.setFlashMode(FlashMode.off);
       XFile picture = await cameraController.takePicture();
       loadingAI.value = true;
-      await postImage(picture);
+      await postImage(picture, true);
       loadingAI.value = false;
-      // Get.to(() => PreviewPage(picture: picture)); // Navigate to preview page
     } on CameraException catch (e) {
       print('Error occurred while taking picture: $e');
     }
   }
 
-  Future<void> postImage(XFile picture) async {
+  Future<void> postImage(XFile picture, bool fromCamera) async {
     try {
       int? point = await getUserPoints();
       LatLng? position = await getCurrentPosition();
@@ -70,6 +69,7 @@ class UploadImageController extends GetxController {
         GetStorage().read("username"),
         position!.longitude,
         position.latitude,
+        fromCamera,
         File(picture.path),
       );
       predict = Predict.fromJson(jsonDecode(response));

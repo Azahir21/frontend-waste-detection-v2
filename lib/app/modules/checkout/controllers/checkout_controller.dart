@@ -5,21 +5,34 @@ import 'package:get/get.dart';
 
 class CheckoutController extends GetxController {
   //TODO: Implement CheckoutController
-  Predict predict = Get.arguments;
+  late Predict predict;
+  final RxDouble? longitude = null;
+  final RxDouble? latitude = null;
+  final RxString? address = null;
 
   @override
   void onInit() async {
     super.onInit();
+    predict = Get.arguments;
+    if (!predict.fromCamera!) {
+      longitude?.value = predict.longitude!;
+      latitude?.value = predict.latitude!;
+      address?.value = predict.address!;
+      predict.longitude = null;
+      predict.latitude = null;
+      predict.address = null;
+    }
   }
 
   Future<void> postImageData() async {
     try {
       if (predict.longitude == null || predict.latitude == null) {
-        Get.snackbar('Some thing error', 'Failed to get location data.');
+        Get.snackbar('Some thing error', 'Location not found.');
         return;
       }
       if (predict.detectedObjects!.isEmpty) {
         Get.snackbar('Failed post image', 'There is no object detected.');
+        Get.offAllNamed("/bottomnav");
         return;
       }
       final response = await ApiServices().post(
@@ -37,6 +50,7 @@ class CheckoutController extends GetxController {
               .toList(),
         },
       );
+      Get.offAllNamed("/bottomnav");
       Get.snackbar("Success post sampah", "Berhasil post sampah");
     } catch (e) {
       Get.snackbar('Some thing error', 'Failed to post image data.');

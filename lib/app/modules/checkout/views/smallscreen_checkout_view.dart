@@ -1,8 +1,6 @@
 import 'dart:convert';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frontend_waste_management/app/modules/checkout/controllers/checkout_controller.dart';
 import 'package:frontend_waste_management/app/modules/checkout/views/Item_tiles.dart';
 import 'package:frontend_waste_management/app/modules/upload_image/views/preview_page.dart';
@@ -15,8 +13,6 @@ import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/state_manager.dart';
 
 class SmallScreenCheckoutView extends GetView<CheckoutController> {
   const SmallScreenCheckoutView({super.key});
@@ -113,12 +109,27 @@ class SmallScreenCheckoutView extends GetView<CheckoutController> {
                                     ],
                                   ),
                                   VerticalGap.formMedium(),
-                                  AppText.labelSmallDefault(
-                                    controller.predict.address!,
-                                    textOverflow: TextOverflow.ellipsis,
-                                    maxLines: 4,
-                                    context: context,
-                                  ),
+                                  Visibility(
+                                    visible: controller.predict.address != null,
+                                    replacement: Column(
+                                      children: [
+                                        AppText.labelTinyDefault(
+                                            "Lokasi belum ditentukan",
+                                            context: context),
+                                        VerticalGap.formSmall(),
+                                        CenteredTextButton.primary(
+                                            label: "Tentukan lokasi",
+                                            onTap: () {},
+                                            context: context),
+                                      ],
+                                    ),
+                                    child: AppText.labelSmallDefault(
+                                      controller.predict.address ?? "",
+                                      textOverflow: TextOverflow.ellipsis,
+                                      maxLines: 4,
+                                      context: context,
+                                    ),
+                                  )
                                 ],
                               ),
                             )
@@ -194,7 +205,7 @@ class SmallScreenCheckoutView extends GetView<CheckoutController> {
                         label: "Submit Sekarang",
                         onTap: () async {
                           await controller.postImageData();
-                          Get.offAllNamed("/bottomnav");
+                          // Get.offAllNamed("/bottomnav");
                         },
                         context: context,
                       ),

@@ -172,13 +172,15 @@ class SmallScreenHomeView extends GetView<HomeController> {
                                   children: [
                                     CustomIconButton.primary(
                                       iconName: AppIconName.info,
-                                      onTap: () async {},
+                                      onTap: () async {
+                                        Get.toNamed('/leaderboard');
+                                      },
                                       context: context,
                                       height: 60,
                                       width: 60,
                                     ),
                                     VerticalGap.formSmall(),
-                                    AppText.labelSmallEmphasis("Info",
+                                    AppText.labelSmallEmphasis("Peringkat",
                                         context: context),
                                   ],
                                 ),

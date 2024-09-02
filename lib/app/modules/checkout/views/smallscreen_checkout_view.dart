@@ -1,7 +1,5 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:frontend_waste_management/app/data/services/location_handler.dart';
 import 'package:frontend_waste_management/app/modules/checkout/controllers/checkout_controller.dart';
@@ -17,8 +15,7 @@ import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
-import 'package:get/state_manager.dart';
+import 'package:overlay_kit/overlay_kit.dart';
 import 'package:latlng_picker/latlng_picker.dart';
 
 class SmallScreenCheckoutView extends GetView<CheckoutController> {
@@ -228,7 +225,9 @@ class SmallScreenCheckoutView extends GetView<CheckoutController> {
                       CenteredTextButton.primary(
                         label: "Submit Sekarang",
                         onTap: () async {
+                          OverlayLoadingProgress.start();
                           await controller.postImageData();
+                          OverlayLoadingProgress.stop();
                           // Get.offAllNamed("/bottomnav");
                         },
                         context: context,

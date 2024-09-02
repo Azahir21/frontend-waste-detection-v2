@@ -1,3 +1,4 @@
+import 'package:frontend_waste_management/app/data/models/post_sampah.dart';
 import 'package:frontend_waste_management/app/data/models/predict_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
@@ -10,6 +11,7 @@ class CheckoutController extends GetxController {
   final address = Rxn<String>();
   late LatLng initial;
   late LatLng? fixedLocation;
+  final isLoading = false.obs;
 
   @override
   void onInit() async {
@@ -27,6 +29,7 @@ class CheckoutController extends GetxController {
 
   Future<void> postImageData() async {
     try {
+      isLoading.value = true;
       if (fixedLocation == null) {
         Get.snackbar('Some thing error', 'Location not found.');
         return;
@@ -51,8 +54,13 @@ class CheckoutController extends GetxController {
               .toList(),
         },
       );
+      final data = PostSampah.fromRawJson(response);
+      isLoading.value = false;
       Get.offAllNamed("/bottomnav");
       Get.snackbar("Success post sampah", "Berhasil post sampah");
+      if (data.updatedBadge!) {
+        Get.snackbar("Congratulation", "You got ${data.badge} badge");
+      }
     } catch (e) {
       Get.snackbar('Some thing error', 'Failed to post image data.');
       print('Post image error: $e');

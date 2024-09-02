@@ -106,6 +106,13 @@ class SmallScreenHomeView extends GetView<HomeController> {
                                                 context: context)
                                           ],
                                         ),
+                                        HorizontalGap.formMedium(),
+                                        AppText.labelSmallEmphasis("|",
+                                            context: context),
+                                        HorizontalGap.formMedium(),
+                                        AppText.labelSmallEmphasis(
+                                            "${controller.badgeName.value}",
+                                            context: context),
                                       ],
                                     ),
                                     VerticalGap.formHuge(),

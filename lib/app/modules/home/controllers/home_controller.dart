@@ -20,7 +20,8 @@ class HomeController extends GetxController {
   final String username = GetStorage().read('username');
   final RxBool isLoading = false.obs;
   final RxList<Article> articles = <Article>[].obs;
-  final RxInt point = 0.obs;
+  final point = 0.obs;
+  final badgeName = ''.obs;
   final picker = ImagePicker().obs;
   Predict predict = Predict();
   final RxBool loadingAI = false.obs;
@@ -44,6 +45,7 @@ class HomeController extends GetxController {
       final response = await ApiServices().get(UrlConstants.point);
       Point pointData = Point.fromRawJson(response);
       point.value = pointData.point!;
+      badgeName.value = convertBadgeIdtoBadgeName(pointData.badgeId!);
     } catch (e) {
       Get.snackbar('Some thing error', 'Failed to get koin data.');
       print('Point error: $e');
@@ -132,6 +134,27 @@ class HomeController extends GetxController {
     } catch (e) {
       debugPrint('Error getting location: $e');
       return null;
+    }
+  }
+
+  String convertBadgeIdtoBadgeName(int badgeId) {
+    switch (badgeId) {
+      case 1:
+        return 'Newcomer';
+      case 2:
+        return 'Junior Reporter';
+      case 3:
+        return 'Field Reporter';
+      case 4:
+        return 'Senior Reporter';
+      case 5:
+        return 'Lead Reporter';
+      case 6:
+        return 'Chief Reporter';
+      case 7:
+        return 'Crowdsourcing Hero';
+      default:
+        return 'Unknown';
     }
   }
 }

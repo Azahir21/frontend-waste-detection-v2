@@ -30,7 +30,6 @@ class SmallScreenRegisterView extends GetView<RegisterController> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  _buildBackButton(context),
                   _buildHeaderText(context),
                   VerticalGap.formSmall(),
                   _buildSubHeaderText(context),

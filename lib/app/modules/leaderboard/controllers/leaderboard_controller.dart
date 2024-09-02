@@ -1,7 +1,6 @@
-import 'dart:convert';
-
 import 'package:frontend_waste_management/app/data/models/leaderboard_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
+import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:get/get.dart';
 
@@ -12,6 +11,7 @@ class LeaderboardController extends GetxController {
   final RxList<Leaderboard> weekly = <Leaderboard>[].obs;
   final RxList<Leaderboard> monthly = <Leaderboard>[].obs;
   final RxList<Leaderboard> allTime = <Leaderboard>[].obs;
+  final _tokenService = TokenService();
 
   @override
   void onInit() async {
@@ -22,6 +22,9 @@ class LeaderboardController extends GetxController {
 
   Future<void> fetchData() async {
     isLoading.value = true;
+    if (!await _tokenService.checkToken()) {
+      return;
+    }
     await getWeekly();
     await getMonthly();
     await getAllTime();

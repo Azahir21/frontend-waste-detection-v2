@@ -28,7 +28,6 @@ class SmallScreenLoginView extends GetView<LoginController> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  _buildBackButton(context),
                   _buildHeaderText(context),
                   VerticalGap.formSmall(),
                   _buildSubHeaderText(context),

@@ -6,6 +6,7 @@ import 'package:flutter_map_heatmap/flutter_map_heatmap.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:frontend_waste_management/app/data/models/sampah_detail_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
+import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
@@ -27,6 +28,7 @@ class MapsController extends GetxController {
   final lastDateController = TextEditingController().obs;
   final timeseriesData = <SampahDetail>[].obs;
   final RxInt difference = 0.obs;
+  final _tokenService = TokenService();
 
   @override
   void onInit() async {
@@ -49,6 +51,9 @@ class MapsController extends GetxController {
   }
 
   Future<void> getAllSampah() async {
+    if (!await _tokenService.checkToken()) {
+      return;
+    }
     try {
       final response = await ApiServices().get(UrlConstants.sampah);
       sampahsData.value = parseSampahDetail(response);
@@ -88,6 +93,9 @@ class MapsController extends GetxController {
 
   Future<void> getTimeseriesData() async {
     try {
+      if (!await _tokenService.checkToken()) {
+        return;
+      }
       alignPositionOnUpdate.value = AlignOnUpdate.always;
       alignPositionStreamController.value = StreamController<double?>();
       isLoading.value = true;

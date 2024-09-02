@@ -225,9 +225,7 @@ class SmallScreenCheckoutView extends GetView<CheckoutController> {
                       CenteredTextButton.primary(
                         label: "Submit Sekarang",
                         onTap: () async {
-                          OverlayLoadingProgress.start();
                           await controller.postImageData();
-                          OverlayLoadingProgress.stop();
                           // Get.offAllNamed("/bottomnav");
                         },
                         context: context,

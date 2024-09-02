@@ -1,9 +1,11 @@
 import 'package:frontend_waste_management/app/data/models/post_sampah.dart';
 import 'package:frontend_waste_management/app/data/models/predict_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
+import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:overlay_kit/overlay_kit.dart';
 
 class CheckoutController extends GetxController {
   //TODO: Implement CheckoutController
@@ -12,6 +14,7 @@ class CheckoutController extends GetxController {
   late LatLng initial;
   late LatLng? fixedLocation;
   final isLoading = false.obs;
+  final _tokenService = TokenService();
 
   @override
   void onInit() async {
@@ -29,13 +32,18 @@ class CheckoutController extends GetxController {
 
   Future<void> postImageData() async {
     try {
+      OverlayLoadingProgress.start();
       isLoading.value = true;
+      if (!await _tokenService.checkToken()) {
+        return;
+      }
       if (fixedLocation == null) {
         Get.snackbar('Some thing error', 'Location not found.');
         return;
       }
       if (predict.detectedObjects!.isEmpty) {
         Get.snackbar('Failed post image', 'There is no object detected.');
+        OverlayLoadingProgress.stop();
         Get.offAllNamed("/bottomnav");
         return;
       }
@@ -56,6 +64,7 @@ class CheckoutController extends GetxController {
       );
       final data = PostSampah.fromRawJson(response);
       isLoading.value = false;
+      OverlayLoadingProgress.stop();
       Get.offAllNamed("/bottomnav");
       Get.snackbar("Success post sampah", "Berhasil post sampah");
       if (data.updatedBadge!) {

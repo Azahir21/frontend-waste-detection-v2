@@ -7,6 +7,7 @@ import 'package:frontend_waste_management/app/data/models/point_model.dart';
 import 'package:frontend_waste_management/app/data/models/predict_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/location_handler.dart';
+import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -19,6 +20,7 @@ class UploadImageController extends GetxController {
   RxBool isCameraInitialized = false.obs;
   Predict predict = Predict();
   final RxBool loadingAI = false.obs;
+  final _tokenService = TokenService();
 
   final List<CameraDescription> cameras = Get.arguments;
 
@@ -62,6 +64,9 @@ class UploadImageController extends GetxController {
 
   Future<void> postImage(XFile picture, bool fromCamera) async {
     try {
+      if (!await _tokenService.checkToken()) {
+        return;
+      }
       int? point = await getUserPoints();
       LatLng? position = await getCurrentPosition();
       var response = await ApiServices().uploadFile(
@@ -96,6 +101,9 @@ class UploadImageController extends GetxController {
 
   Future<int> getUserPoints() async {
     try {
+      if (!await _tokenService.checkToken()) {
+        return 0;
+      }
       final response = await ApiServices().get(UrlConstants.point);
       Point pointData = Point.fromRawJson(response);
       return pointData.point!;

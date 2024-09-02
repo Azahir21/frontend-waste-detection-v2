@@ -7,12 +7,14 @@ import 'package:frontend_waste_management/app/data/models/point_model.dart';
 import 'package:frontend_waste_management/app/data/models/predict_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/location_handler.dart';
+import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:overlay_kit/overlay_kit.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class HomeController extends GetxController {
@@ -25,15 +27,21 @@ class HomeController extends GetxController {
   final picker = ImagePicker().obs;
   Predict predict = Predict();
   final RxBool loadingAI = false.obs;
+  final _tokenService = TokenService();
 
   @override
   void onInit() async {
     super.onInit();
+    print("re init");
     await fetchData();
   }
 
   Future<void> fetchData() async {
+    print("re frase");
     isLoading.value = true;
+    if (!await _tokenService.checkToken()) {
+      return;
+    }
     await getPoint();
     await getArticle();
     isLoading.value = false;
@@ -106,6 +114,7 @@ class HomeController extends GetxController {
 
   Future<void> postImage(XFile picture, bool fromCamera) async {
     try {
+      OverlayLoadingProgress.start();
       LatLng? position = await getCurrentPosition();
       var response = await ApiServices().uploadFile(
         UrlConstants.predict,
@@ -118,7 +127,10 @@ class HomeController extends GetxController {
       predict = Predict.fromJson(jsonDecode(response));
       predict.totalpoint = point.value + predict.subtotalpoint!;
       predict.address = await getAddressFromLatLng(position);
-      Get.toNamed("/checkout", arguments: predict);
+      OverlayLoadingProgress.stop();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.toNamed("/checkout", arguments: predict);
+      });
     } catch (e) {
       print('Error occurred while posting image: $e');
     }

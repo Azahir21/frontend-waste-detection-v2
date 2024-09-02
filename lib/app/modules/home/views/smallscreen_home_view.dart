@@ -1,4 +1,3 @@
-import 'package:camera/camera.dart';
 import 'package:frontend_waste_management/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend_waste_management/app/modules/home/views/widgets/article_tiles.dart';
@@ -10,6 +9,7 @@ import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:get/get.dart';
+import 'package:overlay_kit/overlay_kit.dart';
 
 class SmallScreenHomeView extends GetView<HomeController> {
   const SmallScreenHomeView({super.key});
@@ -38,7 +38,8 @@ class SmallScreenHomeView extends GetView<HomeController> {
                 ),
                 child: Obx(
                   () => Visibility(
-                    visible: !controller.loadingAI.value,
+                    // visible: !controller.loadingAI.value,
+                    visible: true,
                     replacement: Center(
                       child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,

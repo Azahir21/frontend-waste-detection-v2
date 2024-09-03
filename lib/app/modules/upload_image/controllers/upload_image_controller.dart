@@ -105,7 +105,11 @@ class UploadImageController extends GetxController {
         return 0;
       }
       final response = await ApiServices().get(UrlConstants.point);
-      Point pointData = Point.fromRawJson(response);
+      if (response.statusCode != 200) {
+        Get.snackbar('Point Error', jsonDecode(response.body)['detail']);
+        throw ('Point error: ${response.body}');
+      }
+      Point pointData = Point.fromRawJson(response.body);
       return pointData.point!;
     } catch (e) {
       Get.snackbar('Some thing error', 'Failed to get koin data.');

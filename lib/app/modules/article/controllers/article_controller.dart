@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:frontend_waste_management/app/data/models/article_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
@@ -29,10 +31,13 @@ class ArticleController extends GetxController {
   Future<List<Article>> getArticle() async {
     try {
       final response = await ApiServices().get('${UrlConstants.article}s');
-      articles.value = parseArticles(response);
+      if (response.statusCode != 200) {
+        Get.snackbar('Article Error', jsonDecode(response.body)['detail']);
+        throw ('Article error: ${response.body}');
+      }
+      articles.value = parseArticles(response.body);
       return articles;
     } catch (e) {
-      Get.snackbar('Article Error', 'Failed to get article. Please try again.');
       throw ('Article error: $e');
     }
   }

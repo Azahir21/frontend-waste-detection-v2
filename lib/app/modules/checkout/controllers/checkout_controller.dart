@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:frontend_waste_management/app/data/models/post_sampah.dart';
 import 'package:frontend_waste_management/app/data/models/predict_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
@@ -62,7 +64,11 @@ class CheckoutController extends GetxController {
               .toList(),
         },
       );
-      final data = PostSampah.fromRawJson(response);
+      if (response.statusCode != 200) {
+        Get.snackbar('Post Sampah Error', jsonDecode(response.body)['detail']);
+        throw ('Post Sampah error: ${response.body}');
+      }
+      final data = PostSampah.fromRawJson(response.body);
       isLoading.value = false;
       OverlayLoadingProgress.stop();
       Get.offAllNamed("/bottomnav");
@@ -71,7 +77,6 @@ class CheckoutController extends GetxController {
         Get.snackbar("Congratulation", "You got ${data.badge} badge");
       }
     } catch (e) {
-      Get.snackbar('Some thing error', 'Failed to post image data.');
       print('Post image error: $e');
     }
   }

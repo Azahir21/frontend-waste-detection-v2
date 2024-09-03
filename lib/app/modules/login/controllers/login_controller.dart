@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:frontend_waste_management/app/data/models/login_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
@@ -37,12 +39,15 @@ class LoginController extends GetxController {
             'password': _password,
           },
           contentType: 'application/x-www-form-urlencoded');
-      Login loginData = Login.fromRawJson(response);
+      if (response.statusCode != 200) {
+        Get.snackbar('Login Error', jsonDecode(response.body)['detail']);
+        throw ('Login error: ${response.body}');
+      }
+      Login loginData = Login.fromRawJson(response.body);
       GetStorage().write('token', loginData.accessToken);
       GetStorage().write('username', loginData.username);
       Get.offAllNamed("/bottomnav");
     } catch (e) {
-      Get.snackbar('Login Error', 'Failed to login. Please try again.');
       print('Login error: $e');
     }
   }

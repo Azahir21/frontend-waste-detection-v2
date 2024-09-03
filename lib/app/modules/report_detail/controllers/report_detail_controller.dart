@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:frontend_waste_management/app/data/models/sampah_detail_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
@@ -24,7 +25,11 @@ class ReportDetailController extends GetxController {
     isLoading.value = true;
     final response =
         await ApiServices().get(UrlConstants.userSampah + "/$reportId");
-    reportDetail.value = parseSampahDetailSingle(response);
+    if (response.statusCode != 200) {
+      Get.snackbar('Report Detail Error', jsonDecode(response.body)['detail']);
+      throw ('Report Detail error: ${response.body}');
+    }
+    reportDetail.value = parseSampahDetailSingle(response.body);
     print(reportDetail.value.image);
     isLoading.value = false;
   }

@@ -1,3 +1,4 @@
+import 'package:frontend_waste_management/app/data/services/network_middleware.dart';
 import 'package:get/get.dart';
 
 import '../modules/account_setting/bindings/account_setting_binding.dart';
@@ -49,6 +50,7 @@ class AppPages {
       name: _Paths.HOME,
       page: () => const HomeView(),
       binding: HomeBinding(),
+      middlewares: [ConnectivityMiddleware()],
     ),
     GetPage(
       name: _Paths.SPLASH,
@@ -59,6 +61,7 @@ class AppPages {
       name: _Paths.ONBOARDING,
       page: () => OnboardingView(),
       binding: OnboardingBinding(),
+      middlewares: [ConnectivityMiddleware()],
     ),
     GetPage(
       name: _Paths.LOGIN,

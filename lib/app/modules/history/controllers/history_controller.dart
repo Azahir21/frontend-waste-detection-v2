@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:frontend_waste_management/app/data/models/sampah_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
@@ -30,8 +31,11 @@ class HistoryController extends GetxController {
     try {
       sampahs.refresh();
       final response = await ApiServices().get(UrlConstants.userSampah);
-      sampahs.value = parseSampah(response);
-      // sort by capture time
+      if (response.statusCode != 200) {
+        Get.snackbar('History Error', jsonDecode(response.body)['detail']);
+        throw ('History error: ${response.body}');
+      }
+      sampahs.value = parseSampah(response.body);
       sampahs.sort((a, b) => b.captureTime!.compareTo(a.captureTime!));
       return sampahs;
     } catch (e) {

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:frontend_waste_management/app/data/models/leaderboard_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
@@ -35,7 +37,11 @@ class LeaderboardController extends GetxController {
   Future<List<Leaderboard>> getWeekly() async {
     try {
       final response = await ApiServices().get(UrlConstants.weeklyPoint);
-      Leaderboards leaderboards = Leaderboards.fromRawJson(response);
+      if (response.statusCode != 200) {
+        Get.snackbar('Leaderboard Error', jsonDecode(response.body)['detail']);
+        throw ('Leaderboard weekly error: ${response.body}');
+      }
+      Leaderboards leaderboards = Leaderboards.fromRawJson(response.body);
       weekly.value = leaderboards.leaderboards;
       return weekly;
     } catch (e) {
@@ -48,7 +54,11 @@ class LeaderboardController extends GetxController {
   Future<List<Leaderboard>> getMonthly() async {
     try {
       final response = await ApiServices().get(UrlConstants.monthlyPoint);
-      Leaderboards leaderboards = Leaderboards.fromRawJson(response);
+      if (response.statusCode != 200) {
+        Get.snackbar('Leaderboard Error', jsonDecode(response.body)['detail']);
+        throw ('Leaderboard monthly error: ${response.body}');
+      }
+      Leaderboards leaderboards = Leaderboards.fromRawJson(response.body);
       monthly.value = leaderboards.leaderboards;
       return monthly;
     } catch (e) {
@@ -61,7 +71,11 @@ class LeaderboardController extends GetxController {
   Future<List<Leaderboard>> getAllTime() async {
     try {
       final response = await ApiServices().get(UrlConstants.allTimePoint);
-      Leaderboards leaderboards = Leaderboards.fromRawJson(response);
+      if (response.statusCode != 200) {
+        Get.snackbar('Leaderboard Error', jsonDecode(response.body)['detail']);
+        throw ('Leaderboard alltime error: ${response.body}');
+      }
+      Leaderboards leaderboards = Leaderboards.fromRawJson(response.body);
       allTime.value = leaderboards.leaderboards;
       return allTime;
     } catch (e) {

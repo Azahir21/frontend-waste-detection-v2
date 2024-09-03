@@ -51,7 +51,11 @@ class HomeController extends GetxController {
   Future<void> getPoint() async {
     try {
       final response = await ApiServices().get(UrlConstants.point);
-      Point pointData = Point.fromRawJson(response);
+      if (response.statusCode != 200) {
+        Get.snackbar('Point Error', jsonDecode(response.body)['detail']);
+        throw ('Point error: ${response.body}');
+      }
+      Point pointData = Point.fromRawJson(response.body);
       point.value = pointData.point!;
       badgeName.value = convertBadgeIdtoBadgeName(pointData.badgeId!);
     } catch (e) {
@@ -63,7 +67,11 @@ class HomeController extends GetxController {
   Future<List<Article>> getArticle() async {
     try {
       final response = await ApiServices().get('${UrlConstants.article}s');
-      articles.value = parseArticles(response);
+      if (response.statusCode != 200) {
+        Get.snackbar('Article Error', jsonDecode(response.body)['detail']);
+        throw ('Article error: ${response.body}');
+      }
+      articles.value = parseArticles(response.body);
       return articles;
     } catch (e) {
       Get.snackbar('Article Error', 'Failed to get article. Please try again.');

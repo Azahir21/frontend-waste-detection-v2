@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend_waste_management/core/theme/color_theme.dart';
 import 'package:frontend_waste_management/core/theme/dimension_theme.dart';
 import 'package:frontend_waste_management/core/theme/text_theme.dart';
+import 'package:frontend_waste_management/dependency_injection.dart';
 import 'package:get/get.dart';
 import 'package:overlay_kit/overlay_kit.dart';
 import 'app/routes/app_pages.dart';
@@ -11,6 +12,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 Future<void> main() async {
   await dotenv.load(fileName: ".env");
   runApp(MyApp());
+  DependencyInjection.init();
 }
 
 class MyApp extends StatefulWidget {

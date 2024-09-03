@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
@@ -56,7 +57,11 @@ class MapsController extends GetxController {
     }
     try {
       final response = await ApiServices().get(UrlConstants.sampah);
-      sampahsData.value = parseSampahDetail(response);
+      if (response.statusCode != 200) {
+        Get.snackbar('Sampah Error', jsonDecode(response.body)['detail']);
+        throw ('Sampah error: ${response.body}');
+      }
+      sampahsData.value = parseSampahDetail(response.body);
       weightedLatLng.value = sampahsData
           .map(
             (e) => WeightedLatLng(
@@ -105,7 +110,11 @@ class MapsController extends GetxController {
         "start_date": firstDate.value.toIso8601String(),
         "end_date": lastDate.value.toIso8601String(),
       });
-      timeseriesData.value = parseSampahDetail(response);
+      if (response.statusCode != 200) {
+        Get.snackbar('Timeseries Error', jsonDecode(response.body)['detail']);
+        throw ('Timeseries error: ${response.body}');
+      }
+      timeseriesData.value = parseSampahDetail(response.body);
       weightedLatLng.value = timeseriesData
           .map(
             (e) => WeightedLatLng(

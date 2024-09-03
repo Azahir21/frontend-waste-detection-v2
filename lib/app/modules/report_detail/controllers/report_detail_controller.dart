@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:frontend_waste_management/app/data/models/sampah_detail_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
+import 'package:frontend_waste_management/app/data/services/simply_translate.dart';
 import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:get/get.dart';
@@ -26,11 +27,14 @@ class ReportDetailController extends GetxController {
     final response =
         await ApiServices().get(UrlConstants.userSampah + "/$reportId");
     if (response.statusCode != 200) {
-      Get.snackbar('Report Detail Error', jsonDecode(response.body)['detail']);
+      var message = await translate(jsonDecode(response.body)['detail']);
+      Get.snackbar('Report Detail Error', message);
       throw ('Report Detail error: ${response.body}');
     }
     reportDetail.value = parseSampahDetailSingle(response.body);
-    print(reportDetail.value.image);
+    for (var detectedObject in reportDetail.value.countedObjects!) {
+      detectedObject.name = await translate(detectedObject.name!);
+    }
     isLoading.value = false;
   }
 }

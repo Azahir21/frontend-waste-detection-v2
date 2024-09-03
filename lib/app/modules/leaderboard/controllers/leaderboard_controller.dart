@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:frontend_waste_management/app/data/models/leaderboard_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
+import 'package:frontend_waste_management/app/data/services/simply_translate.dart';
 import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:get/get.dart';
@@ -38,7 +39,8 @@ class LeaderboardController extends GetxController {
     try {
       final response = await ApiServices().get(UrlConstants.weeklyPoint);
       if (response.statusCode != 200) {
-        Get.snackbar('Leaderboard Error', jsonDecode(response.body)['detail']);
+        var message = await translate(jsonDecode(response.body)['detail']);
+        Get.snackbar('Leaderboard Error', message);
         throw ('Leaderboard weekly error: ${response.body}');
       }
       Leaderboards leaderboards = Leaderboards.fromRawJson(response.body);
@@ -55,7 +57,8 @@ class LeaderboardController extends GetxController {
     try {
       final response = await ApiServices().get(UrlConstants.monthlyPoint);
       if (response.statusCode != 200) {
-        Get.snackbar('Leaderboard Error', jsonDecode(response.body)['detail']);
+        var message = await translate(jsonDecode(response.body)['detail']);
+        Get.snackbar('Leaderboard Error', message);
         throw ('Leaderboard monthly error: ${response.body}');
       }
       Leaderboards leaderboards = Leaderboards.fromRawJson(response.body);
@@ -72,7 +75,8 @@ class LeaderboardController extends GetxController {
     try {
       final response = await ApiServices().get(UrlConstants.allTimePoint);
       if (response.statusCode != 200) {
-        Get.snackbar('Leaderboard Error', jsonDecode(response.body)['detail']);
+        var message = await translate(jsonDecode(response.body)['detail']);
+        Get.snackbar('Leaderboard Error', message);
         throw ('Leaderboard alltime error: ${response.body}');
       }
       Leaderboards leaderboards = Leaderboards.fromRawJson(response.body);

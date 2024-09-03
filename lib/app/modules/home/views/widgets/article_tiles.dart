@@ -1,8 +1,4 @@
-import 'dart:convert';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frontend_waste_management/app/data/models/article_model.dart';
 import 'package:frontend_waste_management/app/data/services/date_convertion.dart';
 import 'package:frontend_waste_management/app/widgets/app_text.dart';

@@ -7,6 +7,7 @@ import 'package:frontend_waste_management/app/data/models/point_model.dart';
 import 'package:frontend_waste_management/app/data/models/predict_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/location_handler.dart';
+import 'package:frontend_waste_management/app/data/services/simply_translate.dart';
 import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:geolocator/geolocator.dart';
@@ -106,7 +107,8 @@ class UploadImageController extends GetxController {
       }
       final response = await ApiServices().get(UrlConstants.point);
       if (response.statusCode != 200) {
-        Get.snackbar('Point Error', jsonDecode(response.body)['detail']);
+        var message = await translate(jsonDecode(response.body)['detail']);
+        Get.snackbar('Point Error', message);
         throw ('Point error: ${response.body}');
       }
       Point pointData = Point.fromRawJson(response.body);

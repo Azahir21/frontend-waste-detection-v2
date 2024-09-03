@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:frontend_waste_management/app/data/models/post_sampah.dart';
 import 'package:frontend_waste_management/app/data/models/predict_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
+import 'package:frontend_waste_management/app/data/services/simply_translate.dart';
 import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:get/get.dart';
@@ -65,7 +66,8 @@ class CheckoutController extends GetxController {
         },
       );
       if (response.statusCode != 200) {
-        Get.snackbar('Post Sampah Error', jsonDecode(response.body)['detail']);
+        var message = await translate(jsonDecode(response.body)['detail']);
+        Get.snackbar('Post Sampah Error', message);
         throw ('Post Sampah error: ${response.body}');
       }
       final data = PostSampah.fromRawJson(response.body);

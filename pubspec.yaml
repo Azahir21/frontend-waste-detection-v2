@@ -34,6 +34,10 @@ dependencies:
   overlay_kit: ^1.0.8
   jwt_decoder: ^2.0.1
   connectivity_plus: ^4.0.2
+  simplytranslate: ^2.2.1+3
+  flutter_localizations:
+    sdk: flutter
+  intl: any
 
 dev_dependencies:
   flutter_lints: ^3.0.0

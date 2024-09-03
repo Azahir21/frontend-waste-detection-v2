@@ -7,6 +7,7 @@ import 'package:flutter_map_heatmap/flutter_map_heatmap.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:frontend_waste_management/app/data/models/sampah_detail_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
+import 'package:frontend_waste_management/app/data/services/simply_translate.dart';
 import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:get/get.dart';
@@ -58,7 +59,8 @@ class MapsController extends GetxController {
     try {
       final response = await ApiServices().get(UrlConstants.sampah);
       if (response.statusCode != 200) {
-        Get.snackbar('Sampah Error', jsonDecode(response.body)['detail']);
+        var message = await translate(jsonDecode(response.body)['detail']);
+        Get.snackbar('Sampah Error', message);
         throw ('Sampah error: ${response.body}');
       }
       sampahsData.value = parseSampahDetail(response.body);
@@ -111,7 +113,8 @@ class MapsController extends GetxController {
         "end_date": lastDate.value.toIso8601String(),
       });
       if (response.statusCode != 200) {
-        Get.snackbar('Timeseries Error', jsonDecode(response.body)['detail']);
+        var message = await translate(jsonDecode(response.body)['detail']);
+        Get.snackbar('Timeseries Error', message);
         throw ('Timeseries error: ${response.body}');
       }
       timeseriesData.value = parseSampahDetail(response.body);

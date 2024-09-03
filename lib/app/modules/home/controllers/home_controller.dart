@@ -7,6 +7,7 @@ import 'package:frontend_waste_management/app/data/models/point_model.dart';
 import 'package:frontend_waste_management/app/data/models/predict_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/location_handler.dart';
+import 'package:frontend_waste_management/app/data/services/simply_translate.dart';
 import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:geolocator/geolocator.dart';
@@ -16,6 +17,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:overlay_kit/overlay_kit.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:simplytranslate/simplytranslate.dart';
 
 class HomeController extends GetxController {
   //TODO: Implement HomeController
@@ -28,16 +30,15 @@ class HomeController extends GetxController {
   Predict predict = Predict();
   final RxBool loadingAI = false.obs;
   final _tokenService = TokenService();
+  // final st = SimplyTranslator(EngineType.google);
 
   @override
   void onInit() async {
     super.onInit();
-    print("re init");
     await fetchData();
   }
 
   Future<void> fetchData() async {
-    print("re frase");
     isLoading.value = true;
     if (!await _tokenService.checkToken()) {
       return;
@@ -52,12 +53,14 @@ class HomeController extends GetxController {
     try {
       final response = await ApiServices().get(UrlConstants.point);
       if (response.statusCode != 200) {
-        Get.snackbar('Point Error', jsonDecode(response.body)['detail']);
+        var message = await translate(jsonDecode(response.body)['detail']);
+        Get.snackbar('Point Error', message);
         throw ('Point error: ${response.body}');
       }
       Point pointData = Point.fromRawJson(response.body);
       point.value = pointData.point!;
       badgeName.value = convertBadgeIdtoBadgeName(pointData.badgeId!);
+      print(pointData.point);
     } catch (e) {
       Get.snackbar('Some thing error', 'Failed to get koin data.');
       print('Point error: $e');
@@ -68,10 +71,14 @@ class HomeController extends GetxController {
     try {
       final response = await ApiServices().get('${UrlConstants.article}s');
       if (response.statusCode != 200) {
-        Get.snackbar('Article Error', jsonDecode(response.body)['detail']);
+        var message = await translate(jsonDecode(response.body)['detail']);
+        Get.snackbar('Article Error', message);
         throw ('Article error: ${response.body}');
       }
       articles.value = parseArticles(response.body);
+      for (var article in articles) {
+        article.title = await translate(article.title!);
+      }
       return articles;
     } catch (e) {
       Get.snackbar('Article Error', 'Failed to get article. Please try again.');
@@ -135,6 +142,9 @@ class HomeController extends GetxController {
       predict = Predict.fromJson(jsonDecode(response));
       predict.totalpoint = point.value + predict.subtotalpoint!;
       predict.address = await getAddressFromLatLng(position);
+      for (var detectedObject in predict.detectedObjects!) {
+        detectedObject.name = await translate(detectedObject.name!);
+      }
       OverlayLoadingProgress.stop();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Get.toNamed("/checkout", arguments: predict);

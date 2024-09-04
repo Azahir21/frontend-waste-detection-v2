@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:frontend_waste_management/app/data/models/predict_model.dart';
 import 'package:latlong2/latlong.dart';
 
 class SampahDetail {

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_waste_management/app/data/models/onboarding_model.dummy.dart';
 import 'package:get/get.dart';
 
 class OnboardingController extends GetxController {
@@ -7,8 +6,8 @@ class OnboardingController extends GetxController {
   void onInit() {
     super.onInit();
     if (_arguments != null) {
-      _currentPageNotifier.value = onBoardingList.length - 1;
-      _pageController = PageController(initialPage: onBoardingList.length - 1);
+      _currentPageNotifier.value = 3 - 1;
+      _pageController = PageController(initialPage: 3 - 1);
       firstIndex = false;
       lastIndex = true;
     } else {
@@ -16,6 +15,8 @@ class OnboardingController extends GetxController {
       firstIndex = true;
       lastIndex = false;
     }
+    print("locale 3 : ${Get.locale}");
+    Get.updateLocale(Get.locale!);
   }
 
   @override

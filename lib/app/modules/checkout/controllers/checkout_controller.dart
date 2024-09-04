@@ -5,10 +5,12 @@ import 'package:frontend_waste_management/app/data/models/predict_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/simply_translate.dart';
 import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
+import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:overlay_kit/overlay_kit.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CheckoutController extends GetxController {
   //TODO: Implement CheckoutController
@@ -18,6 +20,7 @@ class CheckoutController extends GetxController {
   late LatLng? fixedLocation;
   final isLoading = false.obs;
   final _tokenService = TokenService();
+  final buttonEnable = true.obs;
 
   @override
   void onInit() async {
@@ -41,15 +44,22 @@ class CheckoutController extends GetxController {
         return;
       }
       if (fixedLocation == null) {
-        Get.snackbar('Some thing error', 'Location not found.');
+        showFailedSnackbar(
+          AppLocalizations.of(Get.context!)!.some_things_wrong,
+          AppLocalizations.of(Get.context!)!.location_not_found,
+        );
         return;
       }
       if (predict.detectedObjects!.isEmpty) {
-        Get.snackbar('Failed post image', 'There is no object detected.');
+        showFailedSnackbar(
+          AppLocalizations.of(Get.context!)!.failed_to_post_data,
+          AppLocalizations.of(Get.context!)!.no_object_detected,
+        );
         OverlayLoadingProgress.stop();
         Get.offAllNamed("/bottomnav");
         return;
       }
+      buttonEnable.value = false;
       final response = await ApiServices().post(
         UrlConstants.userSampah,
         {
@@ -67,19 +77,29 @@ class CheckoutController extends GetxController {
       );
       if (response.statusCode != 200) {
         var message = await translate(jsonDecode(response.body)['detail']);
-        Get.snackbar('Post Sampah Error', message);
-        throw ('Post Sampah error: ${response.body}');
+        showFailedSnackbar(
+          AppLocalizations.of(Get.context!)!.failed_to_post_waste,
+          message,
+        );
+        throw ('${AppLocalizations.of(Get.context!)!.failed_to_post_data}: ${response.body}');
       }
       final data = PostSampah.fromRawJson(response.body);
       isLoading.value = false;
+      buttonEnable.value = true;
       OverlayLoadingProgress.stop();
       Get.offAllNamed("/bottomnav");
-      Get.snackbar("Success post sampah", "Berhasil post sampah");
+      showSuccessSnackbar(
+        AppLocalizations.of(Get.context!)!.post_data_success,
+        AppLocalizations.of(Get.context!)!.data_has_been_posted,
+      );
       if (data.updatedBadge!) {
-        Get.snackbar("Congratulation", "You got ${data.badge} badge");
+        showSuccessSnackbar(
+          AppLocalizations.of(Get.context!)!.congratulations,
+          AppLocalizations.of(Get.context!)!.badge_unlocked(data.badge!),
+        );
       }
     } catch (e) {
-      print('Post image error: $e');
+      print('${AppLocalizations.of(Get.context!)!.failed_to_post_data}: $e');
     }
   }
 }

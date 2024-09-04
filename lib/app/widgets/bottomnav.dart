@@ -6,6 +6,7 @@ import 'package:frontend_waste_management/app/modules/profile/views/profile_view
 import 'package:frontend_waste_management/app/widgets/app_icon.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class BottomNavView extends StatefulWidget {
   BottomNavView({Key? key}) : super(key: key);
@@ -54,7 +55,7 @@ class _BottomNavViewState extends State<BottomNavView> {
                   _selectedIndex == 0 ? color.iconActivate : color.iconDefault,
               context: context,
             ),
-            label: 'Dashboard',
+            label: AppLocalizations.of(context)!.dashboard,
           ),
           BottomNavigationBarItem(
             icon: AppIcon.custom(
@@ -63,7 +64,7 @@ class _BottomNavViewState extends State<BottomNavView> {
                   _selectedIndex == 1 ? color.iconActivate : color.iconDefault,
               context: context,
             ),
-            label: 'Artikel',
+            label: AppLocalizations.of(context)!.article,
           ),
           BottomNavigationBarItem(
             icon: AppIcon.custom(
@@ -72,7 +73,7 @@ class _BottomNavViewState extends State<BottomNavView> {
                   _selectedIndex == 2 ? color.iconActivate : color.iconDefault,
               context: context,
             ),
-            label: 'Riwayat',
+            label: AppLocalizations.of(context)!.history,
           ),
           BottomNavigationBarItem(
             icon: AppIcon.custom(
@@ -81,7 +82,7 @@ class _BottomNavViewState extends State<BottomNavView> {
                   _selectedIndex == 3 ? color.iconActivate : color.iconDefault,
               context: context,
             ),
-            label: 'Profile',
+            label: AppLocalizations.of(context)!.profile,
           ),
         ],
       ),

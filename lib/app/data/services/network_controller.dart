@@ -1,6 +1,8 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class NetworkController extends GetxController {
   final Connectivity _connectionStatus = Connectivity();
@@ -26,8 +28,6 @@ class NetworkController extends GetxController {
   }
 
   void _updateConnectionStatus(ConnectivityResult result) {
-    print("Connection status: $result");
-
     switch (result) {
       case ConnectivityResult.none:
         isConnected.value = false;
@@ -40,9 +40,10 @@ class NetworkController extends GetxController {
         if (!isConnected.value) {
           isConnected.value = true;
           if (!isSplashScreen.value) {
-            Get.back(); // Close the dialog if it's open
-            _showConnectedSnackbar(
-                result == ConnectivityResult.wifi ? "Wifi" : "Data Seluler");
+            Get.back();
+            _showConnectedSnackbar(result == ConnectivityResult.wifi
+                ? AppLocalizations.of(Get.context!)!.wifi
+                : AppLocalizations.of(Get.context!)!.mobile_data);
           }
         }
         break;
@@ -55,9 +56,8 @@ class NetworkController extends GetxController {
     if (Get.isDialogOpen ?? false) return; // Prevent multiple dialogs
 
     Get.defaultDialog(
-      title: 'Jaringan Bermasalah',
-      middleText:
-          'Tidak terhubung ke internet, tolong periksa kembali jaringan Anda untuk melanjutkan',
+      title: AppLocalizations.of(Get.context!)!.network_problem,
+      middleText: AppLocalizations.of(Get.context!)!.please_check_connection,
       onWillPop: () async => false,
       titleStyle: const TextStyle(
         fontWeight: FontWeight.w600,
@@ -73,10 +73,10 @@ class NetworkController extends GetxController {
   }
 
   void _showConnectedSnackbar(String connectionType) {
-    Get.snackbar(
-      "Berhasil Terhubung",
-      "Terhubung dengan $connectionType",
-      snackPosition: SnackPosition.BOTTOM,
+    showSuccessSnackbar(
+      AppLocalizations.of(Get.context!)!.connected_successfully,
+      AppLocalizations.of(Get.context!)!
+          .connected_successfully_message(connectionType),
     );
   }
 

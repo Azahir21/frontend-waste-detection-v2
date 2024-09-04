@@ -3,8 +3,10 @@ import 'package:frontend_waste_management/app/data/models/sampah_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/simply_translate.dart';
 import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
+import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HistoryController extends GetxController {
   //TODO: Implement HistoryController
@@ -34,15 +36,16 @@ class HistoryController extends GetxController {
       final response = await ApiServices().get(UrlConstants.userSampah);
       if (response.statusCode != 200) {
         var message = await translate(jsonDecode(response.body)['detail']);
-        Get.snackbar('History Error', message);
-        throw ('History error: ${response.body}');
+        showFailedSnackbar(
+          AppLocalizations.of(Get.context!)!.history_error,
+          message,
+        );
       }
       sampahs.value = parseSampah(response.body);
       sampahs.sort((a, b) => b.captureTime!.compareTo(a.captureTime!));
       return sampahs;
     } catch (e) {
-      Get.snackbar('History Error', 'Failed to get history. Please try again.');
-      throw ('History error: $e');
+      throw ('${AppLocalizations.of(Get.context!)!.history_error}: $e');
     }
   }
 }

@@ -9,9 +9,11 @@ import 'package:frontend_waste_management/app/data/models/sampah_detail_model.da
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/simply_translate.dart';
 import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
+import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class MapsController extends GetxController {
   //TODO: Implement MapsController
@@ -60,7 +62,8 @@ class MapsController extends GetxController {
       final response = await ApiServices().get(UrlConstants.sampah);
       if (response.statusCode != 200) {
         var message = await translate(jsonDecode(response.body)['detail']);
-        Get.snackbar('Sampah Error', message);
+        showFailedSnackbar(
+            AppLocalizations.of(Get.context!)!.waste_data_error, message);
         throw ('Sampah error: ${response.body}');
       }
       sampahsData.value = parseSampahDetail(response.body);
@@ -94,7 +97,7 @@ class MapsController extends GetxController {
           )
           .toList();
     } catch (e) {
-      debugPrint('Error getting all sampah: $e');
+      debugPrint('${AppLocalizations.of(Get.context!)!.waste_data_error}: $e');
     }
   }
 
@@ -114,7 +117,9 @@ class MapsController extends GetxController {
       });
       if (response.statusCode != 200) {
         var message = await translate(jsonDecode(response.body)['detail']);
-        Get.snackbar('Timeseries Error', message);
+        showFailedSnackbar(
+            AppLocalizations.of(Get.context!)!.waste_time_series_error,
+            message);
         throw ('Timeseries error: ${response.body}');
       }
       timeseriesData.value = parseSampahDetail(response.body);
@@ -145,7 +150,8 @@ class MapsController extends GetxController {
       isLoading.value = false;
       print(isLoading.value);
     } catch (e) {
-      debugPrint('Error getting all sampah: $e');
+      debugPrint(
+          '${AppLocalizations.of(Get.context!)!.waste_time_series_error}: $e');
     }
   }
 

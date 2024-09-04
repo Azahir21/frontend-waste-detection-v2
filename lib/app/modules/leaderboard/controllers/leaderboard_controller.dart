@@ -4,8 +4,10 @@ import 'package:frontend_waste_management/app/data/models/leaderboard_model.dart
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/simply_translate.dart';
 import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
+import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class LeaderboardController extends GetxController {
   //TODO: Implement LeaderboardController
@@ -40,15 +42,16 @@ class LeaderboardController extends GetxController {
       final response = await ApiServices().get(UrlConstants.weeklyPoint);
       if (response.statusCode != 200) {
         var message = await translate(jsonDecode(response.body)['detail']);
-        Get.snackbar('Leaderboard Error', message);
+        showFailedSnackbar(
+          AppLocalizations.of(Get.context!)!.leaderboard_error,
+          message,
+        );
         throw ('Leaderboard weekly error: ${response.body}');
       }
       Leaderboards leaderboards = Leaderboards.fromRawJson(response.body);
       weekly.value = leaderboards.leaderboards;
       return weekly;
     } catch (e) {
-      Get.snackbar('Leaderboard Error',
-          'Failed to get weekly leaderboard. Please try again.');
       throw ('Leaderboard weekly error: $e');
     }
   }
@@ -58,15 +61,16 @@ class LeaderboardController extends GetxController {
       final response = await ApiServices().get(UrlConstants.monthlyPoint);
       if (response.statusCode != 200) {
         var message = await translate(jsonDecode(response.body)['detail']);
-        Get.snackbar('Leaderboard Error', message);
+        showFailedSnackbar(
+          AppLocalizations.of(Get.context!)!.leaderboard_error,
+          message,
+        );
         throw ('Leaderboard monthly error: ${response.body}');
       }
       Leaderboards leaderboards = Leaderboards.fromRawJson(response.body);
       monthly.value = leaderboards.leaderboards;
       return monthly;
     } catch (e) {
-      Get.snackbar('Leaderboard Error',
-          'Failed to monthly leaderboard. Please try again.');
       throw ('Leaderboard monthly error: $e');
     }
   }
@@ -76,15 +80,16 @@ class LeaderboardController extends GetxController {
       final response = await ApiServices().get(UrlConstants.allTimePoint);
       if (response.statusCode != 200) {
         var message = await translate(jsonDecode(response.body)['detail']);
-        Get.snackbar('Leaderboard Error', message);
+        showFailedSnackbar(
+          AppLocalizations.of(Get.context!)!.leaderboard_error,
+          message,
+        );
         throw ('Leaderboard alltime error: ${response.body}');
       }
       Leaderboards leaderboards = Leaderboards.fromRawJson(response.body);
       allTime.value = leaderboards.leaderboards;
       return allTime;
     } catch (e) {
-      Get.snackbar('Leaderboard Error',
-          'Failed to alltime leaderboard. Please try again.');
       throw ('Leaderboard alltime error: $e');
     }
   }

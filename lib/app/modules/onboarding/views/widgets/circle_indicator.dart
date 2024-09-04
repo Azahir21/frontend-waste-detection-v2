@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_waste_management/app/data/models/onboarding_model.dummy.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:page_view_indicators/circle_page_indicator.dart';
 
@@ -18,7 +17,7 @@ class CircleIndicator extends StatelessWidget {
       selectedSize: 8.0,
       dotColor: color.iconDisable,
       selectedDotColor: color.iconDefault,
-      itemCount: onBoardingList.length,
+      itemCount: 3,
       currentPageNotifier: currentPageNotifier,
     );
   }

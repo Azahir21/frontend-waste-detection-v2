@@ -3,18 +3,22 @@ import 'package:frontend_waste_management/core/theme/theme_data.dart';
 
 class CustomDropdown extends StatefulWidget {
   final String? labelText;
+  final String? hintText;
   final List<String> dropDownItems;
   final ValueSetter<String> onChanged;
   final double width;
   final double height;
+  final String? initialValue;
 
   const CustomDropdown({
     Key? key,
-    required this.labelText,
+    this.labelText,
+    this.hintText,
     required this.dropDownItems,
     required this.onChanged,
     required this.width,
     required this.height,
+    this.initialValue,
   }) : super(key: key);
 
   @override
@@ -23,6 +27,17 @@ class CustomDropdown extends StatefulWidget {
 
 class _CustomDropdownState extends State<CustomDropdown> {
   String? _selectedValue;
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedValue = widget.initialValue;
+    if (_selectedValue != null &&
+        !widget.dropDownItems.contains(_selectedValue)) {
+      _selectedValue =
+          widget.dropDownItems.isNotEmpty ? widget.dropDownItems.first : null;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +51,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
         decoration: InputDecoration(
           fillColor: color.formFieldBorder,
           labelText: widget.labelText,
+          hintText: widget.hintText,
           labelStyle: TextStyle(
             color: color.textPrimary,
             fontSize: 16,
@@ -45,14 +61,14 @@ class _CustomDropdownState extends State<CustomDropdown> {
             borderRadius: BorderRadius.circular(15),
             borderSide: BorderSide(
               color: color.formFieldBorder,
-              width: 3, // Thicker border
+              width: 3,
             ),
           ),
           focusedBorder: OutlineInputBorder(
             borderRadius: BorderRadius.circular(15),
             borderSide: BorderSide(
               color: color.formFieldBorder,
-              width: 3, // Thicker border when focused
+              width: 3,
             ),
           ),
           errorBorder: OutlineInputBorder(
@@ -66,7 +82,7 @@ class _CustomDropdownState extends State<CustomDropdown> {
             borderRadius: BorderRadius.circular(15),
             borderSide: BorderSide(
               color: color.formFieldBorder,
-              width: 3, // Thicker border when enabled
+              width: 3,
             ),
           ),
         ),
@@ -77,10 +93,12 @@ class _CustomDropdownState extends State<CustomDropdown> {
           );
         }).toList(),
         onChanged: (value) {
-          setState(() {
-            _selectedValue = value;
-          });
-          widget.onChanged(value!);
+          if (value != null) {
+            setState(() {
+              _selectedValue = value;
+            });
+            widget.onChanged(value);
+          }
         },
       ),
     );

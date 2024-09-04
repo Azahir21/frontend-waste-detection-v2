@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_waste_management/app/data/models/leaderboard_model.dart';
 import 'package:frontend_waste_management/app/modules/leaderboard/controllers/leaderboard_controller.dart';
 import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/centered_text_button.dart';
 import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SmallScreenLeaderboardView extends GetView<LeaderboardController> {
   SmallScreenLeaderboardView({super.key});
@@ -36,7 +36,8 @@ class SmallScreenLeaderboardView extends GetView<LeaderboardController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        AppText.labelDefaultEmphasis("Leaderboard",
+                        AppText.labelDefaultEmphasis(
+                            AppLocalizations.of(context)!.leaderboard,
                             context: context),
                         VerticalGap.formBig(),
                         Row(
@@ -44,21 +45,21 @@ class SmallScreenLeaderboardView extends GetView<LeaderboardController> {
                           children: [
                             CenteredTextButton.primary(
                                 width: 100,
-                                label: "Minggu",
+                                label: AppLocalizations.of(context)!.weekly,
                                 onTap: () {
                                   controller.show.value = controller.weekly;
                                 },
                                 context: context),
                             CenteredTextButton.primary(
                                 width: 100,
-                                label: "Monthly",
+                                label: AppLocalizations.of(context)!.monthly,
                                 onTap: () {
                                   controller.show.value = controller.monthly;
                                 },
                                 context: context),
                             CenteredTextButton.primary(
                                 width: 100,
-                                label: "All Time",
+                                label: AppLocalizations.of(context)!.all_time,
                                 onTap: () {
                                   controller.show.value = controller.allTime;
                                 },

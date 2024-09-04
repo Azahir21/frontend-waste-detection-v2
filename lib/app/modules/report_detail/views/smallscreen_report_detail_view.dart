@@ -1,17 +1,16 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:frontend_waste_management/app/modules/report_detail/controllers/report_detail_controller.dart';
 import 'package:frontend_waste_management/app/modules/report_detail/views/widget/Item_tiles.dart';
-import 'package:frontend_waste_management/app/modules/upload_image/views/preview_page.dart';
 import 'package:frontend_waste_management/app/widgets/app_icon.dart';
 import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/horizontal_gap.dart';
 import 'package:frontend_waste_management/app/widgets/icon_button.dart';
+import 'package:frontend_waste_management/app/widgets/preview_page.dart';
 import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SmallScreenReportDetailView extends GetView<ReportDetailController> {
   const SmallScreenReportDetailView({super.key});
@@ -104,7 +103,8 @@ class SmallScreenReportDetailView extends GetView<ReportDetailController> {
                                                 context: context),
                                             HorizontalGap.formSmall(),
                                             AppText.labelSmallEmphasis(
-                                              "Lokasi",
+                                              AppLocalizations.of(context)!
+                                                  .location,
                                               context: context,
                                             ),
                                           ],
@@ -127,7 +127,7 @@ class SmallScreenReportDetailView extends GetView<ReportDetailController> {
                               ),
                             VerticalGap.formMedium(),
                             AppText.labelDefaultEmphasis(
-                              "Item Dideteksi",
+                              AppLocalizations.of(context)!.waste_detected,
                               context: context,
                             ),
                             VerticalGap.formMedium(),

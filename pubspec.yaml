@@ -45,6 +45,7 @@ dev_dependencies:
     sdk: flutter
 
 flutter:
+  generate: true
   assets:
     - .env
     - assets/images/

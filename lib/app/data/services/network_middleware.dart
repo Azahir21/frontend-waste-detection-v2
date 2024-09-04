@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ConnectivityMiddleware extends GetMiddleware {
   @override
@@ -13,9 +14,8 @@ class ConnectivityMiddleware extends GetMiddleware {
     var connectivityResult = await Connectivity().checkConnectivity();
     if (connectivityResult == ConnectivityResult.none) {
       Get.defaultDialog(
-        title: 'Jaringan Bermasalah',
-        middleText:
-            'Tidak terhubung ke internet, tolong periksa kembali jaringan Anda untuk melanjutkan',
+        title: AppLocalizations.of(Get.context!)!.network_problem,
+        middleText: AppLocalizations.of(Get.context!)!.please_check_connection,
         onWillPop: () async => false,
         titleStyle: const TextStyle(
           fontWeight: FontWeight.w600,

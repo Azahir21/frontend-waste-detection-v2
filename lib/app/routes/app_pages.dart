@@ -18,8 +18,6 @@ import '../modules/login/bindings/login_binding.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/maps/bindings/maps_binding.dart';
 import '../modules/maps/views/maps_view.dart';
-import '../modules/notification/bindings/notification_binding.dart';
-import '../modules/notification/views/notification_view.dart';
 import '../modules/onboarding/bindings/onboarding_binding.dart';
 import '../modules/onboarding/views/onboarding_view.dart';
 import '../modules/profile/bindings/profile_binding.dart';
@@ -30,12 +28,8 @@ import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/report_detail/bindings/report_detail_binding.dart';
 import '../modules/report_detail/views/report_detail_view.dart';
-import '../modules/reward/bindings/reward_binding.dart';
-import '../modules/reward/views/reward_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
-import '../modules/upload_image/bindings/upload_image_binding.dart';
-import '../modules/upload_image/views/upload_image_view.dart';
 import '../widgets/bottomnav.dart';
 
 part 'app_routes.dart';
@@ -54,7 +48,7 @@ class AppPages {
     ),
     GetPage(
       name: _Paths.SPLASH,
-      page: () => const SplashView(),
+      page: () => SplashView(),
       binding: SplashBinding(),
     ),
     GetPage(
@@ -105,24 +99,9 @@ class AppPages {
       binding: AccountSettingBinding(),
     ),
     GetPage(
-      name: _Paths.NOTIFICATION,
-      page: () => const NotificationView(),
-      binding: NotificationBinding(),
-    ),
-    GetPage(
-      name: _Paths.REWARD,
-      page: () => const RewardView(),
-      binding: RewardBinding(),
-    ),
-    GetPage(
       name: _Paths.CHECKOUT,
       page: () => const CheckoutView(),
       binding: CheckoutBinding(),
-    ),
-    GetPage(
-      name: _Paths.UPLOAD_IMAGE,
-      page: () => const UploadImageView(),
-      binding: UploadImageBinding(),
     ),
     GetPage(
       name: _Paths.MAPS,

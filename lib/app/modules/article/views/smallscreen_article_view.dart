@@ -5,6 +5,7 @@ import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SmallScreenArticleView extends GetView<ArticleController> {
   const SmallScreenArticleView({super.key});
@@ -25,10 +26,8 @@ class SmallScreenArticleView extends GetView<ArticleController> {
             child: Obx(
               () => Visibility(
                 visible: !controller.isLoading.value,
-                replacement: const Expanded(
-                  child: Center(
-                    child: CircularProgressIndicator(),
-                  ),
+                replacement: const Center(
+                  child: CircularProgressIndicator(),
                 ),
                 child: SingleChildScrollView(
                   child: Padding(
@@ -36,7 +35,8 @@ class SmallScreenArticleView extends GetView<ArticleController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        AppText.labelDefaultEmphasis("Artikel Terbaru",
+                        AppText.labelDefaultEmphasis(
+                            AppLocalizations.of(context)!.latest_article,
                             context: context),
                         VerticalGap.formBig(),
                         ListView.builder(

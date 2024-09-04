@@ -9,6 +9,7 @@ import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/location_handler.dart';
 import 'package:frontend_waste_management/app/data/services/simply_translate.dart';
 import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
+import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
@@ -17,7 +18,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:overlay_kit/overlay_kit.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'package:simplytranslate/simplytranslate.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HomeController extends GetxController {
   //TODO: Implement HomeController
@@ -54,15 +55,14 @@ class HomeController extends GetxController {
       final response = await ApiServices().get(UrlConstants.point);
       if (response.statusCode != 200) {
         var message = await translate(jsonDecode(response.body)['detail']);
-        Get.snackbar('Point Error', message);
+        showFailedSnackbar(
+            AppLocalizations.of(Get.context!)!.point_error, message);
         throw ('Point error: ${response.body}');
       }
       Point pointData = Point.fromRawJson(response.body);
       point.value = pointData.point!;
       badgeName.value = convertBadgeIdtoBadgeName(pointData.badgeId!);
-      print(pointData.point);
     } catch (e) {
-      Get.snackbar('Some thing error', 'Failed to get koin data.');
       print('Point error: $e');
     }
   }
@@ -72,7 +72,8 @@ class HomeController extends GetxController {
       final response = await ApiServices().get('${UrlConstants.article}s');
       if (response.statusCode != 200) {
         var message = await translate(jsonDecode(response.body)['detail']);
-        Get.snackbar('Article Error', message);
+        showFailedSnackbar(
+            AppLocalizations.of(Get.context!)!.article_error, message);
         throw ('Article error: ${response.body}');
       }
       articles.value = parseArticles(response.body);
@@ -81,7 +82,6 @@ class HomeController extends GetxController {
       }
       return articles;
     } catch (e) {
-      Get.snackbar('Article Error', 'Failed to get article. Please try again.');
       throw ('Article error: $e');
     }
   }
@@ -95,7 +95,9 @@ class HomeController extends GetxController {
       final XFile? pickedFile = await picker.value
           .pickImage(source: ImageSource.gallery, imageQuality: 100);
       if (pickedFile == null) {
-        Get.snackbar("error", "No image selected");
+        showFailedSnackbar(
+            AppLocalizations.of(Get.context!)!.action_not_continue,
+            AppLocalizations.of(Get.context!)!.no_image_selected);
         return;
       }
       loadingAI.value = true;
@@ -115,10 +117,11 @@ class HomeController extends GetxController {
       final XFile? pickedFile = await picker.value
           .pickImage(source: ImageSource.camera, imageQuality: 100);
       if (pickedFile == null) {
-        Get.snackbar("error", "No image selected");
+        showFailedSnackbar(
+            AppLocalizations.of(Get.context!)!.action_not_continue,
+            AppLocalizations.of(Get.context!)!.no_image_selected);
         return;
       }
-      print('Image path: ${pickedFile.path}');
       loadingAI.value = true;
       await postImage(pickedFile, true);
       loadingAI.value = false;
@@ -142,8 +145,8 @@ class HomeController extends GetxController {
       predict = Predict.fromJson(jsonDecode(response));
       predict.totalpoint = point.value + predict.subtotalpoint!;
       predict.address = await getAddressFromLatLng(position);
-      for (var detectedObject in predict.detectedObjects!) {
-        detectedObject.name = await translate(detectedObject.name!);
+      for (var countedObject in predict.countedObjects!) {
+        countedObject.name = await translate(countedObject.name!);
       }
       OverlayLoadingProgress.stop();
       WidgetsBinding.instance.addPostFrameCallback((_) {
@@ -170,19 +173,19 @@ class HomeController extends GetxController {
   String convertBadgeIdtoBadgeName(int badgeId) {
     switch (badgeId) {
       case 1:
-        return 'Newcomer';
+        return AppLocalizations.of(Get.context!)!.tier_1;
       case 2:
-        return 'Junior Reporter';
+        return AppLocalizations.of(Get.context!)!.tier_2;
       case 3:
-        return 'Field Reporter';
+        return AppLocalizations.of(Get.context!)!.tier_3;
       case 4:
-        return 'Senior Reporter';
+        return AppLocalizations.of(Get.context!)!.tier_4;
       case 5:
-        return 'Lead Reporter';
+        return AppLocalizations.of(Get.context!)!.tier_5;
       case 6:
-        return 'Chief Reporter';
+        return AppLocalizations.of(Get.context!)!.tier_6;
       case 7:
-        return 'Crowdsourcing Hero';
+        return AppLocalizations.of(Get.context!)!.tier_7;
       default:
         return 'Unknown';
     }

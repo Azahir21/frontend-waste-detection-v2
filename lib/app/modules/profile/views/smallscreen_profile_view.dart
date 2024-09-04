@@ -3,12 +3,14 @@ import 'package:frontend_waste_management/app/modules/profile/controllers/profil
 import 'package:frontend_waste_management/app/widgets/app_icon.dart';
 import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/centered_text_button.dart';
+import 'package:frontend_waste_management/app/widgets/dropdown.dart';
 import 'package:frontend_waste_management/app/widgets/horizontal_gap.dart';
 import 'package:frontend_waste_management/app/widgets/icon_button.dart';
 import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SmallScreenProfileView extends GetView<ProfileController> {
   const SmallScreenProfileView({super.key});
@@ -16,6 +18,12 @@ class SmallScreenProfileView extends GetView<ProfileController> {
   @override
   Widget build(BuildContext context) {
     var color = Theme.of(context).appColors;
+    final languages = {
+      'en': 'English',
+      'id': 'Indonesian',
+      'ja': 'Japanese',
+    };
+    String initialLanguage = controller.box.read('language') ?? 'en';
 
     return Scaffold(
       body: SafeArea(
@@ -46,13 +54,15 @@ class SmallScreenProfileView extends GetView<ProfileController> {
                     ],
                   ),
                   VerticalGap.formHuge(),
-                  AppText.labelSmallEmphasis("Umum",
-                      color: color.textSecondary, context: context),
+                  AppText.labelSmallEmphasis(
+                      AppLocalizations.of(context)!.general,
+                      color: color.textSecondary,
+                      context: context),
                   VerticalGap.formHuge(),
                   _buildSettingButton(
                     context,
                     AppIconName.profile,
-                    "Pengaturan Akun",
+                    AppLocalizations.of(context)!.account_setting,
                     () {
                       Get.toNamed("/account-setting");
                     },
@@ -61,20 +71,35 @@ class SmallScreenProfileView extends GetView<ProfileController> {
                   _buildSettingButton(
                     context,
                     AppIconName.article,
-                    "Syarat dan Ketentuan",
+                    AppLocalizations.of(context)!.terms_and_conditions,
                     () {},
                   ),
                   VerticalGap.formMedium(),
                   _buildSettingButton(
                     context,
                     AppIconName.article,
-                    "Kebijakan Privasi",
+                    AppLocalizations.of(context)!.privacy_policy,
                     () {},
                   ),
+                  VerticalGap.formMedium(),
                   VerticalGap.formHuge(),
+                  CustomDropdown(
+                    // initialValue: languages[initialLanguage],
+                    onChanged: (value) async {
+                      String? languageCode = languages.keys.firstWhere(
+                        (code) => languages[code] == value,
+                        orElse: () => 'en',
+                      );
+                      controller.updateLocale(languageCode);
+                    },
+                    dropDownItems: languages.values.toList(),
+                    hintText: languages[initialLanguage],
+                    width: double.infinity,
+                    height: 70,
+                  ),
                   VerticalGap.formHuge(),
                   CenteredTextButton.secondary(
-                    label: "Keluar",
+                    label: AppLocalizations.of(context)!.logout,
                     onTap: () {
                       controller.logout();
                     },

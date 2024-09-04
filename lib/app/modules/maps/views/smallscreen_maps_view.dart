@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import 'package:flutter_map_compass/flutter_map_compass.dart';
@@ -9,10 +8,10 @@ import 'package:flutter_map_supercluster/flutter_map_supercluster.dart';
 import 'package:frontend_waste_management/app/modules/maps/controllers/maps_controller.dart';
 import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/icon_button.dart';
-import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SmallScreenMapsView extends StatefulWidget {
   const SmallScreenMapsView({super.key});
@@ -29,7 +28,6 @@ class _SmallScreenMapsViewState extends State<SmallScreenMapsView> {
 
   @override
   Widget build(BuildContext context) {
-    var color = Theme.of(context).appColors;
     return Scaffold(
       body: SafeArea(
         child: Stack(
@@ -68,7 +66,7 @@ class _SmallScreenMapsViewState extends State<SmallScreenMapsView> {
                       urlTemplate:
                           'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
                       // 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-                      // "https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg",
+                      // 'https://tiles.stadiamaps.com/tiles/alidade_satellite/{z}/{x}/{y}{r}.jpg',
                       // retinaMode: true,
                       tileProvider: CancellableNetworkTileProvider(
                         silenceExceptions: true,
@@ -90,7 +88,9 @@ class _SmallScreenMapsViewState extends State<SmallScreenMapsView> {
                           ),
                           child: controller.markers.isEmpty
                               ? Center(
-                                  child: AppText.labelSmallDefault("No Data",
+                                  child: AppText.labelSmallDefault(
+                                      AppLocalizations.of(context)!
+                                          .no_data_found,
                                       context: context),
                                 )
                               : SuperclusterLayer.immutable(
@@ -266,7 +266,7 @@ class _SmallScreenMapsViewState extends State<SmallScreenMapsView> {
             //             child: Align(
             //               alignment: Alignment.topRight,
             //               child: AppText.labelSmallEmphasis(
-            //                   "Hari ke-${controller.difference.value}",
+            //                   AppLocalizations.of(context)!.day_count(controller.difference.value),
             //                   context: context),
             //             ),
             //           ),
@@ -297,17 +297,18 @@ class _SmallScreenMapsViewState extends State<SmallScreenMapsView> {
 
   Widget filterDialog() {
     return AlertDialog(
-      title:
-          AppText.labelDefaultEmphasis("Filter Timeseries", context: context),
+      title: AppText.labelDefaultEmphasis(
+          AppLocalizations.of(context)!.filter_timeseries,
+          context: context),
       content: IntrinsicHeight(
         child: Column(
           children: [
             Obx(
               () => TextFormField(
                 controller: controller.firstDateController.value,
-                decoration: const InputDecoration(
-                  labelText: 'Tanggal Awal',
-                  suffixIcon: Icon(Icons.calendar_today),
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.start_date,
+                  suffixIcon: const Icon(Icons.calendar_today),
                 ),
                 readOnly: true,
                 onTap: () async {
@@ -331,9 +332,9 @@ class _SmallScreenMapsViewState extends State<SmallScreenMapsView> {
             Obx(
               () => TextFormField(
                 controller: controller.lastDateController.value,
-                decoration: const InputDecoration(
-                  labelText: 'Tanggal Akhir',
-                  suffixIcon: Icon(Icons.calendar_today),
+                decoration: InputDecoration(
+                  labelText: AppLocalizations.of(context)!.end_date,
+                  suffixIcon: const Icon(Icons.calendar_today),
                 ),
                 readOnly: true,
                 onTap: () async {
@@ -364,14 +365,14 @@ class _SmallScreenMapsViewState extends State<SmallScreenMapsView> {
             controller.lastDateController.value.text = "";
             Get.back();
           },
-          child: const Text('Batal'),
+          child: Text(AppLocalizations.of(context)!.cancel),
         ),
         TextButton(
           onPressed: () {
             controller.getTimeseriesData();
             Get.back();
           },
-          child: const Text('Ok'),
+          child: Text(AppLocalizations.of(context)!.ok),
         ),
       ],
     );

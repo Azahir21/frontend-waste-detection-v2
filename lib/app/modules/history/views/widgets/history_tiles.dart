@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frontend_waste_management/app/data/models/sampah_model.dart';
 import 'package:frontend_waste_management/app/data/services/date_convertion.dart';
 import 'package:frontend_waste_management/app/widgets/app_text.dart';
@@ -9,6 +8,7 @@ import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class HistoryTiles extends StatelessWidget {
   const HistoryTiles({Key? key, required this.sampah}) : super(key: key);
@@ -43,7 +43,9 @@ class HistoryTiles extends StatelessWidget {
                         AppText.labelSmallEmphasis(
                             formatTanggal(sampah.captureTime!.toString()),
                             context: context),
-                        AppText.labelSmallEmphasis("${sampah.point} Poin",
+                        AppText.labelSmallEmphasis(
+                            AppLocalizations.of(context)!
+                                .number_of_points(sampah.point!),
                             context: context),
                       ],
                     ),

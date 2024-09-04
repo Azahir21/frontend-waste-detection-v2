@@ -4,19 +4,20 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:frontend_waste_management/app/data/services/location_handler.dart';
 import 'package:frontend_waste_management/app/modules/checkout/controllers/checkout_controller.dart';
 import 'package:frontend_waste_management/app/modules/checkout/views/Item_tiles.dart';
-import 'package:frontend_waste_management/app/modules/upload_image/views/preview_page.dart';
 import 'package:frontend_waste_management/app/widgets/app_icon.dart';
 import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/centered_text_button.dart';
 import 'package:frontend_waste_management/app/widgets/horizontal_gap.dart';
 import 'package:frontend_waste_management/app/widgets/icon_button.dart';
+import 'package:frontend_waste_management/app/widgets/preview_page.dart';
 import 'package:frontend_waste_management/app/widgets/text_button.dart';
 import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:get/get.dart';
-import 'package:overlay_kit/overlay_kit.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:latlng_picker/latlng_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SmallScreenCheckoutView extends GetView<CheckoutController> {
   const SmallScreenCheckoutView({super.key});
@@ -107,7 +108,7 @@ class SmallScreenCheckoutView extends GetView<CheckoutController> {
                                           context: context),
                                       HorizontalGap.formSmall(),
                                       AppText.labelSmallEmphasis(
-                                        "Lokasi",
+                                        AppLocalizations.of(context)!.location,
                                         context: context,
                                       ),
                                     ],
@@ -119,11 +120,14 @@ class SmallScreenCheckoutView extends GetView<CheckoutController> {
                                       replacement: Column(
                                         children: [
                                           AppText.labelTinyDefault(
-                                              "Lokasi belum ditentukan",
+                                              AppLocalizations.of(context)!
+                                                  .location_not_specified,
                                               context: context),
                                           VerticalGap.formSmall(),
                                           CenteredTextButton.primary(
-                                              label: "Tentukan lokasi",
+                                              label:
+                                                  AppLocalizations.of(context)!
+                                                      .set_location,
                                               onTap: () {
                                                 Get.dialog(
                                                   pickLocation(
@@ -158,7 +162,7 @@ class SmallScreenCheckoutView extends GetView<CheckoutController> {
                         ),
                         VerticalGap.formMedium(),
                         AppText.labelDefaultEmphasis(
-                          "Item Anda",
+                          AppLocalizations.of(context)!.your_waste,
                           context: context,
                         ),
                         VerticalGap.formMedium(),
@@ -201,10 +205,12 @@ class SmallScreenCheckoutView extends GetView<CheckoutController> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          AppText.labelSmallDefault("Subtotal",
+                          AppText.labelSmallDefault(
+                              AppLocalizations.of(context)!.subtotal,
                               context: context),
                           AppText.labelSmallDefault(
-                              "${controller.predict.subtotalpoint} koin",
+                              AppLocalizations.of(context)!.number_of_points(
+                                  controller.predict.subtotalpoint!),
                               color: color.textSecondary,
                               context: context),
                         ],
@@ -213,22 +219,27 @@ class SmallScreenCheckoutView extends GetView<CheckoutController> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          AppText.labelSmallEmphasis("Total Koin",
+                          AppText.labelSmallEmphasis(
+                              AppLocalizations.of(context)!.total_points,
                               context: context),
                           AppText.labelSmallEmphasis(
-                              "${controller.predict.totalpoint} koin",
+                              AppLocalizations.of(context)!.number_of_points(
+                                  controller.predict.totalpoint!),
                               color: color.textSecondary,
                               context: context),
                         ],
                       ),
                       VerticalGap.formBig(),
-                      CenteredTextButton.primary(
-                        label: "Submit Sekarang",
-                        onTap: () async {
-                          await controller.postImageData();
-                          // Get.offAllNamed("/bottomnav");
-                        },
-                        context: context,
+                      Obx(
+                        () => CenteredTextButton.primary(
+                          label: AppLocalizations.of(context)!.submit_now,
+                          onTap: () async {
+                            await controller.postImageData();
+                            // Get.offAllNamed("/bottomnav");
+                          },
+                          isEnabled: controller.buttonEnable.value,
+                          context: context,
+                        ),
                       ),
                     ],
                   ),
@@ -243,16 +254,16 @@ class SmallScreenCheckoutView extends GetView<CheckoutController> {
 
   Widget toolsTips(BuildContext context) {
     return AlertDialog(
-      title: const Text("Informasi"),
+      title: Text(AppLocalizations.of(context)!.information),
       content: AppText.labelSmallDefault(
-          "1. Tekan gambar untuk melihat preview hasil AI \n\n2. Tekan lokasi untuk melihat lokasi di peta \n\n3. Tekan item untuk melihat Rekomendasi daur ulang \n\n4. Tekan submit untuk mengirimkan data sampah Anda \n\nPenting: Pastikan data lokasi dan item sampah Anda benar sebelum submit.",
+          AppLocalizations.of(context)!.checkout_information,
           context: context),
       actions: [
         TextButton(
           onPressed: () {
             Get.back();
           },
-          child: const Text("OK"),
+          child: Text(AppLocalizations.of(context)!.ok),
         ),
       ],
     );
@@ -260,7 +271,8 @@ class SmallScreenCheckoutView extends GetView<CheckoutController> {
 
   Widget pickLocation(BuildContext context, double height, double width) {
     return AlertDialog(
-      title: AppText.labelSmallEmphasis("Location", context: context),
+      title: AppText.labelSmallEmphasis(AppLocalizations.of(context)!.location,
+          context: context),
       content: SizedBox(
         height: height,
         width: width,
@@ -279,7 +291,7 @@ class SmallScreenCheckoutView extends GetView<CheckoutController> {
       actions: [
         Center(
           child: CustomTextButton.secondary(
-            text: "Batal",
+            text: AppLocalizations.of(context)!.cancel,
             onPressed: () {
               Get.back();
             },

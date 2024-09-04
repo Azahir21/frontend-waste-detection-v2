@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend_waste_management/app/modules/login/controllers/login_controller.dart';
 import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/centered_text_button.dart';
+import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
 import 'package:frontend_waste_management/app/widgets/form.dart';
 import 'package:frontend_waste_management/app/widgets/icon_button.dart';
 import 'package:frontend_waste_management/app/widgets/text_button.dart';
@@ -9,6 +10,7 @@ import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SmallScreenLoginView extends GetView<LoginController> {
   const SmallScreenLoginView({Key? key}) : super(key: key);
@@ -67,14 +69,15 @@ class SmallScreenLoginView extends GetView<LoginController> {
 
   Widget _buildHeaderText(BuildContext context) {
     return Center(
-      child: AppText.labelBigEmphasis("Masuk", context: context),
+      child: AppText.labelBigEmphasis(AppLocalizations.of(context)!.login,
+          context: context),
     );
   }
 
   Widget _buildSubHeaderText(BuildContext context) {
     return Center(
       child: AppText.labelDefaultDefault(
-        "Selamat datang kembali!",
+        AppLocalizations.of(context)!.welcome,
         context: context,
       ),
     );
@@ -83,7 +86,7 @@ class SmallScreenLoginView extends GetView<LoginController> {
   Widget _buildEmailField() {
     return CustomForm.email(
       width: double.infinity,
-      labelText: "Email",
+      labelText: AppLocalizations.of(Get.context!)!.email,
       onChanged: (value) {
         controller.email = value;
       },
@@ -93,7 +96,7 @@ class SmallScreenLoginView extends GetView<LoginController> {
   Widget _buildPasswordField() {
     return CustomForm.password(
       width: double.infinity,
-      labelText: "Password",
+      labelText: AppLocalizations.of(Get.context!)!.password,
       onChanged: (value) {
         controller.password = value;
       },
@@ -105,7 +108,7 @@ class SmallScreenLoginView extends GetView<LoginController> {
       mainAxisAlignment: MainAxisAlignment.end,
       children: [
         CustomTextButton.primary(
-          text: "Lupa Password?",
+          text: AppLocalizations.of(context)!.forgot_password,
           onPressed: () {},
           context: context,
         ),
@@ -116,10 +119,11 @@ class SmallScreenLoginView extends GetView<LoginController> {
   Widget _buildLoginButton(BuildContext context) {
     return CenteredTextButton.primary(
       width: double.infinity,
-      label: "Masuk",
+      label: AppLocalizations.of(context)!.login,
       onTap: () {
         if (controller.email.isEmpty || controller.password.isEmpty) {
-          Get.snackbar('Input Error', 'Email and password cannot be empty.');
+          showFailedSnackbar(AppLocalizations.of(context)!.input_error,
+              AppLocalizations.of(context)!.email_pass_cant_empty);
           return;
         }
         controller.login();
@@ -132,15 +136,18 @@ class SmallScreenLoginView extends GetView<LoginController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        AppText.textPrimary("Belum memiliki akun? ", context: context),
+        AppText.textPrimary(
+            "${AppLocalizations.of(context)!.dont_have_account}  ",
+            context: context),
         CustomTextButton.primary(
-          text: "Daftar",
+          text: AppLocalizations.of(context)!.register,
           onPressed: () {
             Get.offNamed("/register");
           },
           context: context,
         ),
-        AppText.textPrimary(" Sekarang", context: context),
+        AppText.textPrimary(" ${AppLocalizations.of(context)!.now}",
+            context: context),
       ],
     );
   }

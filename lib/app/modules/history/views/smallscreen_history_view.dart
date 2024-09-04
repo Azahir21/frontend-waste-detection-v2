@@ -5,6 +5,7 @@ import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SmallScreenHistoryView extends GetView<HistoryController> {
   const SmallScreenHistoryView({super.key});
@@ -35,7 +36,8 @@ class SmallScreenHistoryView extends GetView<HistoryController> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        AppText.labelDefaultEmphasis("Riwayat",
+                        AppText.labelDefaultEmphasis(
+                            AppLocalizations.of(context)!.history,
                             context: context),
                         VerticalGap.formBig(),
                         ListView.builder(

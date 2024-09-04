@@ -8,6 +8,7 @@ import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SmallScreenAccountSettingView extends GetView<AccountSettingController> {
   const SmallScreenAccountSettingView({super.key});
@@ -39,7 +40,7 @@ class SmallScreenAccountSettingView extends GetView<AccountSettingController> {
                     Expanded(
                       child: Center(
                         child: AppText.labelDefaultEmphasis(
-                          "Pengaturan Akun",
+                          AppLocalizations.of(context)!.account_setting,
                           context: context,
                         ),
                       ),
@@ -47,24 +48,35 @@ class SmallScreenAccountSettingView extends GetView<AccountSettingController> {
                   ],
                 ),
                 VerticalGap.formHuge(),
-                AppText.labelSmallEmphasis("Informasi Akun",
-                    color: color.textSecondary, context: context),
+                AppText.labelSmallEmphasis(
+                    AppLocalizations.of(context)!.account_info,
+                    color: color.textSecondary,
+                    context: context),
                 VerticalGap.formHuge(),
                 _buildInformationTiles(
-                    context, "Nama Lengkap", GetStorage().read("username")),
+                    context,
+                    AppLocalizations.of(context)!.full_name,
+                    GetStorage().read("username")),
+                VerticalGap.formBig(),
+                _buildInformationTiles(context,
+                    AppLocalizations.of(context)!.phone_number, "+62 xxxxxxxx"),
                 VerticalGap.formBig(),
                 _buildInformationTiles(
-                    context, "Nomor Telepon", "+62 xxxxxxxx"),
+                    context, AppLocalizations.of(context)!.gender, "Laki-laki"),
                 VerticalGap.formBig(),
-                _buildInformationTiles(context, "Jenis Kelamin", "Laki-laki"),
-                VerticalGap.formBig(),
-                _buildInformationTiles(context, "Email",
+                _buildInformationTiles(
+                    context,
+                    AppLocalizations.of(context)!.email,
                     "${GetStorage().read("username")}@gmail.com"),
                 VerticalGap.formBig(),
                 _buildInformationTiles(
-                    context, "Username", GetStorage().read("username")),
+                    context,
+                    AppLocalizations.of(context)!.username,
+                    GetStorage().read("username")),
                 VerticalGap.formBig(),
-                _buildInformationTiles(context, "Alamat",
+                _buildInformationTiles(
+                    context,
+                    AppLocalizations.of(context)!.address,
                     "Jl. Gebang Wetan No.1, Gebang Putih, Kec. Sukolilo, Surabaya "),
                 const Spacer(),
                 // CenteredTextButton.secondary(

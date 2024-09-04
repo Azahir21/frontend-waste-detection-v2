@@ -2,12 +2,12 @@ import 'dart:convert';
 
 import 'package:frontend_waste_management/app/data/models/article_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
-import 'package:frontend_waste_management/app/data/services/date_convertion.dart';
 import 'package:frontend_waste_management/app/data/services/simply_translate.dart';
 import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
+import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
 import 'package:get/get.dart';
-import 'package:simplytranslate/simplytranslate.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ArticleController extends GetxController {
   //TODO: Implement ArticleController
@@ -37,17 +37,17 @@ class ArticleController extends GetxController {
       final response = await ApiServices().get('${UrlConstants.article}s');
       if (response.statusCode != 200) {
         var message = await translate(jsonDecode(response.body)['detail']);
-        Get.snackbar('Article Error', message);
-        throw ('Article error: ${response.body}');
+        showFailedSnackbar(
+            AppLocalizations.of(Get.context!)!.article_error, message);
+        throw ('${AppLocalizations.of(Get.context!)!.article_error}: ${response.body}');
       }
       articles.value = parseArticles(response.body);
       for (var article in articles) {
         article.title = await translate(article.title!);
-        // article.createdAt = await formatTanggal(article.createdAt!);
       }
       return articles;
     } catch (e) {
-      throw ('Article error: $e');
+      throw ('${AppLocalizations.of(Get.context!)!.article_error}: $e');
     }
   }
 }

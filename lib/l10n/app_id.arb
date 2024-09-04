@@ -1,0 +1,613 @@
+{
+  "@@locale": "id",
+  "app_title": "Lara'an",
+  "@app_title": {
+    "description": "Ditampilkan di bagian atas layar."
+  },
+  "dashboard": "Dasbor",
+  "@dashboard": {
+    "description": "Ditampilkan di layar dasbor."
+  },
+  "history": "Riwayat",
+  "@history": {
+    "description": "Ditampilkan di layar riwayat."
+  },
+  "article": "Artikel",
+  "@article": {
+    "description": "Ditampilkan di layar artikel."
+  },
+  "profile": "Profil",
+  "@profile": {
+    "description": "Ditampilkan di layar profil."
+  },
+  "account_setting": "Pengaturan Akun",
+  "@account_setting": {
+    "description": "Ditampilkan di layar pengaturan akun."
+  },
+  "account_info": "Informasi Akun",
+  "@account_info": {
+    "description": "Ditampilkan di layar informasi akun."
+  },
+  "full_name": "Nama Lengkap",
+  "@full_name": {
+    "description": "Ditampilkan di informasi akun nama lengkap."
+  },
+  "phone_number": "Nomor Telepon",
+  "@phone_number": {
+    "description": "Ditampilkan di informasi akun nomor telepon."
+  },
+  "gender": "Jenis Kelamin",
+  "@gender": {
+    "description": "Ditampilkan di informasi akun jenis kelamin."
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Ditampilkan di informasi akun email."
+  },
+  "username": "Nama Pengguna",
+  "@username": {
+    "description": "Ditampilkan di informasi akun nama pengguna."
+  },
+  "address": "Alamat",
+  "@address": {
+    "description": "Ditampilkan di informasi akun alamat."
+  },
+  "latest_article": "Artikel Terbaru",
+  "@latest_article": {
+    "description": "Ditampilkan di layar artikel terbaru."
+  },
+  "location": "Lokasi",
+  "@location": {
+    "description": "Ditampilkan di lokasi yang diambil atau lokasi pengguna."
+  },
+  "location_not_specified": "Lokasi belum ditentukan",
+  "@location_not_specified": {
+    "description": "Ditampilkan ketika lokasi belum ditentukan."
+  },
+  "set_location": "Tentukan Lokasi",
+  "@set_location": {
+    "description": "Ditampilkan di tombol tentukan lokasi."
+  },
+  "your_waste": "Sampah Anda",
+  "@your_waste": {
+    "description": "Ditampilkan di sampah Anda di layar pembayaran atau detail sampah."
+  },
+  "point": "Poin",
+  "@point": {
+    "description": "Ditampilkan di poin di layar pembayaran atau detail sampah."
+  },
+  "subtotal": "Subtotal",
+  "@subtotal": {
+    "description": "Ditampilkan di subtotal di layar pembayaran."
+  },
+  "total_points": "Total Poin",
+  "@total_points": {
+    "description": "Ditampilkan di total poin di layar pembayaran."
+  },
+  "submit_now": "Kirim Sekarang",
+  "@submit_now": {
+    "description": "Ditampilkan di tombol kirim sekarang di layar pembayaran."
+  },
+  "information": "Informasi",
+  "@information": {
+    "description": "Ditampilkan di dialog informasi."
+  },
+  "checkout_information": "1. Ketuk gambar untuk melihat pratinjau hasil AI \n\n2. Ketuk lokasi untuk melihatnya di peta \n\n3. Ketuk item untuk melihat rekomendasi daur ulang \n\n4. Ketuk kirim untuk mengirim data sampah Anda \n\nPenting: Pastikan data lokasi dan item sampah Anda benar sebelum mengirim.",
+  "@checkout_information": {
+    "description": "Ditampilkan di dialog informasi pembayaran."
+  },
+  "ok": "Oke",
+  "@ok": {
+    "description": "Ditampilkan di tombol oke."
+  },
+  "cancel": "Batal",
+  "@cancel": {
+    "description": "Ditampilkan di tombol batal."
+  },
+  "amount": "Jumlah : {counted}",
+  "@amount": {
+    "description": "Ditampilkan di jumlah sampah di layar pembayaran.",
+    "placeholders": {
+      "counted": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "number_of_points": "{counted} Poin",
+  "@number_of_points": {
+    "description": "Ditampilkan di jumlah poin di layar pembayaran.",
+    "placeholders": {
+      "counted": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "sunday": "Min",
+  "@sunday": {
+    "description": "Ditampilkan di hari Minggu."
+  },
+  "monday": "Sen",
+  "@monday": {
+    "description": "Ditampilkan di hari Senin."
+  },
+  "tuesday": "Sel",
+  "@tuesday": {
+    "description": "Ditampilkan di hari Selasa."
+  },
+  "wednesday": "Rab",
+  "@wednesday": {
+    "description": "Ditampilkan di hari Rabu."
+  },
+  "thursday": "Kam",
+  "@thursday": {
+    "description": "Ditampilkan di hari Kamis."
+  },
+  "friday": "Jum",
+  "@friday": {
+    "description": "Ditampilkan di hari Jumat."
+  },
+  "saturday": "Sab",
+  "@saturday": {
+    "description": "Ditampilkan di hari Sabtu."
+  },
+  "january": "Jan",
+  "@january": {
+    "description": "Ditampilkan di bulan Januari."
+  },
+  "february": "Feb",
+  "@february": {
+    "description": "Ditampilkan di bulan Februari."
+  },
+  "march": "Mar",
+  "@march": {
+    "description": "Ditampilkan di bulan Maret."
+  },
+  "april": "Apr",
+  "@april": {
+    "description": "Ditampilkan di bulan April."
+  },
+  "may": "Mei",
+  "@may": {
+    "description": "Ditampilkan di bulan Mei."
+  },
+  "june": "Jun",
+  "@june": {
+    "description": "Ditampilkan di bulan Juni."
+  },
+  "july": "Jul",
+  "@july": {
+    "description": "Ditampilkan di bulan Juli."
+  },
+  "august": "Agu",
+  "@august": {
+    "description": "Ditampilkan di bulan Agustus."
+  },
+  "september": "Sep",
+  "@september": {
+    "description": "Ditampilkan di bulan September."
+  },
+  "october": "Okt",
+  "@october": {
+    "description": "Ditampilkan di bulan Oktober."
+  },
+  "november": "Nov",
+  "@november": {
+    "description": "Ditampilkan di bulan November."
+  },
+  "december": "Des",
+  "@december": {
+    "description": "Ditampilkan di bulan Desember."
+  },
+  "tier_1": "Pendatang Baru",
+  "@tier_1": {
+    "description": "Ditampilkan di tingkat 1."
+  },
+  "tier_2": "Reporter Junior",
+  "@tier_2": {
+    "description": "Ditampilkan di tingkat 2."
+  },
+  "tier_3": "Reporter Lapangan",
+  "@tier_3": {
+    "description": "Ditampilkan di tingkat 3."
+  },
+  "tier_4": "Reporter Senior",
+  "@tier_4": {
+    "description": "Ditampilkan di tingkat 4."
+  },
+  "tier_5": "Reporter Utama",
+  "@tier_5": {
+    "description": "Ditampilkan di tingkat 5."
+  },
+  "tier_6": "Reporter Kepala",
+  "@tier_6": {
+    "description": "Ditampilkan di tingkat 6."
+  },
+  "tier_7": "Pahlawan Crowdsourcing",
+  "@tier_7": {
+    "description": "Ditampilkan di tingkat 7."
+  },
+  "maps": "Peta",
+  "@maps": {
+    "description": "Ditampilkan di layar peta."
+  },
+  "camera": "Kamera",
+  "@gamera": {
+    "description": "Ditampilkan di layar kamera."
+  },
+  "gallery": "Galeri",
+  "@gallery": {
+    "description": "Ditampilkan di layar galeri."
+  },
+  "leaderboard": "Peringkat",
+  "@leaderboard": {
+    "description": "Ditampilkan di layar papan peringkat."
+  },
+  "weekly": "Mingguan",
+  "@weekly": {
+    "description": "Ditampilkan di layar papan peringkat mingguan."
+  },
+  "monthly": "Bulanan",
+  "@monthly": {
+    "description": "Ditampilkan di layar papan peringkat bulanan."
+  },
+  "all_time": "Sepanjang Waktu",
+  "@all_time": {
+    "description": "Ditampilkan di layar papan peringkat sepanjang waktu."
+  },
+  "login": "Masuk",
+  "@login": {
+    "description": "Ditampilkan di layar masuk."
+  },
+  "register": "Daftar",
+  "@register": {
+    "description": "Ditampilkan di layar daftar."
+  },
+  "welcome": "Selamat Datang Kembali!",
+  "@welcome": {
+    "description": "Ditampilkan di layar masuk."
+  },
+  "create_account": "Buat Akun untuk Memulai",
+  "@create_account": {
+    "description": "Ditampilkan di layar daftar."
+  },
+  "password": "Kata Sandi",
+  "@password": {
+    "description": "Ditampilkan di layar masuk."
+  },
+  "forgot_password": "Lupa Kata Sandi?",
+  "@forgot_password": {
+    "description": "Ditampilkan di layar masuk."
+  },
+  "dont_have_account": "Belum punya akun?",
+  "@dont_have_account": {
+    "description": "Ditampilkan di layar masuk."
+  },
+  "have_account": "Sudah punya akun?",
+  "@have_account": {
+    "description": "Ditampilkan di layar daftar."
+  },
+  "now": "Sekarang",
+  "@now": {
+    "description": "Ditampilkan di layar masuk."
+  },
+  "already_have_account": "Sudah punya akun?",
+  "@already_have_account": {
+    "description": "Ditampilkan di layar daftar."
+  },
+  "input_error": "Kesalahan Input",
+  "@input_error": {
+    "description": "Ditampilkan di dialog kesalahan input."
+  },
+  "email_pass_cant_empty": "Email dan kata sandi tidak boleh kosong.",
+  "@email_pass_cant_empty": {
+    "description": "Ditampilkan di dialog kesalahan input."
+  },
+  "start_date": "Tanggal Mulai",
+  "@start_date": {
+    "description": "Ditampilkan di tanggal mulai."
+  },
+  "end_date": "Tanggal Akhir",
+  "@end_date": {
+    "description": "Ditampilkan di tanggal akhir."
+  },
+  "no_data_found": "Tidak ada data ditemukan",
+  "@no_data_found": {
+    "description": "Ditampilkan saat tidak ada data ditemukan."
+  },
+  "day_count": "Hari ke-{counted}",
+  "@day_count": {
+    "description": "Ditampilkan di hitungan hari.",
+    "placeholders": {
+      "counted": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "filter_timeseries": "Filter Deret Waktu",
+  "@filter_timeseries": {
+    "description": "Ditampilkan di kotak dialog filter deret waktu."
+  },
+  "skip": "Lewati",
+  "@skip": {
+    "description": "Ditampilkan di tombol lewati."
+  },
+  "next": "Lanjut",
+  "@next": {
+    "description": "Ditampilkan di tombol lanjut."
+  },
+  "general": "Umum",
+  "@general": {
+    "description": "Ditampilkan di umum."
+  },
+  "terms_and_conditions": "Syarat dan Ketentuan",
+  "@terms_and_conditions": {
+    "description": "Ditampilkan di syarat dan ketentuan."
+  },
+  "privacy_policy": "Kebijakan Privasi",
+  "@privacy_policy": {
+    "description": "Ditampilkan di kebijakan privasi."
+  },
+  "logout": "Keluar",
+  "@logout": {
+    "description": "Ditampilkan di keluar."
+  },
+  "male": "Laki-laki",
+  "@male": {
+    "description": "Ditampilkan di teks laki-laki."
+  },
+  "female": "Perempuan",
+  "@female": {
+    "description": "Ditampilkan di teks perempuan."
+  },
+  "terms_and_conditions_aggrement": "Dengan mendaftar, Anda menyetujui Syarat dan Ketentuan serta Kebijakan Privasi kami",
+  "@terms_and_conditions_aggrement": {
+    "description": "Ditampilkan di persetujuan syarat dan ketentuan."
+  },
+  "attention": "Perhatian",
+  "@attention": {
+    "description": "Ditampilkan sebagai judul dalam pesan snackbar untuk menarik perhatian pengguna."
+  },
+  "all_fields_must_be_filled": "Semua kolom harus diisi",
+  "@all_fields_must_be_filled": {
+    "description": "Pesan yang ditampilkan di snackbar menunjukkan bahwa semua kolom harus diisi."
+  },
+  "waste_detected": "Sampah Terdeteksi",
+  "@waste_detected": {
+    "description": "Ditampilkan pada dialog sampah terdeteksi."
+  },
+  "onboarding_1_title": "Selamat datang di Lara'an!",
+  "onboarding_1_content": "Sekarang Anda dapat mulai mengambil gambar sampah Anda.",
+  "@onboarding_1_title": {
+    "description": "Judul yang ditampilkan pada layar pengenalan 1."
+  },
+  "@onboarding_1_content": {
+    "description": "Konten yang ditampilkan pada layar pengenalan 1."
+  },
+  "onboarding_2_title": "Bantu Pantau Lingkungan Anda",
+  "onboarding_2_content": "Mulai memantau sampah di sekitar Anda.",
+  "@onboarding_2_title": {
+    "description": "Judul yang ditampilkan pada layar pengenalan 2."
+  },
+  "@onboarding_2_content": {
+    "description": "Konten yang ditampilkan pada layar pengenalan 2."
+  },
+  "onboarding_3_title": "Lihat Riwayat Sampah Anda",
+  "onboarding_3_content": "Anda juga dapat melihat riwayat sampah dan mendapatkan poin.",
+  "@onboarding_3_title": {
+    "description": "Judul yang ditampilkan pada layar pengenalan 3."
+  },
+  "@onboarding_3_content": {
+    "description": "Konten yang ditampilkan pada layar pengenalan 3."
+  },
+  "article_error": "Gagal memuat artikel",
+  "@article_error": {
+    "description": "Ditampilkan pada dialog kesalahan artikel."
+  },
+  "some_things_wrong": "Terjadi kesalahan",
+  "@some_things_wrong": {
+    "description": "Ditampilkan pada dialog kesalahan artikel."
+  },
+  "try_again": "Coba Lagi",
+  "@try_again": {
+    "description": "Ditampilkan pada tombol coba lagi."
+  },
+  "location_not_found": "Lokasi Tidak Ditemukan",
+  "@location_not_found": {
+    "description": "Ditampilkan pada dialog lokasi tidak ditemukan."
+  },
+  "failed_to_post_data": "Gagal mengirim data",
+  "@failed_to_post_data": {
+    "description": "Ditampilkan pada dialog gagal mengirim data."
+  },
+  "no_object_detected": "Tidak ada objek yang terdeteksi",
+  "@no_object_detected": {
+    "description": "Ditampilkan pada dialog tidak ada objek yang terdeteksi."
+  },
+  "post_data_success": "Berhasil mengirim data",
+  "@post_data_success": {
+    "description": "Ditampilkan pada dialog berhasil mengirim data."
+  },
+  "data_has_been_posted": "Data Anda telah dikirim",
+  "@data_has_been_posted": {
+    "description": "Ditampilkan pada dialog berhasil mengirim data."
+  },
+  "failed_to_post_waste": "Gagal mengirim data sampah",
+  "@failed_to_post_waste": {
+    "description": "Ditampilkan pada dialog gagal mengirim data sampah."
+  },
+  "congratulations": "Selamat",
+  "@congratulations": {
+    "description": "Ditampilkan pada dialog selamat."
+  },
+  "badge_unlocked": "Anda telah membuka lencana baru {badge}",
+  "@badge_unlocked": {
+    "description": "Ditampilkan pada dialog lencana terbuka.",
+    "placeholders": {
+      "badge": {
+        "type": "String",
+        "example": "lencana"
+      }
+    }
+  },
+  "session_expired": "Sesi Berakhir",
+  "@session_expired": {
+    "description": "Ditampilkan pada dialog Sesi Berakhir."
+  },
+  "please_login_again": "Silakan masuk kembali",
+  "@please_login_again": {
+    "description": "Ditampilkan pada dialog silakan masuk kembali."
+  },
+  "history_error": "Gagal memuat riwayat",
+  "@history_error": {
+    "description": "Ditampilkan pada dialog kesalahan riwayat."
+  },
+  "leaderboard_error": "Gagal memuat papan peringkat",
+  "@leaderboard_error": {
+    "description": "Ditampilkan pada dialog kesalahan papan peringkat."
+  },
+  "login_error": "Gagal masuk",
+  "@login_error": {
+    "description": "Ditampilkan pada dialog kesalahan masuk."
+  },
+  "register_error": "Gagal mendaftar",
+  "@register_error": {
+    "description": "Ditampilkan pada dialog kesalahan pendaftaran."
+  },
+  "register_error_message": "Gagal mendaftarkan akun Anda, silakan coba lagi",
+  "@register_error_message": {
+    "description": "Ditampilkan pada dialog kesalahan pendaftaran."
+  },
+  "register_success": "Pendaftaran berhasil",
+  "@register_success": {
+    "description": "Ditampilkan pada dialog pendaftaran berhasil."
+  },
+  "register_success_message": "Akun Anda telah berhasil didaftarkan",
+  "@register_success_message": {
+    "description": "Ditampilkan pada dialog pendaftaran berhasil."
+  },
+  "email_not_valid": "Email tidak valid",
+  "@email_not_valid": {
+    "description": "Ditampilkan pada dialog email tidak valid."
+  },
+  "password_has_8_characters": "Kata sandi harus memiliki setidaknya 8 karakter",
+  "@password_has_8_characters": {
+    "description": "Ditampilkan pada dialog kata sandi harus memiliki 8 karakter."
+  },
+  "password_has_uppercase": "Kata sandi harus memiliki setidaknya satu huruf besar",
+  "@password_has_uppercase": {
+    "description": "Ditampilkan pada dialog kata sandi harus memiliki huruf besar."
+  },
+  "password_has_lowercase": "Kata sandi harus memiliki setidaknya satu huruf kecil",
+  "@password_has_lowercase": {
+    "description": "Ditampilkan pada dialog kata sandi harus memiliki huruf kecil."
+  },
+  "password_has_number": "Kata sandi harus memiliki setidaknya satu angka",
+  "@password_has_number": {
+    "description": "Ditampilkan pada dialog kata sandi harus memiliki angka."
+  },
+  "aggrement_checklist_error": "Anda harus menyetujui syarat dan ketentuan serta kebijakan privasi",
+  "@aggrement_checklist_error": {
+    "description": "Ditampilkan pada dialog kesalahan daftar persetujuan."
+  },
+  "report_detail_error": "Gagal memuat detail laporan",
+  "@report_detail_error": {
+    "description": "Ditampilkan pada dialog kesalahan detail laporan."
+  },
+  "waste_data_error": "Gagal memuat data sampah",
+  "@waste_data_error": {
+    "description": "Ditampilkan pada dialog kesalahan data sampah."
+  },
+  "waste_time_series_error": "Gagal memuat seri waktu sampah",
+  "@waste_time_series_error": {
+    "description": "Ditampilkan pada dialog kesalahan seri waktu sampah."
+  },
+  "point_error": "Gagal memuat poin",
+  "@point_error": {
+    "description": "Ditampilkan pada dialog kesalahan poin."
+  },
+  "no_image_selected": "Tidak ada gambar yang dipilih",
+  "@no_image_selected": {
+    "description": "Ditampilkan pada dialog tidak ada gambar yang dipilih."
+  },
+  "action_not_continue": "Tindakan tidak dapat dilanjutkan",
+  "@action_not_continue": {
+    "description": "Ditampilkan pada dialog tindakan tidak dapat dilanjutkan."
+  },
+  "location_services_disabled": "Layanan lokasi dinonaktifkan",
+  "@location_services_disabled": {
+    "description": "Pesan yang ditampilkan saat layanan lokasi dinonaktifkan."
+  },
+  "please_enable_services": "Silakan aktifkan layanan",
+  "@please_enable_services": {
+    "description": "Permintaan kepada pengguna untuk mengaktifkan layanan lokasi."
+  },
+  "location_permissions_denied": "Izin lokasi ditolak",
+  "@location_permissions_denied": {
+    "description": "Pesan yang ditampilkan saat izin lokasi ditolak."
+  },
+  "please_enable_permissions": "Silakan aktifkan izin",
+  "@please_enable_permissions": {
+    "description": "Permintaan kepada pengguna untuk mengaktifkan izin lokasi."
+  },
+  "location_permissions_denied_forever": "Izin lokasi ditolak secara permanen",
+  "@location_permissions_denied_forever": {
+    "description": "Pesan yang ditampilkan saat izin lokasi ditolak secara permanen."
+  },
+  "cannot_request_permissions": "Kami tidak dapat meminta izin",
+  "@cannot_request_permissions": {
+    "description": "Penjelasan bahwa izin tidak dapat diminta saat ditolak secara permanen."
+  },
+  "wifi": "Wi-Fi",
+  "@wifi": {
+    "description": "Ditampilkan pada wifi."
+  },
+  "mobile_data": "Data Seluler",
+  "@mobile_data": {
+    "description": "Ditampilkan pada data seluler."
+  },
+  "network_problem": "Masalah Jaringan",
+  "@network_problem": {
+    "description": "Ditampilkan pada dialog masalah jaringan."
+  },
+  "please_check_connection": "Silakan periksa koneksi Anda",
+  "@please_check_connection": {
+    "description": "Ditampilkan pada dialog silakan periksa koneksi."
+  },
+  "connected_successfully": "Berhasil Terhubung",
+  "@connected_successfully": {
+    "description": "Ditampilkan pada dialog berhasil terhubung."
+  },
+  "connected_successfully_message": "Terhubung ke {network}",
+  "@connected_successfully_message": {
+    "description": "Ditampilkan pada dialog berhasil terhubung.",
+    "placeholders": {
+      "network": {
+        "type": "String",
+        "example": "jaringan"
+      }
+    }
+  },
+  "english": "Bahasa Inggris",
+  "@english": {
+    "description": "Ditampilkan untuk bahasa Inggris."
+  },
+  "indonesian": "Bahasa Indonesia",
+  "@indonesian": {
+    "description": "Ditampilkan untuk bahasa Indonesia."
+  },
+  "japanese": "Bahasa Jepang",
+  "@japanese": {
+    "description": "Ditampilkan untuk bahasa Jepang."
+  },
+  "language": "Bahasa",
+  "@language": {
+    "description": "Ditampilkan untuk pilihan bahasa."
+  },
+  "change_language": "Ubah Bahasa",
+  "@change_language": {
+    "description": "Ditampilkan pada dialog ubah bahasa."
+  }
+}

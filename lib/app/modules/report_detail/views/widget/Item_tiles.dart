@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:frontend_waste_management/app/data/models/sampah_detail_model.dart';
 import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/horizontal_gap.dart';
 import 'package:frontend_waste_management/app/widgets/icon_button.dart';
 import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
-import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ItemTiles extends StatelessWidget {
   const ItemTiles({super.key, required this.countObject});
@@ -14,7 +13,6 @@ class ItemTiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var color = Theme.of(context).appColors;
     return Column(
       children: [
         Row(
@@ -40,7 +38,8 @@ class ItemTiles extends StatelessWidget {
                     textOverflow: TextOverflow.ellipsis,
                   ),
                   VerticalGap.formSmall(),
-                  AppText.labelSmallDefault("Jumlah : ${countObject.count}",
+                  AppText.labelSmallDefault(
+                      AppLocalizations.of(context)!.amount(countObject.count!),
                       context: context)
                 ],
               ),

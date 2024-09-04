@@ -3,8 +3,10 @@ import 'package:frontend_waste_management/app/data/models/sampah_detail_model.da
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/simply_translate.dart';
 import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
+import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:get/get.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ReportDetailController extends GetxController {
   //TODO: Implement ReportDetailController
@@ -28,7 +30,10 @@ class ReportDetailController extends GetxController {
         await ApiServices().get(UrlConstants.userSampah + "/$reportId");
     if (response.statusCode != 200) {
       var message = await translate(jsonDecode(response.body)['detail']);
-      Get.snackbar('Report Detail Error', message);
+      showFailedSnackbar(
+        AppLocalizations.of(Get.context!)!.report_detail_error,
+        message,
+      );
       throw ('Report Detail error: ${response.body}');
     }
     reportDetail.value = parseSampahDetailSingle(response.body);

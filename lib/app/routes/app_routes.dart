@@ -13,10 +13,7 @@ abstract class Routes {
   static const HISTORY = _Paths.HISTORY;
   static const PROFILE = _Paths.PROFILE;
   static const ACCOUNT_SETTING = _Paths.ACCOUNT_SETTING;
-  static const NOTIFICATION = _Paths.NOTIFICATION;
-  static const REWARD = _Paths.REWARD;
   static const CHECKOUT = _Paths.CHECKOUT;
-  static const UPLOAD_IMAGE = _Paths.UPLOAD_IMAGE;
   static const MAPS = _Paths.MAPS;
   static const EDIT_PROFILE = _Paths.EDIT_PROFILE;
   static const RECYCLE = _Paths.RECYCLE;
@@ -36,10 +33,7 @@ abstract class _Paths {
   static const HISTORY = '/history';
   static const PROFILE = '/profile';
   static const ACCOUNT_SETTING = '/account-setting';
-  static const NOTIFICATION = '/notification';
-  static const REWARD = '/reward';
   static const CHECKOUT = '/checkout';
-  static const UPLOAD_IMAGE = '/upload-image';
   static const MAPS = '/maps';
   static const EDIT_PROFILE = '/edit-profile';
   static const RECYCLE = '/recycle';

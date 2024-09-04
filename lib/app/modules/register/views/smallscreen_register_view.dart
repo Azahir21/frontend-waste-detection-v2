@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:frontend_waste_management/app/modules/register/controllers/register_controller.dart';
 import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/centered_text_button.dart';
+import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
 import 'package:frontend_waste_management/app/widgets/dropdown.dart';
 import 'package:frontend_waste_management/app/widgets/form.dart';
 import 'package:frontend_waste_management/app/widgets/icon_button.dart';
@@ -10,7 +11,7 @@ import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:get/get.dart';
-import 'package:get/state_manager.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SmallScreenRegisterView extends GetView<RegisterController> {
   const SmallScreenRegisterView({Key? key}) : super(key: key);
@@ -83,14 +84,15 @@ class SmallScreenRegisterView extends GetView<RegisterController> {
 
   Widget _buildHeaderText(BuildContext context) {
     return Center(
-      child: AppText.labelBigEmphasis("Daftar", context: context),
+      child: AppText.labelBigEmphasis(AppLocalizations.of(context)!.register,
+          context: context),
     );
   }
 
   Widget _buildSubHeaderText(BuildContext context) {
     return Center(
       child: AppText.labelDefaultDefault(
-        "Buat akun untuk melanjutkan!",
+        AppLocalizations.of(context)!.create_account,
         context: context,
       ),
     );
@@ -99,7 +101,7 @@ class SmallScreenRegisterView extends GetView<RegisterController> {
   Widget _buildNameField() {
     return CustomForm.text(
       width: double.infinity,
-      labelText: "Nama Lengkap",
+      labelText: AppLocalizations.of(Get.context!)!.full_name,
       onChanged: (value) {
         controller.fullName = value;
       },
@@ -111,8 +113,11 @@ class SmallScreenRegisterView extends GetView<RegisterController> {
       onChanged: (value) {
         controller.gender = value;
       },
-      dropDownItems: const ["Laki-laki", "Perempuan"],
-      labelText: "Jenis Kelamin",
+      dropDownItems: [
+        AppLocalizations.of(Get.context!)!.male,
+        AppLocalizations.of(Get.context!)!.female
+      ],
+      labelText: AppLocalizations.of(Get.context!)!.gender,
       width: double.infinity,
       height: 70,
     );
@@ -121,7 +126,7 @@ class SmallScreenRegisterView extends GetView<RegisterController> {
   Widget _buildUsernameField() {
     return CustomForm.text(
       width: double.infinity,
-      labelText: "Username",
+      labelText: AppLocalizations.of(Get.context!)!.username,
       onChanged: (value) {
         controller.username = value;
       },
@@ -131,7 +136,7 @@ class SmallScreenRegisterView extends GetView<RegisterController> {
   Widget _buildEmailField() {
     return CustomForm.email(
       width: double.infinity,
-      labelText: "Email",
+      labelText: AppLocalizations.of(Get.context!)!.email,
       onChanged: (value) {
         controller.email = value;
       },
@@ -141,7 +146,7 @@ class SmallScreenRegisterView extends GetView<RegisterController> {
   Widget _buildPasswordField() {
     return CustomForm.password(
       width: double.infinity,
-      labelText: "Password",
+      labelText: AppLocalizations.of(Get.context!)!.password,
       onChanged: (value) {
         controller.password = value;
       },
@@ -160,7 +165,7 @@ class SmallScreenRegisterView extends GetView<RegisterController> {
           ),
           Flexible(
             child: AppText.labelSmallEmphasis(
-              "Anda setuju dengan Syarat & Ketentuan kami",
+              AppLocalizations.of(context)!.terms_and_conditions_aggrement,
               context: context,
             ),
           ),
@@ -172,7 +177,7 @@ class SmallScreenRegisterView extends GetView<RegisterController> {
   Widget _buildRegisterButton(BuildContext context) {
     return CenteredTextButton.primary(
       width: double.infinity,
-      label: "Daftar",
+      label: AppLocalizations.of(context)!.register,
       context: context,
       onTap: () {
         if (!controller.validateEmail(controller.email)) {
@@ -184,7 +189,8 @@ class SmallScreenRegisterView extends GetView<RegisterController> {
             controller.username.isEmpty ||
             controller.email.isEmpty ||
             controller.password.isEmpty) {
-          Get.snackbar("Perhatian", "Semua field harus diisi");
+          showFailedSnackbar(AppLocalizations.of(context)!.attention,
+              AppLocalizations.of(context)!.all_fields_must_be_filled);
           return;
         }
         if (controller.validPassword.value) {
@@ -198,9 +204,10 @@ class SmallScreenRegisterView extends GetView<RegisterController> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        AppText.textPrimary("Sudah memiliki akun? ", context: context),
+        AppText.textPrimary(AppLocalizations.of(context)!.have_account,
+            context: context),
         CustomTextButton.primary(
-          text: "Masuk",
+          text: AppLocalizations.of(context)!.login,
           onPressed: () {
             Get.toNamed("/login");
           },

@@ -1,0 +1,613 @@
+{
+  "@@locale": "en",
+  "app_title": "Lara'an",
+  "@app_title": {
+    "description": "Shown on top of the screen."
+  },
+  "dashboard": "Dashboard",
+  "@dashboard": {
+    "description": "Shown on the dashboard screen."
+  },
+  "history": "History",
+  "@history": {
+    "description": "Shown on the history screen."
+  },
+  "article": "Article",
+  "@article": {
+    "description": "Shown on the article screen."
+  },
+  "profile": "Profile",
+  "@profile": {
+    "description": "Shown on the profile screen."
+  },
+  "account_setting": "Account Setting",
+  "@account_setting": {
+    "description": "Shown on the account setting screen."
+  },
+  "account_info": "Account Information",
+  "@account_info": {
+    "description": "Shown on the account information screen."
+  },
+  "full_name": "Full Name",
+  "@full_name": {
+    "description": "Shown on the account information fullname."
+  },
+  "phone_number": "Phone Number",
+  "@phone_number": {
+    "description": "Shown on the account information phone number."
+  },
+  "gender": "Gender",
+  "@gender": {
+    "description": "Shown on the account information gender."
+  },
+  "email": "Email",
+  "@email": {
+    "description": "Shown on the account information email."
+  },
+  "username": "Username",
+  "@username": {
+    "description": "Shown on the account information username."
+  },
+  "address": "Address",
+  "@address": {
+    "description": "Shown on the account information address."
+  },
+  "latest_article": "Latest Article",
+  "@latest_article": {
+    "description": "Shown on the latest article screen."
+  },
+  "location": "Location",
+  "@location": {
+    "description": "Shown on the taken location or user location."
+  },
+  "location_not_specified": "The location has not been specified",
+  "@location_not_specified": {
+    "description": "Shown when the location is not specified."
+  },
+  "set_location": "Set Location",
+  "@set_location": {
+    "description": "Shown on the set location button."
+  },
+  "your_waste": "Your Waste",
+  "@your_waste": {
+    "description": "Shown on the your trash in chackout or detail waste screen."
+  },
+  "point": "Point",
+  "@point": {
+    "description": "Shown on the point in chackout or detail waste screen."
+  },
+  "subtotal": "Subtotal",
+  "@subtotal": {
+    "description": "Shown on the subtotal in chackout screen."
+  },
+  "total_points": "Total Points",
+  "@total_points": {
+    "description": "Shown on the total points in chackout screen."
+  },
+  "submit_now": "Submit Now",
+  "@submit_now": {
+    "description": "Shown on the submit now button in chackout screen."
+  },
+  "information": "Information",
+  "@information": {
+    "description": "Shown on the information dialog."
+  },
+  "checkout_information": "1. Tap the image to preview the AI result \n\n2. Tap the location to view it on the map \n\n3. Tap the item to see recycling recommendations \n\n4. Tap submit to send your waste data \n\nImportant: Make sure your location and waste item data are correct before submitting.",
+  "@checkout_information": {
+    "description": "Shown on the checkout information dialog."
+  },
+  "ok": "Ok",
+  "@ok": {
+    "description": "Shown on the ok button."
+  },
+  "cancel": "Cancel",
+  "@cancel": {
+    "description": "Shown on the cancel button."
+  },
+  "amount": "Amount : {counted}",
+  "@amount": {
+    "description": "Shown on the amount of waste in chackout screen.",
+    "placeholders": {
+      "counted": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "number_of_points": "{counted} Points",
+  "@number_of_points": {
+    "description": "Shown on the number of points in chackout screen.",
+    "placeholders": {
+      "counted": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "sunday": "Sun",
+  "@sunday": {
+    "description": "Shown on the sunday."
+  },
+  "monday": "Mon",
+  "@monday": {
+    "description": "Shown on the monday."
+  },
+  "tuesday": "Tues",
+  "@tuesday": {
+    "description": "Shown on the tuesday."
+  },
+  "wednesday": "Wed",
+  "@wednesday": {
+    "description": "Shown on the wednesday."
+  },
+  "thursday": "Thurs",
+  "@thursday": {
+    "description": "Shown on the thursday."
+  },
+  "friday": "Fri",
+  "@friday": {
+    "description": "Shown on the friday."
+  },
+  "saturday": "Sat",
+  "@saturday": {
+    "description": "Shown on the saturday."
+  },
+  "january": "Jan",
+  "@january": {
+    "description": "Shown on the january."
+  },
+  "february": "Feb",
+  "@february": {
+    "description": "Shown on the february."
+  },
+  "march": "Mar",
+  "@march": {
+    "description": "Shown on the march."
+  },
+  "april": "Apr",
+  "@april": {
+    "description": "Shown on the april."
+  },
+  "may": "May",
+  "@may": {
+    "description": "Shown on the may."
+  },
+  "june": "Jun",
+  "@june": {
+    "description": "Shown on the june."
+  },
+  "july": "Jul",
+  "@july": {
+    "description": "Shown on the july."
+  },
+  "august": "Aug",
+  "@august": {
+    "description": "Shown on the august."
+  },
+  "september": "Sep",
+  "@september": {
+    "description": "Shown on the september."
+  },
+  "october": "Oct",
+  "@october": {
+    "description": "Shown on the october."
+  },
+  "november": "Nov",
+  "@november": {
+    "description": "Shown on the november."
+  },
+  "december": "Dec",
+  "@december": {
+    "description": "Shown on the december."
+  },
+  "tier_1": "Newcomer",
+  "@tier_1": {
+    "description": "Shown on the tier 1."
+  },
+  "tier_2": "Junior Reporter",
+  "@tier_2": {
+    "description": "Shown on the tier 2."
+  },
+  "tier_3": "Field Reporter",
+  "@tier_3": {
+    "description": "Shown on the tier 3."
+  },
+  "tier_4": "Senior Reporter",
+  "@tier_4": {
+    "description": "Shown on the tier 4."
+  },
+  "tier_5": "Lead Reporter",
+  "@tier_5": {
+    "description": "Shown on the tier 5."
+  },
+  "tier_6": "Chief Reporter",
+  "@tier_6": {
+    "description": "Shown on the tier 6."
+  },
+  "tier_7": "Crowdsourcing Hero",
+  "@tier_7": {
+    "description": "Shown on the tier 7."
+  },
+  "maps": "Maps",
+  "@maps": {
+    "description": "Shown on the maps screen."
+  },
+  "camera": "Camera",
+  "@gamera": {
+    "description": "Shown on the camera screen."
+  },
+  "gallery": "Gallery",
+  "@gallery": {
+    "description": "Shown on the gallery screen."
+  },
+  "leaderboard": "Leaderboard",
+  "@leaderboard": {
+    "description": "Shown on the leaderboard screen."
+  },
+  "weekly": "Weekly",
+  "@weekly": {
+    "description": "Shown on the weekly leaderboard screen."
+  },
+  "monthly": "Monthly",
+  "@monthly": {
+    "description": "Shown on the monthly leaderboard screen."
+  },
+  "all_time": "All Time",
+  "@all_time": {
+    "description": "Shown on the all time leaderboard screen."
+  },
+  "login": "Login",
+  "@login": {
+    "description": "Shown on the login screen."
+  },
+  "register": "Register",
+  "@register": {
+    "description": "Shown on the register screen."
+  },
+  "welcome": "Welcome Back!",
+  "@welcome": {
+    "description": "Shown on the login screen."
+  },
+  "create_account": "Create Account to Get Started",
+  "@create_account": {
+    "description": "Shown on the register screen."
+  },
+  "password": "Password",
+  "@password": {
+    "description": "Shown on the login screen."
+  },
+  "forgot_password": "Forgot Password?",
+  "@forgot_password": {
+    "description": "Shown on the login screen."
+  },
+  "dont_have_account": "Don't have an account?",
+  "@dont_have_account": {
+    "description": "Shown on the login screen."
+  },
+  "have_account": "Have an account?",
+  "@have_account": {
+    "description": "Shown on the register screen."
+  },
+  "now": "Now",
+  "@now": {
+    "description": "Shown on the login screen."
+  },
+  "already_have_account": "Already have an account?",
+  "@already_have_account": {
+    "description": "Shown on the register screen."
+  },
+  "input_error": "Input Error",
+  "@input_error": {
+    "description": "Shown on the input error dialog."
+  },
+  "email_pass_cant_empty": "Email and password cannot be empty.",
+  "@email_pass_cant_empty": {
+    "description": "Shown on the input error dialog."
+  },
+  "start_date": "Start Date",
+  "@start_date": {
+    "description": "Shown on the start date."
+  },
+  "end_date": "End Date",
+  "@end_date": {
+    "description": "Shown on the end date."
+  },
+  "no_data_found": "No data found",
+  "@no_data_found": {
+    "description": "Shown on the no data found."
+  },
+  "day_count": "Days {counted}",
+  "@day_count": {
+    "description": "Shown on the day count.",
+    "placeholders": {
+      "counted": {
+        "type": "int",
+        "example": "1"
+      }
+    }
+  },
+  "filter_timeseries": "Filter Time Series",
+  "@filter_timeseries": {
+    "description": "Shown on the filter time series dialog box."
+  },
+  "skip": "Skip",
+  "@skip": {
+    "description": "Shown on the skip button."
+  },
+  "next": "Next",
+  "@next": {
+    "description": "Shown on the next button."
+  },
+  "general": "General",
+  "@general": {
+    "description": "Shown on the general."
+  },
+  "terms_and_conditions": "Terms and Conditions",
+  "@terms_and_conditions": {
+    "description": "Shown on the terms and conditions."
+  },
+  "privacy_policy": "Privacy Policy",
+  "@privacy_policy": {
+    "description": "Shown on the privacy policy."
+  },
+  "logout": "Logout",
+  "@logout": {
+    "description": "Shown on the logout."
+  },
+  "male": "Male",
+  "@male": {
+    "description": "Shown on male text."
+  },
+  "female": "Female",
+  "@female": {
+    "description": "Shown on female text."
+  },
+  "terms_and_conditions_aggrement": "By signing up, you agree to our Terms and Conditions and Privacy Policy",
+  "@terms_and_conditions_aggrement": {
+    "description": "Shown on the terms and conditions aggrement."
+  },
+  "attention": "Attention",
+  "@attention": {
+    "description": "Shown as the title in a snackbar message to grab the user's attention."
+  },
+  "all_fields_must_be_filled": "All fields must be filled",
+  "@all_fields_must_be_filled": {
+    "description": "Message shown in a snackbar indicating that all fields must be filled."
+  },
+  "waste_detected": "Waste Detected",
+  "@waste_detected": {
+    "description": "Shown on the waste detected dialog."
+  },
+  "onboarding_1_title": "Welcome to Lara'an!",
+  "onboarding_1_content": "Now you can start taking pictures of your waste.",
+  "@onboarding_1_title": {
+    "description": "Title shown on the onboarding screen 1."
+  },
+  "@onboarding_1_content": {
+    "description": "Content shown on the onboarding screen 1."
+  },
+  "onboarding_2_title": "Help Monitor Your Environment",
+  "onboarding_2_content": "Start monitoring the waste around you.",
+  "@onboarding_2_title": {
+    "description": "Title shown on the onboarding screen 2."
+  },
+  "@onboarding_2_content": {
+    "description": "Content shown on the onboarding screen 2."
+  },
+  "onboarding_3_title": "View Your Waste History",
+  "onboarding_3_content": "You can also view your waste history and earn points.",
+  "@onboarding_3_title": {
+    "description": "Title shown on the onboarding screen 3."
+  },
+  "@onboarding_3_content": {
+    "description": "Content shown on the onboarding screen 3."
+  },
+  "article_error": "Failed to load article",
+  "@article_error": {
+    "description": "Shown on the article error dialog."
+  },
+  "some_things_wrong": "Something went wrong",
+  "@some_things_wrong": {
+    "description": "Shown on the article error dialog."
+  },
+  "try_again": "Try Again",
+  "@try_again": {
+    "description": "Shown on the try again button."
+  },
+  "location_not_found": "Location Not Found",
+  "@location_not_found": {
+    "description": "Shown on the location not found dialog."
+  },
+  "failed_to_post_data": "Failed to post data",
+  "@failed_to_post_data": {
+    "description": "Shown on the failed to post data dialog."
+  },
+  "no_object_detected": "There is no object detected",
+  "@no_object_detected": {
+    "description": "Shown on the no object detected dialog."
+  },
+  "post_data_success": "Post data success",
+  "@post_data_success": {
+    "description": "Shown on the post data success dialog."
+  },
+  "data_has_been_posted": "Your data has been posted",
+  "@data_has_been_posted": {
+    "description": "Shown on the post data success dialog."
+  },
+  "failed_to_post_waste": "Failed to post waste",
+  "@failed_to_post_waste": {
+    "description": "Shown on the failed to post waste dialog."
+  },
+  "congratulations": "Congratulations",
+  "@congratulations": {
+    "description": "Shown on the congratulations dialog."
+  },
+  "badge_unlocked": "You have unlocked a new badge {badge}",
+  "@badge_unlocked": {
+    "description": "Shown on the badge unlocked dialog.",
+    "placeholders": {
+      "badge": {
+        "type": "String",
+        "example": "badge"
+      }
+    }
+  },
+  "session_expired": "Session Expired",
+  "@session_expired": {
+    "description": "Shown on the Session Expired dialog."
+  },
+  "please_login_again": "Please login again",
+  "@please_login_again": {
+    "description": "Shown on the please login again dialog."
+  },
+  "history_error": "Failed to load history",
+  "@history_error": {
+    "description": "Shown on the history error dialog."
+  },
+  "leaderboard_error": "Failed to load leaderboard",
+  "@leaderboard_error": {
+    "description": "Shown on the leaderboard error dialog."
+  },
+  "login_error": "Failed to login",
+  "@login_error": {
+    "description": "Shown on the login error dialog."
+  },
+  "register_error": "Failed to register",
+  "@register_error": {
+    "description": "Shown on the register error dialog."
+  },
+  "register_error_message": "Failed to register your account, please try again",
+  "@register_error_message": {
+    "description": "Shown on the register error dialog."
+  },
+  "register_success": "Register success",
+  "@register_success": {
+    "description": "Shown on the register success dialog."
+  },
+  "register_success_message": "Your account has been successfully registered",
+  "@register_success_message": {
+    "description": "Shown on the register success dialog."
+  },
+  "email_not_valid": "Email is not valid",
+  "@email_not_valid": {
+    "description": "Shown on the email not valid dialog."
+  },
+  "password_has_8_characters": "Password must have at least 8 characters",
+  "@password_has_8_characters": {
+    "description": "Shown on the password has 8 characters dialog."
+  },
+  "password_has_uppercase": "Password must have at least one uppercase letter",
+  "@password_has_uppercase": {
+    "description": "Shown on the password has uppercase dialog."
+  },
+  "password_has_lowercase": "Password must have at least one lowercase letter",
+  "@password_has_lowercase": {
+    "description": "Shown on the password has lowercase dialog."
+  },
+  "password_has_number": "Password must have at least one number",
+  "@password_has_number": {
+    "description": "Shown on the password has number dialog."
+  },
+  "aggrement_checklist_error": "You must agree to the terms and conditions and privacy policy",
+  "@aggrement_checklist_error": {
+    "description": "Shown on the aggrement checklist error dialog."
+  },
+  "report_detail_error": "Failed to load report detail",
+  "@report_detail_error": {
+    "description": "Shown on the report detail error dialog."
+  },
+  "waste_data_error": "Failed to load waste data",
+  "@waste_data_error": {
+    "description": "Shown on the waste data error dialog."
+  },
+  "waste_time_series_error": "Failed to load waste time series",
+  "@waste_time_series_error": {
+    "description": "Shown on the waste time series error dialog."
+  },
+  "point_error": "Failed to load point",
+  "@point_error": {
+    "description": "Shown on the point error dialog."
+  },
+  "no_image_selected": "No image selected",
+  "@no_image_selected": {
+    "description": "Shown on the no image selected dialog."
+  },
+  "action_not_continue": "Action cannot be continued",
+  "@action_not_continue": {
+    "description": "Shown on the action not continue dialog."
+  },
+  "location_services_disabled": "Location services are disabled",
+  "@location_services_disabled": {
+    "description": "Message shown when location services are disabled."
+  },
+  "please_enable_services": "Please enable the services",
+  "@please_enable_services": {
+    "description": "Prompt to ask the user to enable location services."
+  },
+  "location_permissions_denied": "Location permissions are denied",
+  "@location_permissions_denied": {
+    "description": "Message shown when location permissions are denied."
+  },
+  "please_enable_permissions": "Please enable the permissions",
+  "@please_enable_permissions": {
+    "description": "Prompt to ask the user to enable location permissions."
+  },
+  "location_permissions_denied_forever": "Location permissions are permanently denied",
+  "@location_permissions_denied_forever": {
+    "description": "Message shown when location permissions are permanently denied."
+  },
+  "cannot_request_permissions": "We cannot request permissions",
+  "@cannot_request_permissions": {
+    "description": "Explanation that permissions cannot be requested when permanently denied."
+  },
+  "wifi": "Wi-Fi",
+  "@wifi": {
+    "description": "Shown on the wifi."
+  },
+  "mobile_data": "Mobile Data",
+  "@mobile_data": {
+    "description": "Shown on the mobile data."
+  },
+  "network_problem": "Network Problem",
+  "@network_problem": {
+    "description": "Shown on the network problem dialog."
+  },
+  "please_check_connection": "Please check your connection",
+  "@please_check_connection": {
+    "description": "Shown on the please check connection dialog."
+  },
+  "connected_successfully": "Connected Successfully",
+  "@connected_successfully": {
+    "description": "Shown on the connected successfully dialog."
+  },
+  "connected_successfully_message": "Connected to {network}",
+  "@connected_successfully_message": {
+    "description": "Shown on the connected successfully dialog.",
+    "placeholders": {
+      "network": {
+        "type": "String",
+        "example": "network"
+      }
+    }
+  },
+  "english": "English",
+  "@english": {
+    "description": "Shown on the english."
+  },
+  "indonesian": "Indonesian",
+  "@indonesian": {
+    "description": "Shown on the indonesian."
+  },
+  "japanese": "Japanese",
+  "@japanese": {
+    "description": "Shown on the japanese."
+  },
+  "language": "Language",
+  "@language": {
+    "description": "Shown on the language."
+  },
+  "change_language": "Change Language",
+  "@change_language": {
+    "description": "Shown on the change language dialog."
+  }
+}

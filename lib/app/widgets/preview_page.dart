@@ -5,10 +5,6 @@ import 'package:frontend_waste_management/app/widgets/icon_button.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:get/get.dart';
 
-import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
 class PreviewPage extends StatelessWidget {
   final String image;
 

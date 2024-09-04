@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_waste_management/app/modules/splash/controllers/splash_controller.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:get/get.dart';
-import '../controllers/splash_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class SplashView extends GetView<SplashController> {
-  const SplashView({Key? key}) : super(key: key);
+  SplashView({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -56,12 +57,12 @@ class SplashContent extends StatelessWidget {
             ),
           ),
         ),
-        const Padding(
-          padding: EdgeInsets.only(top: 20.0),
+        Padding(
+          padding: const EdgeInsets.only(top: 20.0),
           child: Text(
             // "KOLEKAN",
-            "LARA'AN",
-            style: TextStyle(
+            AppLocalizations.of(context)!.app_title.toUpperCase(),
+            style: const TextStyle(
               fontSize: 30,
               fontWeight: FontWeight.bold,
             ),

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
 import 'package:geocoding/geocoding.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 Future<bool> handleLocationPermission() async {
   bool serviceEnabled;
@@ -10,22 +12,28 @@ Future<bool> handleLocationPermission() async {
 
   serviceEnabled = await Geolocator.isLocationServiceEnabled();
   if (!serviceEnabled) {
-    Get.snackbar(
-        'Location services are disabled', 'Please enable the services');
+    showFailedSnackbar(
+      AppLocalizations.of(Get.context!)!.location_services_disabled,
+      AppLocalizations.of(Get.context!)!.please_enable_services,
+    );
     return false;
   }
   permission = await Geolocator.checkPermission();
   if (permission == LocationPermission.denied) {
     permission = await Geolocator.requestPermission();
     if (permission == LocationPermission.denied) {
-      Get.snackbar(
-          'Location permissions are denied', 'Please enable the permissions');
+      showFailedSnackbar(
+        AppLocalizations.of(Get.context!)!.location_permissions_denied,
+        AppLocalizations.of(Get.context!)!.please_enable_permissions,
+      );
       return false;
     }
   }
   if (permission == LocationPermission.deniedForever) {
-    Get.snackbar('Location permissions are permanently denied',
-        'We cannot request permissions.');
+    showFailedSnackbar(
+      AppLocalizations.of(Get.context!)!.location_permissions_denied_forever,
+      AppLocalizations.of(Get.context!)!.cannot_request_permissions,
+    );
     return false;
   }
   return true;

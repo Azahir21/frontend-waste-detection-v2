@@ -29,7 +29,9 @@ class ReportDetailController extends GetxController {
     final response =
         await ApiServices().get(UrlConstants.userSampah + "/$reportId");
     if (response.statusCode != 200) {
-      var message = await translate(jsonDecode(response.body)['detail']);
+      // var message = await translate(jsonDecode(response.body)['detail']);
+      var message = jsonDecode(response.body)['detail'];
+
       showFailedSnackbar(
         AppLocalizations.of(Get.context!)!.report_detail_error,
         message,
@@ -37,9 +39,9 @@ class ReportDetailController extends GetxController {
       throw ('Report Detail error: ${response.body}');
     }
     reportDetail.value = parseSampahDetailSingle(response.body);
-    for (var detectedObject in reportDetail.value.countedObjects!) {
-      detectedObject.name = await translate(detectedObject.name!);
-    }
+    // for (var detectedObject in reportDetail.value.countedObjects!) {
+    //   detectedObject.name = await translate(detectedObject.name!);
+    // }
     isLoading.value = false;
   }
 }

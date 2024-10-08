@@ -76,7 +76,8 @@ class CheckoutController extends GetxController {
         },
       );
       if (response.statusCode != 200) {
-        var message = await translate(jsonDecode(response.body)['detail']);
+        // var message = await translate(jsonDecode(response.body)['detail']);
+        var message = jsonDecode(response.body)['detail'];
         showFailedSnackbar(
           AppLocalizations.of(Get.context!)!.failed_to_post_waste,
           message,

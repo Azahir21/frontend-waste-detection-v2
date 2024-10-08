@@ -35,7 +35,8 @@ class HistoryController extends GetxController {
       sampahs.refresh();
       final response = await ApiServices().get(UrlConstants.userSampah);
       if (response.statusCode != 200) {
-        var message = await translate(jsonDecode(response.body)['detail']);
+        // var message = await translate(jsonDecode(response.body)['detail']);
+        var message = jsonDecode(response.body)['detail'];
         showFailedSnackbar(
           AppLocalizations.of(Get.context!)!.history_error,
           message,

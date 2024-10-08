@@ -56,7 +56,9 @@ class RegisterController extends GetxController {
         },
       );
       if (response.statusCode != 200) {
-        var message = await translate(jsonDecode(response.body)['detail']);
+        // var message = await translate(jsonDecode(response.body)['detail']);
+        var message = jsonDecode(response.body)['detail'];
+
         showFailedSnackbar(
             AppLocalizations.of(Get.context!)!.register_error, message);
         throw ('Registration error: ${response.body}');

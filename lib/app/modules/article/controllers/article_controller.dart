@@ -36,7 +36,8 @@ class ArticleController extends GetxController {
     try {
       final response = await ApiServices().get('${UrlConstants.article}s');
       if (response.statusCode != 200) {
-        var message = await translate(jsonDecode(response.body)['detail']);
+        // var message = await translate(jsonDecode(response.body)['detail']);
+        var message = jsonDecode(response.body)['detail'];
         showFailedSnackbar(
             AppLocalizations.of(Get.context!)!.article_error, message);
         throw ('${AppLocalizations.of(Get.context!)!.article_error}: ${response.body}');

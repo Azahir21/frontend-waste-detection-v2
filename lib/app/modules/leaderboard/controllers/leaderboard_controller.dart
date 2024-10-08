@@ -41,7 +41,8 @@ class LeaderboardController extends GetxController {
     try {
       final response = await ApiServices().get(UrlConstants.weeklyPoint);
       if (response.statusCode != 200) {
-        var message = await translate(jsonDecode(response.body)['detail']);
+        // var message = await translate(jsonDecode(response.body)['detail']);
+        var message = jsonDecode(response.body)['detail'];
         showFailedSnackbar(
           AppLocalizations.of(Get.context!)!.leaderboard_error,
           message,
@@ -60,7 +61,8 @@ class LeaderboardController extends GetxController {
     try {
       final response = await ApiServices().get(UrlConstants.monthlyPoint);
       if (response.statusCode != 200) {
-        var message = await translate(jsonDecode(response.body)['detail']);
+        // var message = await translate(jsonDecode(response.body)['detail']);
+        var message = jsonDecode(response.body)['detail'];
         showFailedSnackbar(
           AppLocalizations.of(Get.context!)!.leaderboard_error,
           message,
@@ -79,7 +81,8 @@ class LeaderboardController extends GetxController {
     try {
       final response = await ApiServices().get(UrlConstants.allTimePoint);
       if (response.statusCode != 200) {
-        var message = await translate(jsonDecode(response.body)['detail']);
+        // var message = await translate(jsonDecode(response.body)['detail']);
+        var message = jsonDecode(response.body)['detail'];
         showFailedSnackbar(
           AppLocalizations.of(Get.context!)!.leaderboard_error,
           message,

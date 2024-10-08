@@ -61,7 +61,9 @@ class MapsController extends GetxController {
     try {
       final response = await ApiServices().get(UrlConstants.sampah);
       if (response.statusCode != 200) {
-        var message = await translate(jsonDecode(response.body)['detail']);
+        // var message = await translate(jsonDecode(response.body)['detail']);
+        var message = jsonDecode(response.body)['detail'];
+
         showFailedSnackbar(
             AppLocalizations.of(Get.context!)!.waste_data_error, message);
         throw ('Sampah error: ${response.body}');
@@ -116,7 +118,9 @@ class MapsController extends GetxController {
         "end_date": lastDate.value.toIso8601String(),
       });
       if (response.statusCode != 200) {
-        var message = await translate(jsonDecode(response.body)['detail']);
+        // var message = await translate(jsonDecode(response.body)['detail']);
+        var message = jsonDecode(response.body)['detail'];
+
         showFailedSnackbar(
             AppLocalizations.of(Get.context!)!.waste_time_series_error,
             message);

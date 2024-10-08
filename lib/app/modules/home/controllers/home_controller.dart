@@ -54,7 +54,8 @@ class HomeController extends GetxController {
     try {
       final response = await ApiServices().get(UrlConstants.point);
       if (response.statusCode != 200) {
-        var message = await translate(jsonDecode(response.body)['detail']);
+        // var message = await translate(jsonDecode(response.body)['detail']);
+        var message = jsonDecode(response.body)['detail'];
         showFailedSnackbar(
             AppLocalizations.of(Get.context!)!.point_error, message);
         throw ('Point error: ${response.body}');
@@ -71,15 +72,16 @@ class HomeController extends GetxController {
     try {
       final response = await ApiServices().get('${UrlConstants.article}s');
       if (response.statusCode != 200) {
-        var message = await translate(jsonDecode(response.body)['detail']);
+        // var message = await translate(jsonDecode(response.body)['detail']);
+        var message = jsonDecode(response.body)['detail'];
         showFailedSnackbar(
             AppLocalizations.of(Get.context!)!.article_error, message);
         throw ('Article error: ${response.body}');
       }
       articles.value = parseArticles(response.body);
-      for (var article in articles) {
-        article.title = await translate(article.title!);
-      }
+      // for (var article in articles) {
+      //   article.title = await translate(article.title!);
+      // }
       return articles;
     } catch (e) {
       throw ('Article error: $e');
@@ -145,9 +147,9 @@ class HomeController extends GetxController {
       predict = Predict.fromJson(jsonDecode(response));
       predict.totalpoint = point.value + predict.subtotalpoint!;
       predict.address = await getAddressFromLatLng(position);
-      for (var countedObject in predict.countedObjects!) {
-        countedObject.name = await translate(countedObject.name!);
-      }
+      // for (var countedObject in predict.countedObjects!) {
+      //   countedObject.name = await translate(countedObject.name!);
+      // }
       OverlayLoadingProgress.stop();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Get.toNamed("/checkout", arguments: predict);

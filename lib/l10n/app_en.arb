@@ -233,7 +233,7 @@
     "description": "Shown on the maps screen."
   },
   "camera": "Camera",
-  "@gamera": {
+  "@camera": {
     "description": "Shown on the camera screen."
   },
   "gallery": "Gallery",
@@ -609,5 +609,25 @@
   "change_language": "Change Language",
   "@change_language": {
     "description": "Shown on the change language dialog."
+  },
+  "no_data": "No Data",
+  "@no_data": {
+    "description": "Shown on the no data."
+  },
+  "show_previous_data": "No data found for the selected time range. Showing previous data.",
+  "@show_previous_data": {
+    "description": "Shown on the show previous data."
+  },
+  "reset": "Reset",
+  "@reset": {
+    "description": "Shown on the reset button."
+  },
+  "daily_data": "Daily Data",
+  "@daily_data": {
+    "description": "Shown on the daily data."
+  },
+  "cumulative_data": "Cumulative Data",
+  "@cumulative_data": {
+    "description": "Shown on the cumulative data."
   }
 }

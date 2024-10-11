@@ -609,5 +609,25 @@
   "change_language": "言語を変更",
   "@change_language": {
     "description": "言語変更ダイアログに表示されます。"
+  },
+  "no_data": "データがありません",
+  "@no_data": {
+    "description": "データがない場合に表示されるダイアログです。"
+  },
+  "show_previous_data": "選択された時点ではデータがありません。以前のデータを表示しています。",
+  "@show_previous_data": {
+    "description": "データがない場合に表示されるダイアログです。"
+  },
+  "reset": "リセット",
+  "@reset": {
+    "description": "リセットボタンです。"
+  },
+  "daily_data": "日次データ",
+  "@daily_data": {
+    "description": "日次データのタイトルです。"
+  },
+  "cumulative_data": "累積データ",
+  "@cumulative_data": {
+    "description": "累積データのタイトルです。"
   }
 }

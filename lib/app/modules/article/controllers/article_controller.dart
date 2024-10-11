@@ -43,9 +43,9 @@ class ArticleController extends GetxController {
         throw ('${AppLocalizations.of(Get.context!)!.article_error}: ${response.body}');
       }
       articles.value = parseArticles(response.body);
-      for (var article in articles) {
-        article.title = await translate(article.title!);
-      }
+      // for (var article in articles) {
+      //   article.title = await translate(article.title!);
+      // }
       return articles;
     } catch (e) {
       throw ('${AppLocalizations.of(Get.context!)!.article_error}: $e');

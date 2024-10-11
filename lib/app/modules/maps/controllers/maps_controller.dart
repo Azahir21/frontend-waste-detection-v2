@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_heatmap/flutter_map_heatmap.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
+import 'package:flutter_map_supercluster/flutter_map_supercluster.dart';
 import 'package:frontend_waste_management/app/data/models/sampah_detail_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/simply_translate.dart';
@@ -31,13 +32,17 @@ class MapsController extends GetxController {
   final firstDateController = TextEditingController().obs;
   final lastDateController = TextEditingController().obs;
   final timeseriesData = <SampahDetail>[].obs;
-  final RxInt difference = 0.obs;
+  final RxInt difference = 1.obs;
   final _tokenService = TokenService();
+  final selectedDay = 1.obs;
+  final switcher = false.obs;
+  late final Rx<SuperclusterMutableController> superclusterController;
 
   @override
   void onInit() async {
     super.onInit();
     isLoading.value = true;
+    superclusterController = SuperclusterMutableController().obs;
     alignPositionOnUpdate.value = AlignOnUpdate.always;
     alignPositionStreamController.value = StreamController<double?>();
     streamController.value = StreamController.broadcast();
@@ -51,6 +56,7 @@ class MapsController extends GetxController {
   void onClose() {
     alignPositionStreamController.value.close();
     streamController.value.close();
+    superclusterController.value.dispose();
     super.onClose();
   }
 
@@ -111,52 +117,150 @@ class MapsController extends GetxController {
       alignPositionOnUpdate.value = AlignOnUpdate.always;
       alignPositionStreamController.value = StreamController<double?>();
       isLoading.value = true;
-      difference.value = lastDate.value.difference(firstDate.value).inDays;
+
       final response =
           await ApiServices().post("${UrlConstants.sampah}/timeseries", {
         "start_date": firstDate.value.toIso8601String(),
         "end_date": lastDate.value.toIso8601String(),
       });
-      if (response.statusCode != 200) {
-        // var message = await translate(jsonDecode(response.body)['detail']);
-        var message = jsonDecode(response.body)['detail'];
 
+      if (response.statusCode != 200) {
+        var message = jsonDecode(response.body)['detail'];
         showFailedSnackbar(
             AppLocalizations.of(Get.context!)!.waste_time_series_error,
             message);
         throw ('Timeseries error: ${response.body}');
       }
+
       timeseriesData.value = parseSampahDetail(response.body);
-      weightedLatLng.value = timeseriesData
-          .map(
-            (e) => WeightedLatLng(
-              e.geom!,
-              e.totalSampah!.toDouble(),
-            ),
-          )
-          .toList();
-      markers.value = timeseriesData
-          .map(
-            (e) => Marker(
-              width: 80.0,
-              height: 80.0,
-              point: e.geom!,
-              rotate: true,
-              child: Icon(
-                Icons.location_on,
-                color:
-                    interpolateColor((e.totalSampah! / 20.0), defaultGradient),
-                size: 40.0,
+
+      if (timeseriesData.isEmpty) {
+        showFailedSnackbar(
+          AppLocalizations.of(Get.context!)!.no_data,
+          AppLocalizations.of(Get.context!)!.show_previous_data,
+        );
+      } else {
+        difference.value =
+            lastDate.value.difference(firstDate.value).inDays + 1;
+        weightedLatLng.value = timeseriesData
+            .map(
+              (e) => WeightedLatLng(
+                e.geom!,
+                e.totalSampah!.toDouble(),
               ),
-            ),
-          )
-          .toList();
+            )
+            .toList();
+        markers.value = timeseriesData
+            .map(
+              (e) => Marker(
+                width: 80.0,
+                height: 80.0,
+                point: e.geom!,
+                rotate: true,
+                child: GestureDetector(
+                  onTap: () {
+                    Get.toNamed('/report-detail', arguments: e.id);
+                  },
+                  child: Icon(
+                    Icons.location_on,
+                    color: interpolateColor(
+                        (e.totalSampah! / 20.0), defaultGradient),
+                    size: 40.0,
+                  ),
+                ),
+              ),
+            )
+            .toList();
+      }
+
       isLoading.value = false;
-      print(isLoading.value);
     } catch (e) {
       debugPrint(
           '${AppLocalizations.of(Get.context!)!.waste_time_series_error}: $e');
     }
+  }
+
+  void sliderChanged(double value) {
+    selectedDay.value = value.toInt(); // Update selected day
+
+    if (switcher.value) {
+      // Cumulative Data Mode
+      // Accumulate data from Day 1 to the selected day
+      final cumulativeWeightedLatLng = timeseriesData
+          .where((element) =>
+              element.captureTime!.difference(firstDate.value).inDays <=
+              selectedDay.value - 1)
+          .map((e) => WeightedLatLng(e.geom!, e.totalSampah!.toDouble()))
+          .toList();
+
+      final cumulativeMarkers = timeseriesData
+          .where((element) =>
+              element.captureTime!.difference(firstDate.value).inDays <=
+              selectedDay.value - 1)
+          .map((e) => Marker(
+                width: 80.0,
+                height: 80.0,
+                point: e.geom!,
+                rotate: true,
+                child: GestureDetector(
+                  onTap: () {
+                    Get.toNamed('/report-detail', arguments: e.id);
+                  },
+                  child: Icon(
+                    Icons.location_on,
+                    color: interpolateColor(
+                        (e.totalSampah! / 20.0), defaultGradient),
+                    size: 40.0,
+                  ),
+                ),
+              ))
+          .toList();
+
+      // Update cumulative data
+      weightedLatLng.value = [...cumulativeWeightedLatLng];
+      markers.value = [...cumulativeMarkers];
+    } else {
+      // Daily Data Mode
+      // Clear and show only data for the selected day
+      final dailyWeightedLatLng = timeseriesData
+          .where((element) =>
+              element.captureTime!.difference(firstDate.value).inDays ==
+              selectedDay.value - 1)
+          .map((e) => WeightedLatLng(e.geom!, e.totalSampah!.toDouble()))
+          .toList();
+
+      final dailyMarkers = timeseriesData
+          .where((element) =>
+              element.captureTime!.difference(firstDate.value).inDays ==
+              selectedDay.value - 1)
+          .map((e) => Marker(
+                width: 80.0,
+                height: 80.0,
+                point: e.geom!,
+                rotate: true,
+                child: GestureDetector(
+                  onTap: () {
+                    Get.toNamed('/report-detail', arguments: e.id);
+                  },
+                  child: Icon(
+                    Icons.location_on,
+                    color: interpolateColor(
+                        (e.totalSampah! / 20.0), defaultGradient),
+                    size: 40.0,
+                  ),
+                ),
+              ))
+          .toList();
+
+      // Update daily data
+      weightedLatLng.value = [...dailyWeightedLatLng];
+      markers.value = [...dailyMarkers];
+    }
+
+    weightedLatLng.refresh();
+    markers.refresh();
+    superclusterController.value.replaceAll(markers.value);
+    streamController.value.add(null);
   }
 
   Color interpolateColor(double value, Map<double, Color> gradient) {

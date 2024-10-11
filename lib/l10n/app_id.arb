@@ -233,7 +233,7 @@
     "description": "Ditampilkan di layar peta."
   },
   "camera": "Kamera",
-  "@gamera": {
+  "@camera": {
     "description": "Ditampilkan di layar kamera."
   },
   "gallery": "Galeri",
@@ -609,5 +609,25 @@
   "change_language": "Ubah Bahasa",
   "@change_language": {
     "description": "Ditampilkan pada dialog ubah bahasa."
+  },
+  "no_data": "Tidak ada data",
+  "@no_data": {
+    "description": "Ditampilkan pada dialog tidak ada data."
+  },
+  "show_previous_data": "Tidak ada data pada waktu yang dipilih, menampilkan data sebelumnya",
+  "@show_previous_data": {
+    "description": "Ditampilkan pada dialog tidak ada data."
+  },
+  "reset": "Reset",
+  "@reset": {
+    "description": "Ditampilkan pada tombol reset."
+  },
+  "daily_data": "Data Harian",
+  "@daily_data": {
+    "description": "Ditampilkan pada data harian."
+  },
+  "cumulative_data": "Data Kumulatif",
+  "@cumulative_data": {
+    "description": "Ditampilkan pada data kumulatif."
   }
 }

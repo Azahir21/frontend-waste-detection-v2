@@ -629,5 +629,17 @@
   "cumulative_data": "Cumulative Data",
   "@cumulative_data": {
     "description": "Shown on the cumulative data."
+  },
+  "failed_to_pick_end_date": "Failed to pick end date",
+  "@failed_to_pick_end_date": {
+    "description": "Shown when the user tries to pick an end date before selecting a start date."
+  },
+  "please_input_start_date_first": "Please input the start date first.",
+  "@please_input_start_date_first": {
+    "description": "Shown when prompting the user to select a start date first."
+  },
+  "capture_time": "Capture Time:",
+  "@capture_time": {
+    "description": "Label for capture time information."
   }
 }

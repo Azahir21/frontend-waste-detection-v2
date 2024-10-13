@@ -629,5 +629,17 @@
   "cumulative_data": "Data Kumulatif",
   "@cumulative_data": {
     "description": "Ditampilkan pada data kumulatif."
+  },
+  "failed_to_pick_end_date": "Gagal memilih tanggal akhir",
+  "@failed_to_pick_end_date": {
+    "description": "Ditampilkan saat pengguna mencoba memilih tanggal akhir sebelum memilih tanggal mulai."
+  },
+  "please_input_start_date_first": "Silakan masukkan tanggal mulai terlebih dahulu.",
+  "@please_input_start_date_first": {
+    "description": "Ditampilkan saat meminta pengguna untuk memilih tanggal mulai terlebih dahulu."
+  },
+  "capture_time": "Waktu Penangkapan:",
+  "@capture_time": {
+    "description": "Label untuk informasi waktu penangkapan."
   }
 }

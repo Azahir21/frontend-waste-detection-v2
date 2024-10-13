@@ -25,4 +25,5 @@ class AppIconName {
   static get cursor => const AppIconName("${_iconsPath}cursor.png");
   static get markermap => const AppIconName("${_iconsPath}markermap.png");
   static get heatmap => const AppIconName("${_iconsPath}heatmap.png");
+  static get cluster => const AppIconName("${_iconsPath}cluster.png");
 }

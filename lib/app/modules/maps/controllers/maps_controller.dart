@@ -37,6 +37,7 @@ class MapsController extends GetxController {
   final selectedDay = 1.obs;
   final switcher = false.obs;
   late final Rx<SuperclusterMutableController> superclusterController;
+  final selectedMarkerDetail = Rx<SampahDetail?>(null);
 
   @override
   void onInit() async {
@@ -92,7 +93,7 @@ class MapsController extends GetxController {
               rotate: true,
               child: GestureDetector(
                 onTap: () {
-                  Get.toNamed('/report-detail', arguments: e.id);
+                  selectedMarkerDetail.value = e;
                 },
                 child: Icon(
                   Icons.location_on,
@@ -159,7 +160,7 @@ class MapsController extends GetxController {
                 rotate: true,
                 child: GestureDetector(
                   onTap: () {
-                    Get.toNamed('/report-detail', arguments: e.id);
+                    selectedMarkerDetail.value = e;
                   },
                   child: Icon(
                     Icons.location_on,
@@ -171,6 +172,7 @@ class MapsController extends GetxController {
               ),
             )
             .toList();
+        sliderChanged(1);
       }
 
       isLoading.value = false;
@@ -178,6 +180,20 @@ class MapsController extends GetxController {
       debugPrint(
           '${AppLocalizations.of(Get.context!)!.waste_time_series_error}: $e');
     }
+  }
+
+  void resetTimeSeries() {
+    firstDateController.value.text = "";
+    lastDateController.value.text = "";
+    selectedDay.value = 1;
+    difference.value = 1;
+    timeseriesData.clear();
+    getAllSampah();
+    showSuccessSnackbar(
+      "Time Series Reset",
+      "All data is now displayed without any date filter.",
+    );
+    superclusterController.value.replaceAll(markers.value);
   }
 
   void sliderChanged(double value) {
@@ -204,7 +220,7 @@ class MapsController extends GetxController {
                 rotate: true,
                 child: GestureDetector(
                   onTap: () {
-                    Get.toNamed('/report-detail', arguments: e.id);
+                    selectedMarkerDetail.value = e;
                   },
                   child: Icon(
                     Icons.location_on,
@@ -240,7 +256,7 @@ class MapsController extends GetxController {
                 rotate: true,
                 child: GestureDetector(
                   onTap: () {
-                    Get.toNamed('/report-detail', arguments: e.id);
+                    selectedMarkerDetail.value = e;
                   },
                   child: Icon(
                     Icons.location_on,

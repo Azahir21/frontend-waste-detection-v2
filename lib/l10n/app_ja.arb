@@ -629,5 +629,17 @@
   "cumulative_data": "累積データ",
   "@cumulative_data": {
     "description": "累積データのタイトルです。"
+  },
+  "failed_to_pick_end_date": "終了日を選択できませんでした",
+  "@failed_to_pick_end_date": {
+    "description": "ユーザーが開始日を選択する前に終了日を選択しようとしたときに表示されます。"
+  },
+  "please_input_start_date_first": "最初に開始日を入力してください。",
+  "@please_input_start_date_first": {
+    "description": "ユーザーに最初に開始日を選択するように促すときに表示されます。"
+  },
+  "capture_time": "キャプチャ時間:",
+  "@capture_time": {
+    "description": "キャプチャ時間情報のラベル。"
   }
 }

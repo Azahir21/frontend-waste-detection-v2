@@ -11,6 +11,7 @@ import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 class SmallScreenReportDetailView extends GetView<ReportDetailController> {
   const SmallScreenReportDetailView({super.key});
@@ -125,6 +126,24 @@ class SmallScreenReportDetailView extends GetView<ReportDetailController> {
                                   )
                                 ],
                               ),
+                            VerticalGap.formMedium(),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                AppText.labelSmallEmphasis(
+                                    AppLocalizations.of(context)!.capture_time,
+                                    context: context),
+                                AppText.labelSmallDefault(
+                                  controller.reportDetail.value.captureTime !=
+                                          null
+                                      ? DateFormat('yyyy-MM-dd HH:mm').format(
+                                          controller
+                                              .reportDetail.value.captureTime!)
+                                      : "",
+                                  context: context,
+                                )
+                              ],
+                            ),
                             VerticalGap.formMedium(),
                             AppText.labelDefaultEmphasis(
                               AppLocalizations.of(context)!.waste_detected,

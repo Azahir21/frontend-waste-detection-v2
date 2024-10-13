@@ -641,5 +641,49 @@
   "capture_time": "キャプチャ時間:",
   "@capture_time": {
     "description": "キャプチャ時間情報のラベル。"
+  },
+  "points_needed_tier_1": "必要ポイント: 0 - 999",
+  "@points_needed_tier_1": {
+    "description": "ティア1に必要なポイント"
+  },
+  "points_needed_tier_2": "必要ポイント: 1000 - 2999",
+  "@points_needed_tier_2": {
+    "description": "ティア2に必要なポイント"
+  },
+  "points_needed_tier_3": "必要ポイント: 3000 - 5999",
+  "@points_needed_tier_3": {
+    "description": "ティア3に必要なポイント"
+  },
+  "points_needed_tier_4": "必要ポイント: 6000 - 9999",
+  "@points_needed_tier_4": {
+    "description": "ティア4に必要なポイント"
+  },
+  "points_needed_tier_5": "必要ポイント: 10000 - 14999",
+  "@points_needed_tier_5": {
+    "description": "ティア5に必要なポイント"
+  },
+  "points_needed_tier_6": "必要ポイント: 15000 - 24999",
+  "@points_needed_tier_6": {
+    "description": "ティア6に必要なポイント"
+  },
+  "points_needed_tier_7": "必要ポイント: 25000以上",
+  "@points_needed_tier_7": {
+    "description": "ティア7に必要なポイント"
+  },
+  "close_button": "閉じる",
+  "@close_button": {
+    "description": "ダイアログを閉じるボタンのラベル"
+  },
+  "tier_information": "バッジ情報",
+  "@tier_information": {
+    "description": "バッジ情報セクションのタイトル"
+  },
+  "feature_under_development": "開発中の機能",
+  "recycle_feature_message": "リサイクル推奨機能は現在、日本語版に対応するための開発中です",
+  "@feature_under_development": {
+    "description": "開発中の機能に関するメッセージのタイトル"
+  },
+  "@recycle_feature_message": {
+    "description": "リサイクル推奨機能が日本語で開発中であることを説明するメッセージ"
   }
 }

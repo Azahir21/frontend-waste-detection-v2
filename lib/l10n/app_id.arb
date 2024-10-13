@@ -641,5 +641,49 @@
   "capture_time": "Waktu Penangkapan:",
   "@capture_time": {
     "description": "Label untuk informasi waktu penangkapan."
+  },
+  "points_needed_tier_1": "Poin yang dibutuhkan: 0 - 999",
+  "@points_needed_tier_1": {
+    "description": "Poin yang dibutuhkan untuk Tingkat 1"
+  },
+  "points_needed_tier_2": "Poin yang dibutuhkan: 1000 - 2999",
+  "@points_needed_tier_2": {
+    "description": "Poin yang dibutuhkan untuk Tingkat 2"
+  },
+  "points_needed_tier_3": "Poin yang dibutuhkan: 3000 - 5999",
+  "@points_needed_tier_3": {
+    "description": "Poin yang dibutuhkan untuk Tingkat 3"
+  },
+  "points_needed_tier_4": "Poin yang dibutuhkan: 6000 - 9999",
+  "@points_needed_tier_4": {
+    "description": "Poin yang dibutuhkan untuk Tingkat 4"
+  },
+  "points_needed_tier_5": "Poin yang dibutuhkan: 10000 - 14999",
+  "@points_needed_tier_5": {
+    "description": "Poin yang dibutuhkan untuk Tingkat 5"
+  },
+  "points_needed_tier_6": "Poin yang dibutuhkan: 15000 - 24999",
+  "@points_needed_tier_6": {
+    "description": "Poin yang dibutuhkan untuk Tingkat 6"
+  },
+  "points_needed_tier_7": "Poin yang dibutuhkan: 25000 ke atas",
+  "@points_needed_tier_7": {
+    "description": "Poin yang dibutuhkan untuk Tingkat 7"
+  },
+  "close_button": "Tutup",
+  "@close_button": {
+    "description": "Label untuk tombol menutup dialog"
+  },
+  "tier_information": "Informasi Lencana",
+  "@tier_information": {
+    "description": "Judul untuk bagian informasi tingkat"
+  },
+  "feature_under_development": "Fitur Sedang Dikembangkan",
+  "recycle_feature_message": "Fitur rekomendasi daur ulang saat ini sedang dalam pengembangan untuk bahasa Jepang",
+  "@feature_under_development": {
+    "description": "Judul untuk pesan fitur yang sedang dikembangkan"
+  },
+  "@recycle_feature_message": {
+    "description": "Pesan yang menjelaskan bahwa fitur rekomendasi daur ulang sedang dikembangkan untuk bahasa Jepang"
   }
 }

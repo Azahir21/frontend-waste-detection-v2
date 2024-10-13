@@ -1,3 +1,4 @@
+import 'package:flutter/widgets.dart';
 import 'package:frontend_waste_management/app/modules/home/controllers/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend_waste_management/app/modules/home/views/widgets/article_tiles.dart';
@@ -60,33 +61,42 @@ class SmallScreenHomeView extends GetView<HomeController> {
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Row(
-                                    children: [
-                                      AppIcon.custom(
-                                          appIconName: AppIconName.score,
-                                          context: context),
-                                      HorizontalGap.formSmall(),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          AppText.labelTinyDefault(
-                                              AppLocalizations.of(context)!
-                                                  .point,
-                                              context: context),
-                                          AppText.labelSmallEmphasis(
-                                              controller.point.value.toString(),
-                                              context: context)
-                                        ],
-                                      ),
-                                      HorizontalGap.formMedium(),
-                                      AppText.labelSmallEmphasis("|",
-                                          context: context),
-                                      HorizontalGap.formMedium(),
-                                      AppText.labelSmallEmphasis(
-                                          controller.badgeName.value,
-                                          context: context),
-                                    ],
+                                  GestureDetector(
+                                    onTap: () {
+                                      Get.dialog(
+                                        barrierDismissible: false,
+                                        badgeDialog(context),
+                                      );
+                                    },
+                                    child: Row(
+                                      children: [
+                                        AppIcon.custom(
+                                            appIconName: AppIconName.score,
+                                            context: context),
+                                        HorizontalGap.formSmall(),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            AppText.labelTinyDefault(
+                                                AppLocalizations.of(context)!
+                                                    .point,
+                                                context: context),
+                                            AppText.labelSmallEmphasis(
+                                                controller.point.value
+                                                    .toString(),
+                                                context: context)
+                                          ],
+                                        ),
+                                        HorizontalGap.formMedium(),
+                                        AppText.labelSmallEmphasis("|",
+                                            context: context),
+                                        HorizontalGap.formMedium(),
+                                        AppText.labelSmallEmphasis(
+                                            controller.badgeName.value,
+                                            context: context),
+                                      ],
+                                    ),
                                   ),
                                   VerticalGap.formHuge(),
                                   AppText.labelDefaultEmphasis(
@@ -194,6 +204,119 @@ class SmallScreenHomeView extends GetView<HomeController> {
             ),
           ),
         ),
+      ),
+    );
+  }
+
+  Dialog badgeDialog(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Dialog Title
+              AppText.labelDefaultEmphasis(
+                AppLocalizations.of(context)!.tier_information,
+                context: context,
+              ),
+              const SizedBox(height: 15),
+
+              // Tier 1 Information
+              AppText.labelSmallEmphasis(
+                AppLocalizations.of(context)!.tier_1,
+                context: context,
+              ),
+              AppText.labelSmallDefault(
+                AppLocalizations.of(context)!.points_needed_tier_1,
+                context: context,
+              ),
+              const Divider(height: 20),
+
+              // Tier 2 Information
+              AppText.labelSmallEmphasis(
+                AppLocalizations.of(context)!.tier_2,
+                context: context,
+              ),
+              AppText.labelSmallDefault(
+                AppLocalizations.of(context)!.points_needed_tier_2,
+                context: context,
+              ),
+              const Divider(height: 20),
+
+              // Tier 3 Information
+              AppText.labelSmallEmphasis(
+                AppLocalizations.of(context)!.tier_3,
+                context: context,
+              ),
+              AppText.labelSmallDefault(
+                AppLocalizations.of(context)!.points_needed_tier_3,
+                context: context,
+              ),
+              const Divider(height: 20),
+
+              // Tier 4 Information
+              AppText.labelSmallEmphasis(
+                AppLocalizations.of(context)!.tier_4,
+                context: context,
+              ),
+              AppText.labelSmallDefault(
+                AppLocalizations.of(context)!.points_needed_tier_4,
+                context: context,
+              ),
+              const Divider(height: 20),
+
+              // Tier 5 Information
+              AppText.labelSmallEmphasis(
+                AppLocalizations.of(context)!.tier_5,
+                context: context,
+              ),
+              AppText.labelSmallDefault(
+                AppLocalizations.of(context)!.points_needed_tier_5,
+                context: context,
+              ),
+              const Divider(height: 20),
+
+              // Tier 6 Information
+              AppText.labelSmallEmphasis(
+                AppLocalizations.of(context)!.tier_6,
+                context: context,
+              ),
+              AppText.labelSmallDefault(
+                AppLocalizations.of(context)!.points_needed_tier_6,
+                context: context,
+              ),
+              const Divider(height: 20),
+
+              // Tier 7 Information
+              AppText.labelSmallEmphasis(
+                AppLocalizations.of(context)!.tier_7,
+                context: context,
+              ),
+              AppText.labelSmallDefault(
+                AppLocalizations.of(context)!.points_needed_tier_7,
+                context: context,
+              ),
+              const Divider(height: 20),
+
+              // Close Button
+              Align(
+                alignment: Alignment.centerRight,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Get.back(); // Close the dialog
+                  },
+                  child: AppText.labelSmallDefault(
+                    AppLocalizations.of(context)!.close_button,
+                    context: context,
+                  ),
+                ),
+              ),
+            ]),
       ),
     );
   }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import 'package:flutter_map_compass/flutter_map_compass.dart';
@@ -291,6 +292,24 @@ class _SmallScreenMapsViewState extends State<SmallScreenMapsView> {
                                     controller.resetTimeSeries();
                                   },
                                   context: context,
+                                ),
+                                // Play/Pause/Restart Button
+                                GestureDetector(
+                                  onTap: () {
+                                    controller
+                                        .togglePlayPause(); // Toggle play/pause/restart
+                                  },
+                                  child: Icon(
+                                    controller.selectedDay.value ==
+                                            controller.difference.value
+                                        ? Icons
+                                            .restart_alt // Show restart icon if at the last day
+                                        : controller.isPlaying.value
+                                            ? Icons
+                                                .pause // Show pause icon if playing
+                                            : Icons.play_arrow,
+                                    // Show play icon if paused
+                                  ),
                                 ),
                                 AppText.labelSmallEmphasis(
                                   AppLocalizations.of(context)!

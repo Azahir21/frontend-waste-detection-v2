@@ -641,5 +641,49 @@
   "capture_time": "Capture Time:",
   "@capture_time": {
     "description": "Label for capture time information."
+  },
+  "points_needed_tier_1": "Points needed: 0 - 999",
+  "@points_needed_tier_1": {
+    "description": "Points required for Tier 1"
+  },
+  "points_needed_tier_2": "Points needed: 1000 - 2999",
+  "@points_needed_tier_2": {
+    "description": "Points required for Tier 2"
+  },
+  "points_needed_tier_3": "Points needed: 3000 - 5999",
+  "@points_needed_tier_3": {
+    "description": "Points required for Tier 3"
+  },
+  "points_needed_tier_4": "Points needed: 6000 - 9999",
+  "@points_needed_tier_4": {
+    "description": "Points required for Tier 4"
+  },
+  "points_needed_tier_5": "Points needed: 10000 - 14999",
+  "@points_needed_tier_5": {
+    "description": "Points required for Tier 5"
+  },
+  "points_needed_tier_6": "Points needed: 15000 - 24999",
+  "@points_needed_tier_6": {
+    "description": "Points required for Tier 6"
+  },
+  "points_needed_tier_7": "Points needed: 25000 and above",
+  "@points_needed_tier_7": {
+    "description": "Points required for Tier 7"
+  },
+  "close_button": "Close",
+  "@close_button": {
+    "description": "Label for the button to close the dialog"
+  },
+  "tier_information": "Badge Information",
+  "@tier_information": {
+    "description": "Title for the tier information section"
+  },
+  "feature_under_development": "Feature Under Development",
+  "recycle_feature_message": "The recycle recommendation feature is currently under development for the Japanese language",
+  "@feature_under_development": {
+    "description": "Title for feature under development message"
+  },
+  "@recycle_feature_message": {
+    "description": "Message explaining that the recycle recommendation feature is under development for the Japanese language"
   }
 }

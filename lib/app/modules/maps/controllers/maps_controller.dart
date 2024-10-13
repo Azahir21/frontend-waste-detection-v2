@@ -38,6 +38,8 @@ class MapsController extends GetxController {
   final switcher = false.obs;
   late final Rx<SuperclusterMutableController> superclusterController;
   final selectedMarkerDetail = Rx<SampahDetail?>(null);
+  final isPlaying = false.obs;
+  Timer? _sliderTimer;
 
   @override
   void onInit() async {
@@ -301,4 +303,43 @@ class MapsController extends GetxController {
     0.85: Colors.yellow,
     1.0: Colors.red,
   };
+
+  void playSlider() {
+    // Start or resume the timer
+    isPlaying.value = true;
+    _sliderTimer = Timer.periodic(Duration(seconds: 3), (timer) {
+      if (selectedDay.value < difference.value) {
+        selectedDay.value++; // Move to the next day
+        sliderChanged(selectedDay.value.toDouble());
+      } else {
+        stopSlider(); // Stop when we reach the last day
+      }
+    });
+  }
+
+  void stopSlider() {
+    // Stop the timer
+    _sliderTimer?.cancel();
+    isPlaying.value = false;
+  }
+
+  void restartSlider() {
+    // Reset the slider to the first day and restart playback
+    selectedDay.value = 1;
+    sliderChanged(selectedDay.value.toDouble());
+    playSlider(); // Start playing again from day 1
+  }
+
+  void togglePlayPause() {
+    if (selectedDay.value == difference.value) {
+      // If slider is at the end, restart from the beginning
+      restartSlider();
+    } else if (isPlaying.value) {
+      // Pause the slider if it is playing
+      stopSlider();
+    } else {
+      // Play the slider if it is paused
+      playSlider();
+    }
+  }
 }

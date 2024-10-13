@@ -24,7 +24,7 @@ class Popup extends GetView<MapsController> {
     return DraggableScrollableSheet(
       initialChildSize: 0.4,
       maxChildSize: 1.0,
-      minChildSize: 0.05,
+      minChildSize: 0.12,
       builder: (context, scrollController) {
         return NotificationListener<DraggableScrollableNotification>(
           onNotification: (notification) {
@@ -120,11 +120,11 @@ class Popup extends GetView<MapsController> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      AppText.labelSmallEmphasis(
+                      AppText.labelDefaultEmphasis(
                           AppLocalizations.of(context)!.capture_time,
                           context: context),
                       AppText.labelSmallDefault(
-                          DateFormat('yyyy-MM-dd HH:mm')
+                          DateFormat('yyyy-MM-dd HH:mm:ss')
                               .format(detail.captureTime!),
                           context: context),
                     ],
@@ -142,7 +142,8 @@ class Popup extends GetView<MapsController> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          onTap: () => Get.toNamed("/recycle"),
+                          onTap: () => Get.toNamed("/recycle",
+                              arguments: detail.countedObjects![index].name),
                           child: ItemTiles(
                             countObject: detail.countedObjects![index],
                           ),

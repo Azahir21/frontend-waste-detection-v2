@@ -4,6 +4,7 @@ import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/horizontal_gap.dart';
 import 'package:frontend_waste_management/app/widgets/icon_button.dart';
 import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
+import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -13,6 +14,8 @@ class ItemTiles extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var color = Theme.of(context).appColors;
+
     return Column(
       children: [
         Row(
@@ -44,17 +47,17 @@ class ItemTiles extends StatelessWidget {
                 ],
               ),
             ),
-            // Container(
-            //   height: 40,
-            //   width: 80,
-            //   decoration: BoxDecoration(
-            //     color: color.backgroundActionIconPrimary,
-            //     borderRadius: BorderRadius.circular(15),
-            //   ),
-            //   child: Center(
-            //       child: AppText.labelSmallEmphasis("${countObject.point} koin",
-            //           context: context)),
-            // )
+            Container(
+              height: 40,
+              width: 80,
+              decoration: BoxDecoration(
+                color: color.backgroundActionIconPrimary,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: Center(
+                  child: AppText.labelSmallEmphasis("${countObject.point} koin",
+                      context: context)),
+            )
           ],
         ),
         VerticalGap.formMedium(),

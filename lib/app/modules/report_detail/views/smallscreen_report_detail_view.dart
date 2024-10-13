@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:frontend_waste_management/app/modules/report_detail/controllers/report_detail_controller.dart';
 import 'package:frontend_waste_management/app/modules/report_detail/views/widget/Item_tiles.dart';
 import 'package:frontend_waste_management/app/widgets/app_icon.dart';
@@ -47,7 +48,6 @@ class SmallScreenReportDetailView extends GetView<ReportDetailController> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 CustomIconButton.secondary(
                                   iconName: AppIconName.backButton,
@@ -55,6 +55,20 @@ class SmallScreenReportDetailView extends GetView<ReportDetailController> {
                                     Get.back();
                                   },
                                   context: context,
+                                ),
+                                Expanded(
+                                  child: Center(
+                                    child: AppText.labelDefaultEmphasis(
+                                      controller.reportDetail.value
+                                                  .captureTime !=
+                                              null
+                                          ? DateFormat('yyyy-MM-dd HH:mm:ss')
+                                              .format(controller.reportDetail
+                                                  .value.captureTime!)
+                                          : "",
+                                      context: context,
+                                    ),
+                                  ),
                                 ),
                               ],
                             ),
@@ -127,24 +141,6 @@ class SmallScreenReportDetailView extends GetView<ReportDetailController> {
                                 ],
                               ),
                             VerticalGap.formMedium(),
-                            Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                AppText.labelSmallEmphasis(
-                                    AppLocalizations.of(context)!.capture_time,
-                                    context: context),
-                                AppText.labelSmallDefault(
-                                  controller.reportDetail.value.captureTime !=
-                                          null
-                                      ? DateFormat('yyyy-MM-dd HH:mm').format(
-                                          controller
-                                              .reportDetail.value.captureTime!)
-                                      : "",
-                                  context: context,
-                                )
-                              ],
-                            ),
-                            VerticalGap.formMedium(),
                             AppText.labelDefaultEmphasis(
                               AppLocalizations.of(context)!.waste_detected,
                               context: context,
@@ -159,7 +155,12 @@ class SmallScreenReportDetailView extends GetView<ReportDetailController> {
                                   physics: const NeverScrollableScrollPhysics(),
                                   itemBuilder: (context, index) {
                                     return GestureDetector(
-                                      onTap: () => Get.toNamed("/recycle"),
+                                      onTap: () => Get.toNamed("/recycle",
+                                          arguments: controller
+                                              .reportDetail
+                                              .value
+                                              .countedObjects![index]
+                                              .name),
                                       child: ItemTiles(
                                         countObject: controller.reportDetail
                                             .value.countedObjects![index],

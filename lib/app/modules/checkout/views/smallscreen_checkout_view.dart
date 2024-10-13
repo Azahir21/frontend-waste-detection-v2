@@ -173,7 +173,9 @@ class SmallScreenCheckoutView extends GetView<CheckoutController> {
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               return GestureDetector(
-                                onTap: () => Get.toNamed("/recycle"),
+                                onTap: () => Get.toNamed("/recycle",
+                                    arguments: controller
+                                        .predict.countedObjects![index].name),
                                 child: ItemTiles(
                                   countObject:
                                       controller.predict.countedObjects![index],

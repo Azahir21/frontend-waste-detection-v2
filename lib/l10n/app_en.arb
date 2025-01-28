@@ -685,5 +685,29 @@
   },
   "@recycle_feature_message": {
     "description": "Message explaining that the recycle recommendation feature is under development for the Japanese language"
+  },
+  "status": "Status",
+  "@status": {
+    "description": "Status"
+  },
+  "pickup_true": "already picked up",
+  "@pickup_true": {
+    "description": "already picked up"
+  },
+  "pickup_false": "not yet picked up",
+  "@pickup_false": {
+    "description": "not yet picked up"
+  },
+  "detail_information_pickup": "Pickup Details",
+  "@detail_information_pickup": {
+    "description": "Header for pickup details section"
+  },
+  "pickup_by": "Picked up by",
+  "@pickup_by": {
+    "description": "Label for person who picked up the item"
+  },
+  "pickup_at": "Pickup time",
+  "@pickup_at": {
+    "description": "Label for pickup timestamp"
   }
 }

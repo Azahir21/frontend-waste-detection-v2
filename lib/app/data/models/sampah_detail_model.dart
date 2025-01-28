@@ -3,10 +3,14 @@ import 'package:latlong2/latlong.dart';
 
 class SampahDetail {
   int? id;
+  bool? isWastePile;
   String? address;
   LatLng? geom;
   String? image;
   DateTime? captureTime;
+  bool? isPickup;
+  DateTime? pickupAt;
+  String? pickupByUser;
   int? point;
   int? totalSampah;
   List<SampahItem>? sampahItems;
@@ -14,10 +18,14 @@ class SampahDetail {
 
   SampahDetail({
     this.id,
+    this.isWastePile,
     this.address,
     this.geom,
     this.image,
     this.captureTime,
+    this.isPickup,
+    this.pickupAt,
+    this.pickupByUser,
     this.point,
     this.totalSampah,
     this.sampahItems,
@@ -31,12 +39,18 @@ class SampahDetail {
 
   factory SampahDetail.fromJson(Map<String, dynamic> json) => SampahDetail(
         id: json["id"],
+        isWastePile: json["is_waste_pile"],
         address: json["address"],
         geom: json["geom"] == null ? null : _parseWktToLatLng(json["geom"]),
         image: json["image"],
         captureTime: json["captureTime"] == null
             ? null
             : DateTime.parse(json["captureTime"]),
+        isPickup: json["is_pickup"],
+        pickupAt: json["pickup_at"] == null
+            ? null
+            : DateTime.parse(json["pickup_at"]),
+        pickupByUser: json["pickup_by_user"],
         point: json["point"],
         totalSampah: json["total_sampah"],
         sampahItems: json["sampah_items"] == null

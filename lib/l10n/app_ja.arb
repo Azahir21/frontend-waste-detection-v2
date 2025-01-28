@@ -685,5 +685,29 @@
   },
   "@recycle_feature_message": {
     "description": "リサイクル推奨機能が日本語で開発中であることを説明するメッセージ"
+  },
+  "status": "ステータス",
+  "@status": {
+    "description": "ステータス"
+  },
+  "pickup_true": "受け取り済み",
+  "@pickup_true": {
+    "description": "受け取り済み"
+  },
+  "pickup_false": "未受け取り",
+  "@pickup_false": {
+    "description": "未受け取り"
+  },
+  "detail_information_pickup": "受け取り詳細",
+  "@detail_information_pickup": {
+    "description": "Header for pickup details section"
+  },
+  "pickup_by": "受け取り人",
+  "@pickup_by": {
+    "description": "Label for person who picked up the item"
+  },
+  "pickup_at": "受け取り時間",
+  "@pickup_at": {
+    "description": "Label for pickup timestamp"
   }
 }

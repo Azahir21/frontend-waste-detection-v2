@@ -117,18 +117,14 @@ class Popup extends GetView<MapsController> {
                       ],
                     ),
                   VerticalGap.formMedium(),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      AppText.labelDefaultEmphasis(
-                          AppLocalizations.of(context)!.capture_time,
-                          context: context),
-                      AppText.labelSmallDefault(
-                          DateFormat('yyyy-MM-dd HH:mm:ss')
-                              .format(detail.captureTime!),
-                          context: context),
-                    ],
-                  ),
+                  AppText.labelDefaultEmphasis(
+                      AppLocalizations.of(context)!.capture_time,
+                      context: context),
+                  VerticalGap.formSmall(),
+                  AppText.labelSmallDefault(
+                      DateFormat('yyyy-MM-dd HH:mm:ss')
+                          .format(detail.captureTime!),
+                      context: context),
                   VerticalGap.formMedium(),
                   AppText.labelDefaultEmphasis(
                     AppLocalizations.of(context)!.waste_detected,
@@ -142,14 +138,93 @@ class Popup extends GetView<MapsController> {
                       physics: const NeverScrollableScrollPhysics(),
                       itemBuilder: (context, index) {
                         return GestureDetector(
-                          onTap: () => Get.toNamed("/recycle",
-                              arguments: detail.countedObjects![index].name),
+                          onTap: () {
+                            if (detail.countedObjects![index].name !=
+                                "Garbage") {
+                              Get.toNamed("/recycle",
+                                  arguments:
+                                      detail.countedObjects![index].name);
+                            }
+                          },
                           child: ItemTiles(
                             countObject: detail.countedObjects![index],
                           ),
                         );
                       },
                     ),
+                  VerticalGap.formBig(),
+                  Row(
+                    children: [
+                      AppText.labelDefaultEmphasis(
+                        AppLocalizations.of(context)!.status,
+                        context: context,
+                      ),
+                      Visibility(
+                        visible: detail.isPickup!,
+                        replacement: AppText.labelDefaultEmphasis(
+                          "   (${AppLocalizations.of(context)!.pickup_false})",
+                          context: context,
+                          color: Colors.red,
+                        ),
+                        child: AppText.labelDefaultEmphasis(
+                          "   (${AppLocalizations.of(context)!.pickup_true})",
+                          context: context,
+                          color: color.textButton,
+                        ),
+                      ),
+                    ],
+                  ),
+                  VerticalGap.formMedium(),
+                  Visibility(
+                    visible: !detail.isPickup!,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        AppText.labelDefaultEmphasis(
+                          "${AppLocalizations.of(context)!.detail_information_pickup} :",
+                          context: context,
+                        ),
+                        VerticalGap.formSmall(),
+                        Row(
+                          children: [
+                            Flexible(
+                              child: AppText.labelSmallEmphasis(
+                                "${AppLocalizations.of(context)!.pickup_by}: ",
+                                context: context,
+                              ),
+                            ),
+                            Flexible(
+                              child: AppText.labelSmallDefault(
+                                detail.pickupByUser ?? "N/A",
+                                context: context,
+                              ),
+                            ),
+                          ],
+                        ),
+                        VerticalGap.formSmall(),
+                        Row(
+                          children: [
+                            Flexible(
+                              child: AppText.labelSmallEmphasis(
+                                "${AppLocalizations.of(context)!.pickup_at}: ",
+                                context: context,
+                              ),
+                            ),
+                            Flexible(
+                              child: AppText.labelSmallDefault(
+                                detail.captureTime != null
+                                    ? DateFormat('yyyy-MM-dd HH:mm:ss')
+                                        .format(detail.captureTime!)
+                                    : "N/A",
+                                context: context,
+                              ),
+                            ),
+                          ],
+                        )
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),

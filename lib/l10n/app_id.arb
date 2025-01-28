@@ -685,5 +685,29 @@
   },
   "@recycle_feature_message": {
     "description": "Pesan yang menjelaskan bahwa fitur rekomendasi daur ulang sedang dikembangkan untuk bahasa Jepang"
+  },
+  "status": "Status",
+  "@status": {
+    "description": "Status"
+  },
+  "pickup_true": "sudah diambil",
+  "@pickup_true": {
+    "description": "sudah diambil"
+  },
+  "pickup_false": "belum diambil",
+  "@pickup_false": {
+    "description": "belum diambil"
+  },
+  "detail_information_pickup": "Detail Pengambilan",
+  "@detail_information_pickup": {
+    "description": "Header for pickup details section"
+  },
+  "pickup_by": "Diambil oleh",
+  "@pickup_by": {
+    "description": "Label for person who picked up the item"
+  },
+  "pickup_at": "Waktu pengambilan",
+  "@pickup_at": {
+    "description": "Label for pickup timestamp"
   }
 }

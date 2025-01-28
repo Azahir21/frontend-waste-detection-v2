@@ -150,24 +150,115 @@ class ReportDetailView extends GetView<ReportDetailController> {
                             if (controller.reportDetail.value.countedObjects !=
                                 null)
                               ListView.builder(
-                                  shrinkWrap: true,
-                                  itemCount: controller.reportDetail.value
-                                      .countedObjects!.length,
-                                  physics: const NeverScrollableScrollPhysics(),
-                                  itemBuilder: (context, index) {
-                                    return GestureDetector(
-                                      onTap: () => Get.toNamed("/recycle",
-                                          arguments: controller
-                                              .reportDetail
-                                              .value
-                                              .countedObjects![index]
-                                              .name),
-                                      child: ItemTiles(
-                                        countObject: controller.reportDetail
-                                            .value.countedObjects![index],
+                                shrinkWrap: true,
+                                itemCount: controller
+                                    .reportDetail.value.countedObjects!.length,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemBuilder: (context, index) {
+                                  return GestureDetector(
+                                    onTap: () {
+                                      if (controller.reportDetail.value
+                                              .countedObjects![index].name !=
+                                          "Garbage") {
+                                        Get.toNamed("/recycle",
+                                            arguments: controller
+                                                .reportDetail
+                                                .value
+                                                .countedObjects![index]
+                                                .name);
+                                      }
+                                    },
+                                    child: ItemTiles(
+                                      countObject: controller.reportDetail.value
+                                          .countedObjects![index],
+                                    ),
+                                  );
+                                },
+                              ),
+                            VerticalGap.formBig(),
+                            Row(
+                              children: [
+                                AppText.labelDefaultEmphasis(
+                                  AppLocalizations.of(context)!.status,
+                                  context: context,
+                                ),
+                                Visibility(
+                                  visible:
+                                      controller.reportDetail.value.isPickup ??
+                                          false,
+                                  replacement: AppText.labelDefaultEmphasis(
+                                    "   (${AppLocalizations.of(context)!.pickup_false})",
+                                    context: context,
+                                    color: Colors.red,
+                                  ),
+                                  child: AppText.labelDefaultEmphasis(
+                                    "   (${AppLocalizations.of(context)!.pickup_true})",
+                                    context: context,
+                                    color: color.textButton,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            VerticalGap.formMedium(),
+                            Visibility(
+                              visible: controller.reportDetail.value.isPickup ??
+                                  false,
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  AppText.labelDefaultEmphasis(
+                                    "${AppLocalizations.of(context)!.detail_information_pickup} :",
+                                    context: context,
+                                  ),
+                                  VerticalGap.formSmall(),
+                                  Row(
+                                    children: [
+                                      Flexible(
+                                        child: AppText.labelSmallEmphasis(
+                                          "${AppLocalizations.of(context)!.pickup_by}: ",
+                                          context: context,
+                                        ),
                                       ),
-                                    );
-                                  }),
+                                      Flexible(
+                                        child: AppText.labelSmallDefault(
+                                          controller.reportDetail.value
+                                                  .pickupByUser ??
+                                              "N/A",
+                                          context: context,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  VerticalGap.formSmall(),
+                                  Row(
+                                    children: [
+                                      Flexible(
+                                        child: AppText.labelSmallEmphasis(
+                                          "${AppLocalizations.of(context)!.pickup_at}: ",
+                                          context: context,
+                                        ),
+                                      ),
+                                      Flexible(
+                                        child: AppText.labelSmallDefault(
+                                          controller.reportDetail.value
+                                                      .pickupAt !=
+                                                  null
+                                              ? DateFormat(
+                                                      'yyyy-MM-dd HH:mm:ss')
+                                                  .format(controller
+                                                      .reportDetail
+                                                      .value
+                                                      .pickupAt!)
+                                              : "N/A",
+                                          context: context,
+                                        ),
+                                      ),
+                                    ],
+                                  )
+                                ],
+                              ),
+                            )
                           ],
                         ),
                       ),

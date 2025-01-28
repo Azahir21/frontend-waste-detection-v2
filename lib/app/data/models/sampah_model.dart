@@ -46,12 +46,14 @@ class Sampah {
   String? address;
   DateTime? captureTime;
   int? point;
+  bool? isGarbagePile;
 
   Sampah({
     this.id,
     this.address,
     this.captureTime,
     this.point,
+    this.isGarbagePile,
   });
 
   factory Sampah.fromRawJson(String str) => Sampah.fromJson(json.decode(str));
@@ -65,6 +67,7 @@ class Sampah {
             ? null
             : DateTime.parse(json["captureTime"]),
         point: json["point"],
+        isGarbagePile: json["isGarbagePile"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -72,6 +75,7 @@ class Sampah {
         "address": address,
         "captureTime": captureTime?.toIso8601String(),
         "point": point,
+        "isGarbagePile": isGarbagePile,
       };
 }
 

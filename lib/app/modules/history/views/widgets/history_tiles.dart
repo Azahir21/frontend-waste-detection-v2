@@ -17,7 +17,6 @@ class HistoryTiles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var color = Theme.of(context).appColors;
-
     return GestureDetector(
       onTap: () => Get.toNamed('/report-detail', arguments: sampah.id),
       child: Column(
@@ -25,7 +24,8 @@ class HistoryTiles extends StatelessWidget {
           Row(
             children: [
               CustomIconButton.primary(
-                iconName: AppIconName.trash,
+                iconName:
+                    sampah.isGarbagePile! ? AppIconName.pile : AppIconName.pcs,
                 onTap: () {},
                 context: context,
                 height: 60,

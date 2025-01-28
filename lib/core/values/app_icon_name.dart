@@ -33,4 +33,14 @@ class AppIconName {
   static get crown => const AppIconName("${_iconsPath}crown.png");
   static get star => const AppIconName("${_iconsPath}star.png");
   static get leaderboard => const AppIconName("${_iconsPath}leaderboard.png");
+  static get pcsPinlocation =>
+      const AppIconName("${_iconsPath}pcs_pinlocation.png");
+  static get pilePinlocation =>
+      const AppIconName("${_iconsPath}pile_pinlocation.png");
+  static get tpaPinlocation =>
+      const AppIconName("${_iconsPath}tpa_pinlocation.png");
+  static get tps3rPinlocation =>
+      const AppIconName("${_iconsPath}tps3r_pinlocation.png");
+  static get wasteBankPinlocation =>
+      const AppIconName("${_iconsPath}waste_bank_pinlocation.png");
 }

@@ -1,9 +1,15 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:frontend_waste_management/app/modules/leaderboard/controllers/leaderboard_controller.dart';
+import 'package:frontend_waste_management/app/modules/leaderboard/views/leaderboard_list_tile.dart';
+import 'package:frontend_waste_management/app/widgets/app_icon.dart';
 import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/centered_text_button.dart';
+import 'package:frontend_waste_management/app/widgets/horizontal_gap.dart';
 import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
+import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -32,57 +38,144 @@ class LeaderboardView extends GetView<LeaderboardController> {
                 ),
                 child: SingleChildScrollView(
                   child: Padding(
-                    padding: const EdgeInsets.fromLTRB(32, 32, 32, 0),
+                    padding: const EdgeInsets.only(top: 32),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        AppText.labelDefaultEmphasis(
-                            AppLocalizations.of(context)!.leaderboard,
-                            context: context),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 32),
+                          child: AppText.labelDefaultEmphasis(
+                              AppLocalizations.of(context)!.leaderboard,
+                              context: context),
+                        ),
                         VerticalGap.formBig(),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            CenteredTextButton.primary(
-                                width: 100,
-                                label: AppLocalizations.of(context)!.weekly,
-                                onTap: () {
+                        SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              HorizontalGap.formHuge(),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      controller.activeBotton.value == 'weekly'
+                                          ? color.textButton
+                                          : null,
+                                ),
+                                onPressed: () {
                                   controller.show.value = controller.weekly;
+                                  controller.activeBotton.value = 'weekly';
                                 },
-                                context: context),
-                            CenteredTextButton.primary(
-                                width: 100,
-                                label: AppLocalizations.of(context)!.monthly,
-                                onTap: () {
+                                child: AppText.labelTinyEmphasis(
+                                  AppLocalizations.of(context)!.weekly,
+                                  color:
+                                      controller.activeBotton.value == 'weekly'
+                                          ? color.formFieldBorder
+                                          : color.textButton,
+                                  context: context,
+                                ),
+                              ),
+                              HorizontalGap.formSmall(),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      controller.activeBotton.value == 'monthly'
+                                          ? color.textButton
+                                          : null,
+                                ),
+                                onPressed: () {
                                   controller.show.value = controller.monthly;
+                                  controller.activeBotton.value = 'monthly';
                                 },
-                                context: context),
-                            CenteredTextButton.primary(
-                                width: 100,
-                                label: AppLocalizations.of(context)!.all_time,
-                                onTap: () {
+                                child: AppText.labelTinyEmphasis(
+                                  AppLocalizations.of(context)!.monthly,
+                                  color:
+                                      controller.activeBotton.value == 'monthly'
+                                          ? color.formFieldBorder
+                                          : color.textButton,
+                                  context: context,
+                                ),
+                              ),
+                              HorizontalGap.formSmall(),
+                              ElevatedButton(
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor:
+                                      controller.activeBotton.value == 'allTime'
+                                          ? color.textButton
+                                          : null,
+                                ),
+                                onPressed: () {
                                   controller.show.value = controller.allTime;
+                                  controller.activeBotton.value = 'allTime';
                                 },
-                                context: context),
-                          ],
+                                child: AppText.labelTinyEmphasis(
+                                  AppLocalizations.of(context)!.all_time,
+                                  color:
+                                      controller.activeBotton.value == 'allTime'
+                                          ? color.formFieldBorder
+                                          : color.textButton,
+                                  context: context,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                         ListView.builder(
-                          itemCount: controller.show.length,
+                          itemCount: controller.show.length > 10
+                              ? 10
+                              : controller.show.length,
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
                           itemBuilder: (context, index) {
-                            return ListTile(
-                              leading: Text(
-                                  controller.show[index].ranking.toString()),
-                              title: Text(controller.show[index].username!),
-                              subtitle: Text(controller.show[index].totalPoints
-                                  .toString()),
-                              trailing: controller.show[index].isQueryingUser!
-                                  ? const Icon(Icons.star)
-                                  : null,
-                            );
+                            return LeaderboardListTile(
+                                data: controller.show[index]);
                           },
                         ),
+                        Visibility(
+                          visible: controller.show.length > 10,
+                          child: Column(
+                            children: [
+                              VerticalGap.formBig(),
+                              Center(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Container(
+                                      width: 5,
+                                      height: 5,
+                                      decoration: BoxDecoration(
+                                        color: color.textButton,
+                                        borderRadius: BorderRadius.circular(45),
+                                      ),
+                                    ),
+                                    VerticalGap.formTiny(),
+                                    Container(
+                                      width: 5,
+                                      height: 5,
+                                      decoration: BoxDecoration(
+                                        color: color.textButton,
+                                        borderRadius: BorderRadius.circular(45),
+                                      ),
+                                    ),
+                                    VerticalGap.formTiny(),
+                                    Container(
+                                      width: 5,
+                                      height: 5,
+                                      decoration: BoxDecoration(
+                                        color: color.textButton,
+                                        borderRadius: BorderRadius.circular(45),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              ),
+                              VerticalGap.formMedium(),
+                              if (controller.show.length > 10)
+                                LeaderboardListTile(data: controller.show[10]),
+                            ],
+                          ),
+                        ),
+                        VerticalGap.formBig(),
                       ],
                     ),
                   ),

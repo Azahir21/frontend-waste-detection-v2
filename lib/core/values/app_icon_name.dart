@@ -30,4 +30,7 @@ class AppIconName {
   static get pile => const AppIconName("${_iconsPath}pile.png");
   static get camera => const AppIconName("${_iconsPath}camera.png");
   static get gallery => const AppIconName("${_iconsPath}gallery.png");
+  static get crown => const AppIconName("${_iconsPath}crown.png");
+  static get star => const AppIconName("${_iconsPath}star.png");
+  static get leaderboard => const AppIconName("${_iconsPath}leaderboard.png");
 }

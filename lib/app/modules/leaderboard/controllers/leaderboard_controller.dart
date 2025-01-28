@@ -12,6 +12,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class LeaderboardController extends GetxController {
   //TODO: Implement LeaderboardController
   final RxBool isLoading = false.obs;
+  final activeBotton = 'weekly'.obs;
   final RxList<Leaderboard> show = <Leaderboard>[].obs;
   final RxList<Leaderboard> weekly = <Leaderboard>[].obs;
   final RxList<Leaderboard> monthly = <Leaderboard>[].obs;

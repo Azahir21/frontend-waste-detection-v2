@@ -10,6 +10,7 @@ class AppTextsTheme extends ThemeExtension<AppTextsTheme> {
   final TextStyle labelSmallEmphasis;
   final TextStyle labelSmallDefault;
   final TextStyle labelTinyDefault;
+  final TextStyle labelTinyEmphasis;
   final TextStyle textPrimary;
 
   const AppTextsTheme._internal({
@@ -20,6 +21,7 @@ class AppTextsTheme extends ThemeExtension<AppTextsTheme> {
     required this.labelSmallEmphasis,
     required this.labelSmallDefault,
     required this.labelTinyDefault,
+    required this.labelTinyEmphasis,
     required this.textPrimary,
   });
 
@@ -66,6 +68,12 @@ class AppTextsTheme extends ThemeExtension<AppTextsTheme> {
           fontSize: 12,
           height: 1.4,
         ),
+        labelTinyEmphasis: TextStyle(
+          fontFamily: _baseFamily,
+          fontWeight: FontWeight.bold,
+          fontSize: 12,
+          height: 1.4,
+        ),
         textPrimary: TextStyle(
           fontFamily: _baseFamily,
           fontWeight: FontWeight.normal,
@@ -84,6 +92,7 @@ class AppTextsTheme extends ThemeExtension<AppTextsTheme> {
       labelSmallEmphasis: labelSmallEmphasis,
       labelSmallDefault: labelSmallDefault,
       labelTinyDefault: labelTinyDefault,
+      labelTinyEmphasis: labelTinyEmphasis,
       textPrimary: textPrimary,
     );
   }

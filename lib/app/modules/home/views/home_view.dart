@@ -182,7 +182,7 @@ class HomeView extends GetView<HomeController> {
                               Column(
                                 children: [
                                   CustomIconButton.primary(
-                                    iconName: AppIconName.info,
+                                    iconName: AppIconName.leaderboard,
                                     onTap: () async {
                                       Get.toNamed('/leaderboard');
                                     },

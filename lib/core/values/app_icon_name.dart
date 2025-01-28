@@ -26,4 +26,8 @@ class AppIconName {
   static get markermap => const AppIconName("${_iconsPath}markermap.png");
   static get heatmap => const AppIconName("${_iconsPath}heatmap.png");
   static get cluster => const AppIconName("${_iconsPath}cluster.png");
+  static get pcs => const AppIconName("${_iconsPath}pcs.png");
+  static get pile => const AppIconName("${_iconsPath}pile.png");
+  static get camera => const AppIconName("${_iconsPath}camera.png");
+  static get gallery => const AppIconName("${_iconsPath}gallery.png");
 }

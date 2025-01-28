@@ -130,9 +130,18 @@ class HomeView extends GetView<HomeController> {
                               Column(
                                 children: [
                                   CustomIconButton.primary(
-                                    iconName: AppIconName.scan,
+                                    iconName: AppIconName.camera,
                                     onTap: () async {
-                                      await controller.getImageFromCamera();
+                                      Get.dialog(
+                                        chooseTypeWaste(
+                                          context,
+                                          AppLocalizations.of(context)!.camera,
+                                          () async {
+                                            await controller
+                                                .getImageFromCamera();
+                                          },
+                                        ),
+                                      );
                                     },
                                     context: context,
                                     height: 60,
@@ -147,9 +156,18 @@ class HomeView extends GetView<HomeController> {
                               Column(
                                 children: [
                                   CustomIconButton.primary(
-                                    iconName: AppIconName.add,
+                                    iconName: AppIconName.gallery,
                                     onTap: () async {
-                                      await controller.getImageFromGallery();
+                                      Get.dialog(
+                                        chooseTypeWaste(
+                                          context,
+                                          AppLocalizations.of(context)!.gallery,
+                                          () async {
+                                            await controller
+                                                .getImageFromGallery();
+                                          },
+                                        ),
+                                      );
                                     },
                                     context: context,
                                     height: 60,
@@ -208,7 +226,7 @@ class HomeView extends GetView<HomeController> {
     );
   }
 
-  Dialog badgeDialog(BuildContext context) {
+  Dialog chooseTypeWaste(BuildContext context, String label, Function() onTap) {
     return Dialog(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(20),
@@ -216,107 +234,173 @@ class HomeView extends GetView<HomeController> {
       child: Padding(
         padding: const EdgeInsets.all(20),
         child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // Dialog Title
-              AppText.labelDefaultEmphasis(
-                AppLocalizations.of(context)!.tier_information,
-                context: context,
-              ),
-              const SizedBox(height: 15),
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            AppText.labelSmallEmphasis(label, context: context),
+            VerticalGap.formMedium(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                Column(
+                  children: [
+                    CustomIconButton.primary(
+                      iconName: AppIconName.pile,
+                      onTap: () async {
+                        controller.isPile = true;
+                        Get.back();
+                        await onTap();
+                      },
+                      context: context,
+                      height: 75,
+                      width: 75,
+                    ),
+                    VerticalGap.formSmall(),
+                    AppText.labelSmallEmphasis(
+                        AppLocalizations.of(context)!.illegal_dumping_site,
+                        context: context),
+                  ],
+                ),
+                Column(
+                  children: [
+                    CustomIconButton.primary(
+                      iconName: AppIconName.pcs,
+                      onTap: () async {
+                        controller.isPile = false;
+                        Get.back();
+                        await onTap();
+                      },
+                      context: context,
+                      height: 75,
+                      width: 75,
+                    ),
+                    VerticalGap.formSmall(),
+                    AppText.labelSmallEmphasis(
+                        AppLocalizations.of(context)!.illegal_trash,
+                        context: context),
+                  ],
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 
-              // Tier 1 Information
-              AppText.labelSmallEmphasis(
-                AppLocalizations.of(context)!.tier_1,
-                context: context,
-              ),
-              AppText.labelSmallDefault(
-                AppLocalizations.of(context)!.points_needed_tier_1,
-                context: context,
-              ),
-              const Divider(height: 20),
+  Dialog badgeDialog(BuildContext context) {
+    return Dialog(
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(20),
+      ),
+      child: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(20),
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Dialog Title
+                AppText.labelDefaultEmphasis(
+                  AppLocalizations.of(context)!.tier_information,
+                  context: context,
+                ),
+                const SizedBox(height: 15),
 
-              // Tier 2 Information
-              AppText.labelSmallEmphasis(
-                AppLocalizations.of(context)!.tier_2,
-                context: context,
-              ),
-              AppText.labelSmallDefault(
-                AppLocalizations.of(context)!.points_needed_tier_2,
-                context: context,
-              ),
-              const Divider(height: 20),
+                // Tier 1 Information
+                AppText.labelSmallEmphasis(
+                  AppLocalizations.of(context)!.tier_1,
+                  context: context,
+                ),
+                AppText.labelSmallDefault(
+                  AppLocalizations.of(context)!.points_needed_tier_1,
+                  context: context,
+                ),
+                const Divider(height: 20),
 
-              // Tier 3 Information
-              AppText.labelSmallEmphasis(
-                AppLocalizations.of(context)!.tier_3,
-                context: context,
-              ),
-              AppText.labelSmallDefault(
-                AppLocalizations.of(context)!.points_needed_tier_3,
-                context: context,
-              ),
-              const Divider(height: 20),
+                // Tier 2 Information
+                AppText.labelSmallEmphasis(
+                  AppLocalizations.of(context)!.tier_2,
+                  context: context,
+                ),
+                AppText.labelSmallDefault(
+                  AppLocalizations.of(context)!.points_needed_tier_2,
+                  context: context,
+                ),
+                const Divider(height: 20),
 
-              // Tier 4 Information
-              AppText.labelSmallEmphasis(
-                AppLocalizations.of(context)!.tier_4,
-                context: context,
-              ),
-              AppText.labelSmallDefault(
-                AppLocalizations.of(context)!.points_needed_tier_4,
-                context: context,
-              ),
-              const Divider(height: 20),
+                // Tier 3 Information
+                AppText.labelSmallEmphasis(
+                  AppLocalizations.of(context)!.tier_3,
+                  context: context,
+                ),
+                AppText.labelSmallDefault(
+                  AppLocalizations.of(context)!.points_needed_tier_3,
+                  context: context,
+                ),
+                const Divider(height: 20),
 
-              // Tier 5 Information
-              AppText.labelSmallEmphasis(
-                AppLocalizations.of(context)!.tier_5,
-                context: context,
-              ),
-              AppText.labelSmallDefault(
-                AppLocalizations.of(context)!.points_needed_tier_5,
-                context: context,
-              ),
-              const Divider(height: 20),
+                // Tier 4 Information
+                AppText.labelSmallEmphasis(
+                  AppLocalizations.of(context)!.tier_4,
+                  context: context,
+                ),
+                AppText.labelSmallDefault(
+                  AppLocalizations.of(context)!.points_needed_tier_4,
+                  context: context,
+                ),
+                const Divider(height: 20),
 
-              // Tier 6 Information
-              AppText.labelSmallEmphasis(
-                AppLocalizations.of(context)!.tier_6,
-                context: context,
-              ),
-              AppText.labelSmallDefault(
-                AppLocalizations.of(context)!.points_needed_tier_6,
-                context: context,
-              ),
-              const Divider(height: 20),
+                // Tier 5 Information
+                AppText.labelSmallEmphasis(
+                  AppLocalizations.of(context)!.tier_5,
+                  context: context,
+                ),
+                AppText.labelSmallDefault(
+                  AppLocalizations.of(context)!.points_needed_tier_5,
+                  context: context,
+                ),
+                const Divider(height: 20),
 
-              // Tier 7 Information
-              AppText.labelSmallEmphasis(
-                AppLocalizations.of(context)!.tier_7,
-                context: context,
-              ),
-              AppText.labelSmallDefault(
-                AppLocalizations.of(context)!.points_needed_tier_7,
-                context: context,
-              ),
-              const Divider(height: 20),
+                // Tier 6 Information
+                AppText.labelSmallEmphasis(
+                  AppLocalizations.of(context)!.tier_6,
+                  context: context,
+                ),
+                AppText.labelSmallDefault(
+                  AppLocalizations.of(context)!.points_needed_tier_6,
+                  context: context,
+                ),
+                const Divider(height: 20),
 
-              // Close Button
-              Align(
-                alignment: Alignment.centerRight,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Get.back(); // Close the dialog
-                  },
-                  child: AppText.labelSmallDefault(
-                    AppLocalizations.of(context)!.close_button,
-                    context: context,
+                // Tier 7 Information
+                AppText.labelSmallEmphasis(
+                  AppLocalizations.of(context)!.tier_7,
+                  context: context,
+                ),
+                AppText.labelSmallDefault(
+                  AppLocalizations.of(context)!.points_needed_tier_7,
+                  context: context,
+                ),
+                const Divider(height: 20),
+
+                // Close Button
+                Align(
+                  alignment: Alignment.centerRight,
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Get.back(); // Close the dialog
+                    },
+                    child: AppText.labelSmallDefault(
+                      AppLocalizations.of(context)!.close_button,
+                      context: context,
+                    ),
                   ),
                 ),
-              ),
-            ]),
+              ],
+            ),
+          ),
+        ),
       ),
     );
   }

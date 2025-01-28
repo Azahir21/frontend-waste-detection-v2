@@ -31,6 +31,7 @@ class HomeController extends GetxController {
   Predict predict = Predict();
   final RxBool loadingAI = false.obs;
   final _tokenService = TokenService();
+  bool isPile = false;
   // final st = SimplyTranslator(EngineType.google);
 
   @override
@@ -141,9 +142,18 @@ class HomeController extends GetxController {
         position!.longitude,
         position.latitude,
         fromCamera,
+        isPile,
         File(picture.path),
       );
-      predict = Predict.fromJson(jsonDecode(response));
+      var responseData = jsonDecode(response);
+      if (responseData.containsKey('detail')) {
+        showFailedSnackbar(
+            AppLocalizations.of(Get.context!)!.action_not_continue,
+            responseData['detail']);
+        OverlayLoadingProgress.stop();
+        return;
+      }
+      predict = Predict.fromJson(responseData);
       predict.totalpoint = point.value + predict.subtotalpoint!;
       predict.address = await getAddressFromLatLng(position);
       // for (var countedObject in predict.countedObjects!) {

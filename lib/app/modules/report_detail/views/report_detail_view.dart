@@ -4,6 +4,7 @@ import 'package:frontend_waste_management/app/modules/report_detail/controllers/
 import 'package:frontend_waste_management/app/modules/report_detail/views/widget/Item_tiles.dart';
 import 'package:frontend_waste_management/app/widgets/app_icon.dart';
 import 'package:frontend_waste_management/app/widgets/app_text.dart';
+import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
 import 'package:frontend_waste_management/app/widgets/horizontal_gap.dart';
 import 'package:frontend_waste_management/app/widgets/icon_button.dart';
 import 'package:frontend_waste_management/app/widgets/preview_page.dart';
@@ -166,6 +167,12 @@ class ReportDetailView extends GetView<ReportDetailController> {
                                                 .value
                                                 .countedObjects![index]
                                                 .name);
+                                      } else {
+                                        showFailedSnackbar(
+                                            AppLocalizations.of(context)!
+                                                .action_not_continue,
+                                            AppLocalizations.of(context)!
+                                                .illegal_dumping_recycle_error);
                                       }
                                     },
                                     child: ItemTiles(

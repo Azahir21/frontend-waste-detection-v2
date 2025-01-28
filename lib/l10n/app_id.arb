@@ -709,5 +709,17 @@
   "pickup_at": "Waktu pengambilan",
   "@pickup_at": {
     "description": "Label for pickup timestamp"
+  },
+  "illegal_dumping_site": "TPS Ilegal",
+  "@illegal_dumping_site": {
+    "description": "Label for illegal dumping site"
+  },
+  "illegal_trash": "Sampah Ilegal",
+  "@illegal_trash": {
+    "description": "Label for illegal trash"
+  },
+  "illegal_dumping_recycle_error": "TPS ilegal tidak dapat di daur ulang",
+  "@illegal_dumping_recycle_error": {
+    "description": "Label for illegal dumping recycle error"
   }
 }

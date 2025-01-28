@@ -709,5 +709,17 @@
   "pickup_at": "Pickup time",
   "@pickup_at": {
     "description": "Label for pickup timestamp"
+  },
+  "illegal_dumping_site": "Waste Pile",
+  "@illegal_dumping_site": {
+    "description": "Label for waste pile site"
+  },
+  "illegal_trash": "Illegal Trash",
+  "@illegal_trash": {
+    "description": "Label for illegal trash"
+  },
+  "illegal_dumping_recycle_error": "Waste pile cannot be recycled",
+  "@illegal_dumping_recycle_error": {
+    "description": "Label for waste pile recycle error"
   }
 }

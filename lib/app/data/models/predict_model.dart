@@ -3,6 +3,7 @@ import 'dart:convert';
 class Predict {
   String? fileName;
   bool? fromCamera;
+  bool? isWastePile;
   DateTime? datetime;
   double? longitude;
   double? latitude;
@@ -16,6 +17,7 @@ class Predict {
   Predict({
     this.fileName,
     this.fromCamera,
+    this.isWastePile,
     this.datetime,
     this.longitude,
     this.latitude,
@@ -34,6 +36,7 @@ class Predict {
   factory Predict.fromJson(Map<String, dynamic> json) => Predict(
         fileName: json["file_name"],
         fromCamera: json["from_camera"],
+        isWastePile: json["is_garbage_pile"],
         datetime:
             json["datetime"] == null ? null : DateTime.parse(json["datetime"]),
         longitude: json["longitude"]?.toDouble(),
@@ -55,6 +58,7 @@ class Predict {
   Map<String, dynamic> toJson() => {
         "file_name": fileName,
         "from_camera": fromCamera,
+        "is_garbage_pile": isWastePile,
         "datetime": datetime?.toIso8601String(),
         "longitude": longitude,
         "latitude": latitude,

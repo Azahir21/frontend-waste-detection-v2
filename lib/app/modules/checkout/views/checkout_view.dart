@@ -7,6 +7,7 @@ import 'package:frontend_waste_management/app/modules/checkout/views/Item_tiles.
 import 'package:frontend_waste_management/app/widgets/app_icon.dart';
 import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/centered_text_button.dart';
+import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
 import 'package:frontend_waste_management/app/widgets/horizontal_gap.dart';
 import 'package:frontend_waste_management/app/widgets/icon_button.dart';
 import 'package:frontend_waste_management/app/widgets/preview_page.dart';
@@ -56,6 +57,16 @@ class CheckoutView extends GetView<CheckoutController> {
                                 Get.back();
                               },
                               context: context,
+                            ),
+                            Visibility(
+                              visible: controller.predict.isWastePile!,
+                              replacement: AppText.labelDefaultEmphasis(
+                                  AppLocalizations.of(context)!.illegal_trash,
+                                  context: context),
+                              child: AppText.labelDefaultEmphasis(
+                                  AppLocalizations.of(context)!
+                                      .illegal_dumping_site,
+                                  context: context),
                             ),
                             CustomIconButton.secondary(
                               iconName: AppIconName.info,
@@ -173,9 +184,21 @@ class CheckoutView extends GetView<CheckoutController> {
                             physics: const NeverScrollableScrollPhysics(),
                             itemBuilder: (context, index) {
                               return GestureDetector(
-                                onTap: () => Get.toNamed("/recycle",
-                                    arguments: controller
-                                        .predict.countedObjects![index].name),
+                                onTap: () {
+                                  if (controller.predict.countedObjects![index]
+                                          .name !=
+                                      "Garbage") {
+                                    Get.toNamed("/recycle",
+                                        arguments: controller.predict
+                                            .countedObjects![index].name);
+                                  } else {
+                                    showFailedSnackbar(
+                                        AppLocalizations.of(context)!
+                                            .action_not_continue,
+                                        AppLocalizations.of(context)!
+                                            .illegal_dumping_recycle_error);
+                                  }
+                                },
                                 child: ItemTiles(
                                   countObject:
                                       controller.predict.countedObjects![index],

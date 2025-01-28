@@ -709,5 +709,17 @@
   "pickup_at": "受け取り時間",
   "@pickup_at": {
     "description": "Label for pickup timestamp"
+  },
+  "illegal_dumping_site": "ゴミ集積所",
+  "@illegal_dumping_site": {
+    "description": "Label for waste pile site"
+  },
+  "illegal_trash": "不法ゴミ",
+  "@illegal_trash": {
+    "description": "Label for waste pile"
+  },
+  "illegal_dumping_recycle_error": "ゴミ集積所はリサイクル不可",
+  "@illegal_dumping_recycle_error": {
+    "description": "Label for waste pile recycle error"
   }
 }

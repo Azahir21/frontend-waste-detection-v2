@@ -46,9 +46,10 @@ class ApiServices {
   }
 
   Future<String> uploadFile(String url, String username, double longitude,
-      double latitude, bool fromCamera, File file) async {
+      double latitude, bool fromCamera, bool isPile, File file) async {
+    print("is pile : $isPile");
     Uri uri = Uri.parse(
-        '$url?username=$username&longitude=$longitude&latitude=$latitude&from_camera=$fromCamera');
+        '$url?username=$username&longitude=$longitude&latitude=$latitude&from_camera=$fromCamera&use_garbage_pile_model=$isPile');
     var request = MultipartRequest('POST', uri)
       ..files.add(await MultipartFile.fromPath('file', file.path))
       ..headers.addAll({

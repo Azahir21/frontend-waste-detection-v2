@@ -1,3 +1,4 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:frontend_waste_management/core/theme/color_theme.dart';
 import 'package:frontend_waste_management/core/theme/dimension_theme.dart';
@@ -43,6 +44,7 @@ class MyApp extends StatelessWidget {
       child: GetMaterialApp(
         // title: "Kolekan",
         title: "Lara'an",
+        scrollBehavior: MyCustomScrollBehavior(),
         initialRoute: AppPages.INITIAL,
         getPages: AppPages.routes,
         debugShowCheckedModeBanner: false,
@@ -69,4 +71,13 @@ class MyApp extends StatelessWidget {
       ),
     );
   }
+}
+
+class MyCustomScrollBehavior extends MaterialScrollBehavior {
+  // Override behavior methods and getters like dragDevices
+  @override
+  Set<PointerDeviceKind> get dragDevices => {
+        PointerDeviceKind.touch,
+        PointerDeviceKind.mouse,
+      };
 }

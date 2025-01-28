@@ -183,7 +183,7 @@ class Popup extends GetView<MapsController> {
                   ),
                   VerticalGap.formMedium(),
                   Visibility(
-                    visible: !detail.isPickup!,
+                    visible: detail.isPickup!,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -220,9 +220,9 @@ class Popup extends GetView<MapsController> {
                             ),
                             Flexible(
                               child: AppText.labelSmallDefault(
-                                detail.captureTime != null
+                                detail.pickupAt != null
                                     ? DateFormat('yyyy-MM-dd HH:mm:ss')
-                                        .format(detail.captureTime!)
+                                        .format(detail.pickupAt!)
                                     : "N/A",
                                 context: context,
                               ),

@@ -10,7 +10,9 @@ import 'package:frontend_waste_management/app/data/models/sampah_detail_model.da
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/simply_translate.dart';
 import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
+import 'package:frontend_waste_management/app/widgets/app_icon.dart';
 import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
+import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:get/get.dart';
 import 'package:latlong2/latlong.dart';
@@ -89,21 +91,21 @@ class MapsController extends GetxController {
       markers.value = sampahsData
           .map(
             (e) => Marker(
-              width: 80.0,
-              height: 80.0,
+              width: 40.0,
+              height: 40.0,
               point: e.geom!,
               rotate: true,
               child: GestureDetector(
-                onTap: () {
-                  selectedMarkerDetail.value = e;
-                },
-                child: Icon(
-                  Icons.location_on,
-                  color: interpolateColor(
-                      (e.totalSampah! / 20.0), defaultGradient),
-                  size: 40.0,
-                ),
-              ),
+                  onTap: () {
+                    selectedMarkerDetail.value = e;
+                  },
+                  child: e.isWastePile!
+                      ? AppIcon.custom(
+                          appIconName: AppIconName.pilePinlocation,
+                          context: Get.context!)
+                      : AppIcon.custom(
+                          appIconName: AppIconName.pcsPinlocation,
+                          context: Get.context!)),
             ),
           )
           .toList();
@@ -121,11 +123,8 @@ class MapsController extends GetxController {
       alignPositionStreamController.value = StreamController<double?>();
       isLoading.value = true;
 
-      final response =
-          await ApiServices().post("${UrlConstants.sampah}/timeseries", {
-        "start_date": firstDate.value.toIso8601String(),
-        "end_date": lastDate.value.toIso8601String(),
-      });
+      final response = await ApiServices().get(
+          "${UrlConstants.sampah}/timeseries?start_date=${firstDate.value.toIso8601String()}&end_date=${lastDate.value.toIso8601String()}");
 
       if (response.statusCode != 200) {
         var message = jsonDecode(response.body)['detail'];
@@ -156,20 +155,21 @@ class MapsController extends GetxController {
         markers.value = timeseriesData
             .map(
               (e) => Marker(
-                width: 80.0,
-                height: 80.0,
+                width: 40.0,
+                height: 40.0,
                 point: e.geom!,
                 rotate: true,
                 child: GestureDetector(
                   onTap: () {
                     selectedMarkerDetail.value = e;
                   },
-                  child: Icon(
-                    Icons.location_on,
-                    color: interpolateColor(
-                        (e.totalSampah! / 20.0), defaultGradient),
-                    size: 40.0,
-                  ),
+                  child: e.isWastePile!
+                      ? AppIcon.custom(
+                          appIconName: AppIconName.pilePinlocation,
+                          context: Get.context!)
+                      : AppIcon.custom(
+                          appIconName: AppIconName.pcsPinlocation,
+                          context: Get.context!),
                 ),
               ),
             )
@@ -216,20 +216,21 @@ class MapsController extends GetxController {
               element.captureTime!.difference(firstDate.value).inDays <=
               selectedDay.value - 1)
           .map((e) => Marker(
-                width: 80.0,
-                height: 80.0,
+                width: 40.0,
+                height: 40.0,
                 point: e.geom!,
                 rotate: true,
                 child: GestureDetector(
                   onTap: () {
                     selectedMarkerDetail.value = e;
                   },
-                  child: Icon(
-                    Icons.location_on,
-                    color: interpolateColor(
-                        (e.totalSampah! / 20.0), defaultGradient),
-                    size: 40.0,
-                  ),
+                  child: e.isWastePile!
+                      ? AppIcon.custom(
+                          appIconName: AppIconName.pilePinlocation,
+                          context: Get.context!)
+                      : AppIcon.custom(
+                          appIconName: AppIconName.pcsPinlocation,
+                          context: Get.context!),
                 ),
               ))
           .toList();
@@ -251,23 +252,25 @@ class MapsController extends GetxController {
           .where((element) =>
               element.captureTime!.difference(firstDate.value).inDays ==
               selectedDay.value - 1)
-          .map((e) => Marker(
-                width: 80.0,
-                height: 80.0,
-                point: e.geom!,
-                rotate: true,
-                child: GestureDetector(
+          .map(
+            (e) => Marker(
+              width: 40.0,
+              height: 40.0,
+              point: e.geom!,
+              rotate: true,
+              child: GestureDetector(
                   onTap: () {
                     selectedMarkerDetail.value = e;
                   },
-                  child: Icon(
-                    Icons.location_on,
-                    color: interpolateColor(
-                        (e.totalSampah! / 20.0), defaultGradient),
-                    size: 40.0,
-                  ),
-                ),
-              ))
+                  child: e.isWastePile!
+                      ? AppIcon.custom(
+                          appIconName: AppIconName.pilePinlocation,
+                          context: Get.context!)
+                      : AppIcon.custom(
+                          appIconName: AppIconName.pcsPinlocation,
+                          context: Get.context!)),
+            ),
+          )
           .toList();
 
       // Update daily data

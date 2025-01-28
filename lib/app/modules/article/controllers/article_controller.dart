@@ -14,6 +14,9 @@ class ArticleController extends GetxController {
   final RxBool isLoading = false.obs;
   final RxList<Article> articles = <Article>[].obs;
   final _tokenService = TokenService();
+  final RxInt currentPage = 1.obs;
+  final RxInt pageSize = 10.obs;
+  final RxInt totalPage = 0.obs;
   // final st = SimplyTranslator(EngineType.google);
 
   @override
@@ -32,9 +35,30 @@ class ArticleController extends GetxController {
     return Future.value();
   }
 
-  Future<List<Article>> getArticle() async {
+  Future getNextPage() async {
+    isLoading.value = true;
+    if (currentPage.value < totalPage.value) {
+      currentPage.value++;
+    }
+    await getArticle();
+    isLoading.value = false;
+    return Future.value();
+  }
+
+  Future getPrevPage() async {
+    isLoading.value = true;
+    if (currentPage.value > 1) {
+      currentPage.value--;
+    }
+    await getArticle();
+    isLoading.value = false;
+    return Future.value();
+  }
+
+  Future getArticle() async {
     try {
-      final response = await ApiServices().get('${UrlConstants.article}s');
+      final response = await ApiServices().get(
+          '${UrlConstants.article}s?page=${currentPage.value}&page_size=${pageSize.value}');
       if (response.statusCode != 200) {
         // var message = await translate(jsonDecode(response.body)['detail']);
         var message = jsonDecode(response.body)['detail'];
@@ -42,11 +66,11 @@ class ArticleController extends GetxController {
             AppLocalizations.of(Get.context!)!.article_error, message);
         throw ('${AppLocalizations.of(Get.context!)!.article_error}: ${response.body}');
       }
-      articles.value = parseArticles(response.body);
-      // for (var article in articles) {
-      //   article.title = await translate(article.title!);
-      // }
-      return articles;
+      ArticleList articleList = ArticleList.fromJson(jsonDecode(response.body));
+      articles.value = articleList.data!;
+      currentPage.value = articleList.page!;
+      pageSize.value = articleList.pageSize!;
+      totalPage.value = articleList.totalPage!;
     } catch (e) {
       throw ('${AppLocalizations.of(Get.context!)!.article_error}: $e');
     }

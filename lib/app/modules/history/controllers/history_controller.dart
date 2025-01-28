@@ -7,12 +7,16 @@ import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get/get_rx/get_rx.dart';
 
 class HistoryController extends GetxController {
   //TODO: Implement HistoryController
   final RxBool isLoading = false.obs;
   final RxList<Sampah> sampahs = <Sampah>[].obs;
   final _tokenService = TokenService();
+  RxInt currentPage = 1.obs;
+  RxInt pageSize = 10.obs;
+  RxInt totalPage = 0.obs;
 
   @override
   void onInit() async {
@@ -30,10 +34,31 @@ class HistoryController extends GetxController {
     return Future.value();
   }
 
+  Future getNextPage() async {
+    isLoading.value = true;
+    if (currentPage.value < totalPage.value) {
+      currentPage.value++;
+    }
+    await getHistory();
+    isLoading.value = false;
+    return Future.value();
+  }
+
+  Future getPrevPage() async {
+    isLoading.value = true;
+    if (currentPage.value > 1) {
+      currentPage.value--;
+    }
+    await getHistory();
+    isLoading.value = false;
+    return Future.value();
+  }
+
   Future<List<Sampah>> getHistory() async {
     try {
       sampahs.refresh();
-      final response = await ApiServices().get(UrlConstants.userSampah);
+      final response = await ApiServices().get(
+          '${UrlConstants.userSampah}?page=${currentPage.value}&page_size=${pageSize.value}');
       if (response.statusCode != 200) {
         // var message = await translate(jsonDecode(response.body)['detail']);
         var message = jsonDecode(response.body)['detail'];
@@ -42,8 +67,11 @@ class HistoryController extends GetxController {
           message,
         );
       }
-      sampahs.value = parseSampah(response.body);
-      sampahs.sort((a, b) => b.captureTime!.compareTo(a.captureTime!));
+      SampahList sampahList = SampahList.fromJson(jsonDecode(response.body));
+      currentPage.value = sampahList.page!;
+      pageSize.value = sampahList.pageSize!;
+      totalPage.value = sampahList.totalPages!;
+      sampahs.value = sampahList.data!;
       return sampahs;
     } catch (e) {
       throw ('${AppLocalizations.of(Get.context!)!.history_error}: $e');

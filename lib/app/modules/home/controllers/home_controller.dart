@@ -70,7 +70,8 @@ class HomeController extends GetxController {
 
   Future<List<Article>> getArticle() async {
     try {
-      final response = await ApiServices().get('${UrlConstants.article}s');
+      final response = await ApiServices()
+          .get('${UrlConstants.article}s?page=1&page_size=5');
       if (response.statusCode != 200) {
         // var message = await translate(jsonDecode(response.body)['detail']);
         var message = jsonDecode(response.body)['detail'];
@@ -78,10 +79,8 @@ class HomeController extends GetxController {
             AppLocalizations.of(Get.context!)!.article_error, message);
         throw ('Article error: ${response.body}');
       }
-      articles.value = parseArticles(response.body);
-      // for (var article in articles) {
-      //   article.title = await translate(article.title!);
-      // }
+      ArticleList articleList = ArticleList.fromJson(jsonDecode(response.body));
+      articles.value = articleList.data!;
       return articles;
     } catch (e) {
       throw ('Article error: $e');

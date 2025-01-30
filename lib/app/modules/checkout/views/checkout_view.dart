@@ -86,7 +86,7 @@ class CheckoutView extends GetView<CheckoutController> {
                           children: [
                             GestureDetector(
                               onTap: () => Get.to(() => PreviewPage(
-                                    image: controller.predict.encodedImages!,
+                                    image: controller.predict.imageUrl!,
                                   )),
                               child: Container(
                                 height: size.width * 0.35,
@@ -97,9 +97,8 @@ class CheckoutView extends GetView<CheckoutController> {
                                   image: DecorationImage(
                                     image:
                                         // AssetImage('assets/images/onboarding3.png'),
-                                        Image.memory(base64Decode(controller
-                                                .predict.encodedImages!))
-                                            .image,
+                                        NetworkImage(
+                                            controller.predict.imageUrl!),
                                     fit: BoxFit.cover,
                                   ),
                                 ),

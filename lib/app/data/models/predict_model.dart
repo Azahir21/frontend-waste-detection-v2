@@ -12,7 +12,7 @@ class Predict {
   String? address;
   List<DetectedObject>? detectedObjects;
   List<CountedObject>? countedObjects;
-  String? encodedImages;
+  String? imageUrl;
 
   Predict({
     this.fileName,
@@ -26,7 +26,7 @@ class Predict {
     this.address,
     this.detectedObjects,
     this.countedObjects,
-    this.encodedImages,
+    this.imageUrl,
   });
 
   factory Predict.fromRawJson(String str) => Predict.fromJson(json.decode(str));
@@ -52,7 +52,7 @@ class Predict {
             ? []
             : List<CountedObject>.from(
                 json["counted_objects"]!.map((x) => CountedObject.fromJson(x))),
-        encodedImages: json["encoded_images"],
+        imageUrl: json["image_url"],
       );
 
   Map<String, dynamic> toJson() => {
@@ -71,7 +71,7 @@ class Predict {
         "counted_objects": countedObjects == null
             ? []
             : List<dynamic>.from(countedObjects!.map((x) => x.toJson())),
-        "encoded_images": encodedImages,
+        "image_url": imageUrl,
       };
 }
 

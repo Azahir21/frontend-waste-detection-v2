@@ -67,9 +67,8 @@ class CheckoutController extends GetxController {
           "longitude": fixedLocation!.longitude,
           "latitude": fixedLocation!.latitude,
           "point": predict.subtotalpoint,
-          "image": predict.encodedImages,
+          "image_url": predict.imageUrl,
           "is_waste_pile": predict.isWastePile,
-          "filename": predict.fileName,
           "capture_date": predict.datetime!.toIso8601String(),
           "sampah_items": predict.detectedObjects!
               .map((e) => {"jenisSampahId": e.detectedObjectClass})

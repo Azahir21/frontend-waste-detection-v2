@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:frontend_waste_management/app/modules/leaderboard/controllers/leaderboard_controller.dart';
 import 'package:frontend_waste_management/app/modules/leaderboard/views/leaderboard_list_tile.dart';

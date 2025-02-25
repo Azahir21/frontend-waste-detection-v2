@@ -34,52 +34,32 @@ class _CameraPreview extends GetView<CameraViewController> {
           child: GestureDetector(
             onTapDown: (details) => _onTapFocus(details, size),
             child: Obx(() {
+              // Get camera preview size
               final previewSize = controller.cameraController.value.previewSize;
               if (previewSize == null) {
                 return const Center(child: CircularProgressIndicator());
               }
 
+              // Get current desired aspect ratio
+              final targetAspectRatio = controller.currentAspectRatio == 0
+                  ? size.width / size.height // Full screen uses device ratio
+                  : controller.currentAspectRatio;
+
+              // Determine if camera is rotated (typical for mobile cameras)
               final isPortrait =
                   MediaQuery.of(context).orientation == Orientation.portrait;
-              // Calculate the camera's native aspect ratio
+
+              // Calculate camera's native aspect ratio
+              // When in portrait, we need to invert the preview size ratio
               final cameraAspectRatio = isPortrait
                   ? previewSize.height / previewSize.width
                   : previewSize.width / previewSize.height;
 
-              // We fix the target aspect ratio to 9:16
-              const targetAspectRatio = 9 / 16;
-
-              // Determine how to size the container
-              double containerWidth, containerHeight;
-              if (size.width / size.height < targetAspectRatio) {
-                // Width constrained
-                containerWidth = size.width;
-                containerHeight = containerWidth / targetAspectRatio;
-              } else {
-                // Height constrained
-                containerHeight = size.height;
-                containerWidth = containerHeight * targetAspectRatio;
-              }
-
-              // Calculate the scaling so the camera preview fills the container
-              final scale = _calculateScaleFactor(
-                cameraAspectRatio,
-                targetAspectRatio,
-                containerWidth,
-                containerHeight,
-              );
-
               return Center(
-                child: SizedBox(
-                  width: containerWidth,
-                  height: containerHeight,
-                  child: ClipRect(
-                    child: Transform.scale(
-                      scale: scale,
-                      alignment: Alignment.center,
-                      child: CameraPreview(controller.cameraController),
-                    ),
-                  ),
+                child: _buildCameraPreviewWithRatio(
+                  targetAspectRatio,
+                  cameraAspectRatio,
+                  context,
                 ),
               );
             }),
@@ -91,23 +71,128 @@ class _CameraPreview extends GetView<CameraViewController> {
     );
   }
 
+  Widget _buildCameraPreviewWithRatio(
+    double targetAspectRatio,
+    double cameraAspectRatio,
+    BuildContext context,
+  ) {
+    final screenSize = MediaQuery.of(context).size;
+
+    // Calculate container dimensions based on target aspect ratio
+    double containerWidth, containerHeight;
+
+    // For full screen (device aspect ratio)
+    if (controller.currentAspectRatio == 0) {
+      containerWidth = screenSize.width;
+      containerHeight = screenSize.height;
+    }
+    // For fixed aspect ratios
+    else {
+      // Check if we should constrain by width or height
+      if (screenSize.width / screenSize.height < targetAspectRatio) {
+        // Width constrained
+        containerWidth = screenSize.width;
+        containerHeight = screenSize.width / targetAspectRatio;
+      } else {
+        // Height constrained
+        containerHeight = screenSize.height;
+        containerWidth = screenSize.height * targetAspectRatio;
+      }
+    }
+
+    // Special handling for different aspect ratios
+    double scale = 1.0;
+
+    // Different scale calculation approach based on aspect ratio
+    if (targetAspectRatio == 1.0) {
+      // 1:1 Square
+      // For square, we want to ensure we don't crop too much
+      // Using a larger scale factor to show more of the scene
+      scale = _calculateSquareScaleFactor(
+          cameraAspectRatio, containerWidth, containerHeight);
+    } else if (targetAspectRatio == 0.75) {
+      // 3:4 Portrait
+      // For 3:4, we need a different approach to prevent cropping
+      scale = _calculate34ScaleFactor(
+          cameraAspectRatio, containerWidth, containerHeight);
+    } else if (targetAspectRatio == 9.0 / 16.0) {
+      // 9:16 Portrait Full
+      // The 9:16 ratio is already working well, so we use the original calculation
+      scale = _calculateStandardScaleFactor(cameraAspectRatio,
+          targetAspectRatio, containerWidth, containerHeight);
+    } else {
+      // Default calculation for other ratios
+      scale = _calculateStandardScaleFactor(cameraAspectRatio,
+          targetAspectRatio, containerWidth, containerHeight);
+    }
+
+    return SizedBox(
+      width: containerWidth,
+      height: containerHeight,
+      child: ClipRect(
+        child: Transform.scale(
+          scale: scale,
+          alignment: Alignment.center,
+          child: CameraPreview(controller.cameraController),
+        ),
+      ),
+    );
+  }
+
   // Standard scale factor calculation that works well for 9:16
-  double _calculateScaleFactor(
+  double _calculateStandardScaleFactor(
     double cameraAspectRatio,
     double targetAspectRatio,
     double containerWidth,
     double containerHeight,
   ) {
+    // Calculate scale factors for both dimensions
     final widthScale = containerWidth / (containerHeight * cameraAspectRatio);
     final heightScale = (containerWidth / targetAspectRatio) /
         (containerWidth / cameraAspectRatio);
 
-    // Use the larger scale to ensure the preview fills the container
+    // Use the larger scale to ensure the camera preview fills the container
     if (cameraAspectRatio > targetAspectRatio) {
       return heightScale;
     } else {
       return widthScale;
     }
+  }
+
+  // Special scale factor calculation optimized for 1:1 square ratio
+  double _calculateSquareScaleFactor(
+    double cameraAspectRatio,
+    double containerWidth,
+    double containerHeight,
+  ) {
+    // For square format, we want to zoom out a bit to show more content
+    // This helps prevent excessive cropping of the scene
+    final baseScale = containerHeight / (containerWidth / cameraAspectRatio);
+
+    // Apply a modifier to ensure we see more of the scene
+    // Lower values = less cropping/more scene visible
+    final zoomModifier = 0.8;
+
+    return baseScale * zoomModifier;
+  }
+
+  // Special scale factor calculation optimized for 3:4 portrait ratio
+  double _calculate34ScaleFactor(
+    double cameraAspectRatio,
+    double containerWidth,
+    double containerHeight,
+  ) {
+    // For 3:4, we need to ensure we don't crop too much vertically
+    // We'll create a slight zoom-out effect to show more of the scene
+    final scaleWidth = containerWidth / (containerHeight * cameraAspectRatio);
+    final scaleHeight = containerHeight / (containerWidth / cameraAspectRatio);
+
+    // Choose the smaller scale to ensure less cropping
+    // and apply a modifier to further reduce cropping
+    final baseScale = scaleWidth < scaleHeight ? scaleWidth : scaleHeight;
+    final zoomModifier = 0.85;
+
+    return baseScale * zoomModifier;
   }
 
   void _onTapFocus(TapDownDetails details, Size size) {
@@ -169,7 +254,6 @@ class _ControlsOverlay extends GetView<CameraViewController> {
             icon: const Icon(Icons.flash_on, color: Colors.white),
             onPressed: controller.toggleFlash,
           ),
-          // Removed the aspect ratio IconButton entirely
         ],
       ),
     );

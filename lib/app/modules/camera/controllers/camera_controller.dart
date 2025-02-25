@@ -26,11 +26,15 @@ class CameraViewController extends GetxController {
   // Flash mode (toggle between off and torch)
   FlashMode _flashMode = FlashMode.off;
 
+  // Aspect ratio for the preview (1:1, 3:4, 16:9, or full screen)
+  final RxDouble _currentAspectRatio = (9 / 16).obs;
+
   // Getters
   CameraController get cameraController => _cameraController;
   bool get isLoading => _isLoading.value;
   String? get filePath => _filePath.value;
   Position? get position => _position.value;
+  double get currentAspectRatio => _currentAspectRatio.value;
 
   @override
   Future<void> onInit() async {
@@ -46,9 +50,6 @@ class CameraViewController extends GetxController {
       (camera) => camera.lensDirection == CameraLensDirection.back,
     );
     _currentCameraIndex = backCameraIndex != -1 ? backCameraIndex : 0;
-
-    // 2. Initialize location.
-    await _initLocation();
 
     // 3. Initialize camera controller with the current camera.
     if (_cameras.isNotEmpty) {

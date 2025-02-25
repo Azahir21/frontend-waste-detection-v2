@@ -109,7 +109,9 @@ class LoginView extends GetView<LoginController> {
       children: [
         CustomTextButton.primary(
           text: AppLocalizations.of(context)!.forgot_password,
-          onPressed: () {},
+          onPressed: () {
+            Get.toNamed("/forget-password");
+          },
           context: context,
         ),
       ],

@@ -19,6 +19,7 @@ abstract class Routes {
   static const RECYCLE = _Paths.RECYCLE;
   static const REPORT_DETAIL = _Paths.REPORT_DETAIL;
   static const LEADERBOARD = _Paths.LEADERBOARD;
+  static const FORGET_PASSWORD = _Paths.FORGET_PASSWORD;
 }
 
 abstract class _Paths {
@@ -39,4 +40,5 @@ abstract class _Paths {
   static const RECYCLE = '/recycle';
   static const REPORT_DETAIL = '/report-detail';
   static const LEADERBOARD = '/leaderboard';
+  static const FORGET_PASSWORD = '/forget-password';
 }

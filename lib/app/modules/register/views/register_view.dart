@@ -180,10 +180,6 @@ class RegisterView extends GetView<RegisterController> {
       label: AppLocalizations.of(context)!.register,
       context: context,
       onTap: () {
-        if (!controller.validateEmail(controller.email)) {
-          return;
-        }
-        controller.validatePassword(controller.password);
         if (controller.fullName.isEmpty ||
             controller.gender.isEmpty ||
             controller.username.isEmpty ||
@@ -193,8 +189,13 @@ class RegisterView extends GetView<RegisterController> {
               AppLocalizations.of(context)!.all_fields_must_be_filled);
           return;
         }
+        if (!controller.validateEmail(controller.email)) {
+          return;
+        }
+        controller.validatePassword(controller.password);
         if (controller.validPassword.value) {
           controller.register();
+          // Get.back();
         }
       },
     );

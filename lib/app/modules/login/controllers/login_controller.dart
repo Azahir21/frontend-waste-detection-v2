@@ -13,10 +13,21 @@ class LoginController extends GetxController {
   //TODO: Implement LoginController
   String _email = '';
   String _password = '';
+  String _resetEmail = '';
+  String _resetUsername = '';
+  String _resetPassword = '';
+  final RxBool validPassword = true.obs;
+  final massage = "".obs;
   get email => _email;
   get password => _password;
+  get resetEmail => _resetEmail;
+  get resetUsername => _resetUsername;
+  get resetPassword => _resetPassword;
   set email(value) => _email = value;
   set password(value) => _password = value;
+  set resetEmail(value) => _resetEmail = value;
+  set resetUsername(value) => _resetUsername = value;
+  set resetPassword(value) => _resetPassword = value;
 
   @override
   void onInit() {
@@ -47,5 +58,68 @@ class LoginController extends GetxController {
     } catch (e) {
       print('Login error: $e');
     }
+  }
+
+  Future<void> forgotPassword() async {
+    try {
+      print("object");
+      final response = await ApiServices().post(
+        UrlConstants.forgotPassword,
+        {
+          'email': _resetEmail,
+          'username': _resetUsername,
+          'password': _resetPassword,
+        },
+      );
+      print(response.body);
+      print(response.statusCode);
+      if (response.statusCode != 200) {
+        // var message = await translate(jsonDecode(response.body)['detail']);
+        var message = jsonDecode(response.body)['detail'];
+
+        showFailedSnackbar("Reset password error", message);
+        throw ('Reset password error: ${response.body}');
+      }
+      showSuccessSnackbar(
+          "Reset password success", "Please login with your new password");
+      Get.offAllNamed("/login");
+    } catch (e) {
+      print('Reset password error: $e');
+    }
+  }
+
+  bool validateEmail(String email) {
+    if (!GetUtils.isEmail(email)) {
+      showFailedSnackbar(AppLocalizations.of(Get.context!)!.attention,
+          AppLocalizations.of(Get.context!)!.email_not_valid);
+      return false;
+    }
+    return true;
+  }
+
+  void validatePassword(String password) {
+    validPassword.value = true;
+    if (password.length < 8) {
+      massage.value =
+          AppLocalizations.of(Get.context!)!.password_has_8_characters;
+      validPassword.value = false;
+      return;
+    }
+    if (!RegExp(r'[A-Z]').hasMatch(password)) {
+      massage.value = AppLocalizations.of(Get.context!)!.password_has_uppercase;
+      validPassword.value = false;
+      return;
+    }
+    if (!RegExp(r'[a-z]').hasMatch(password)) {
+      massage.value = AppLocalizations.of(Get.context!)!.password_has_lowercase;
+      validPassword.value = false;
+      return;
+    }
+    if (!RegExp(r'\d').hasMatch(password)) {
+      massage.value = AppLocalizations.of(Get.context!)!.password_has_number;
+      validPassword.value = false;
+      return;
+    }
+    massage.value = "valid";
   }
 }

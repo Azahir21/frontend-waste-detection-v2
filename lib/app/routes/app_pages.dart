@@ -1,4 +1,5 @@
 import 'package:frontend_waste_management/app/data/services/network_middleware.dart';
+import 'package:frontend_waste_management/app/modules/login/views/forget_password_view.dart';
 import 'package:get/get.dart';
 
 import '../modules/account_setting/bindings/account_setting_binding.dart';
@@ -126,6 +127,11 @@ class AppPages {
       name: _Paths.LEADERBOARD,
       page: () => const LeaderboardView(),
       binding: LeaderboardBinding(),
+    ),
+    GetPage(
+      name: _Paths.FORGET_PASSWORD,
+      page: () => const ForgetPasswordView(),
+      binding: LoginBinding(),
     ),
   ];
 }

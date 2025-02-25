@@ -86,14 +86,11 @@ class _BottomNavViewState extends State<BottomNavView> {
         height: 64.0,
         child: FittedBox(
           child: FloatingActionButton(
+            foregroundColor: color.iconActivate,
             onPressed: () {
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => CameraView()),
-              // );
               Get.toNamed('/camera');
             },
-            backgroundColor: Colors.grey,
+            backgroundColor: color.iconDefault,
             shape: CircleBorder(), // Enforces a circular shape explicitly
             child: AppIcon.custom(
               appIconName: AppIconName.camera,
@@ -144,87 +141,3 @@ class _BottomNavViewState extends State<BottomNavView> {
     );
   }
 }
-
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   var color = Theme.of(context).appColors;
-  //   return Scaffold(
-  //     body: PageStorage(
-  //       bucket: bucket,
-  //       child: _screens[_selectedIndex],
-  //     ),
-  //     floatingActionButton: FloatingActionButton(
-  //       onPressed: () {
-  //         Navigator.push(
-  //           context,
-  //           MaterialPageRoute(builder: (context) => CameraView()),
-  //         );
-  //       },
-  //       child: AppIcon.custom(
-  //         appIconName: AppIconName.camera,
-  //         color: color.iconActivate,
-  //         context: context,
-  //       ),
-  //       backgroundColor: Colors.grey,
-  //     ),
-  //     floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-  //     bottomNavigationBar: BottomNavigationBar(
-  //       type: BottomNavigationBarType.fixed,
-  //       backgroundColor: Colors.white,
-  //       elevation: 5,
-  //       currentIndex: _selectedIndex,
-  //       onTap: _onItemTapped,
-  //       selectedItemColor: color.iconActivate,
-  //       unselectedItemColor: color.iconDisable,
-  //       items: [
-  //         BottomNavigationBarItem(
-  //           icon: AppIcon.custom(
-  //             appIconName: AppIconName.home,
-  //             color:
-  //                 _selectedIndex == 0 ? color.iconActivate : color.iconDefault,
-  //             context: context,
-  //           ),
-  //           label: AppLocalizations.of(context)!.dashboard,
-  //         ),
-  //         BottomNavigationBarItem(
-  //           icon: Padding(
-  //             padding: const EdgeInsets.only(
-  //                 right: 16.0), // Tambahkan padding sebelah kanan
-  //             child: AppIcon.custom(
-  //               appIconName: AppIconName.article,
-  //               color: _selectedIndex == 1
-  //                   ? color.iconActivate
-  //                   : color.iconDefault,
-  //               context: context,
-  //             ),
-  //           ),
-  //           label: AppLocalizations.of(context)!.article,
-  //         ),
-  //         BottomNavigationBarItem(
-  //           icon: Padding(
-  //             padding: const EdgeInsets.only(
-  //                 left: 16.0), // Tambahkan padding sebelah kiri
-  //             child: AppIcon.custom(
-  //               appIconName: AppIconName.history,
-  //               color: _selectedIndex == 2
-  //                   ? color.iconActivate
-  //                   : color.iconDefault,
-  //               context: context,
-  //             ),
-  //           ),
-  //           label: AppLocalizations.of(context)!.history,
-  //         ),
-  //         BottomNavigationBarItem(
-  //           icon: AppIcon.custom(
-  //             appIconName: AppIconName.profile,
-  //             color:
-  //                 _selectedIndex == 3 ? color.iconActivate : color.iconDefault,
-  //             context: context,
-  //           ),
-  //           label: AppLocalizations.of(context)!.profile,
-  //         ),
-  //       ],
-  //     ),
-  //   );
-  // }

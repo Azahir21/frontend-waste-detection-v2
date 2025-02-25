@@ -1,5 +1,6 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:get/get.dart';
 import '../controllers/camera_controller.dart';
 
@@ -29,10 +30,11 @@ class _CameraPreview extends GetView<CameraViewController> {
       children: [
         // Black background for the entire screen
         Container(color: Colors.black),
-
         Positioned.fill(
           child: GestureDetector(
             onTapDown: (details) => _onTapFocus(details, size),
+            onScaleStart: (details) => controller.onScaleStart(details),
+            onScaleUpdate: (details) => controller.onScaleUpdate(details),
             child: Obx(() {
               // Get camera preview size
               final previewSize = controller.cameraController.value.previewSize;
@@ -63,6 +65,17 @@ class _CameraPreview extends GetView<CameraViewController> {
                 ),
               );
             }),
+          ),
+        ),
+        Positioned(
+          top: 50,
+          left: 0,
+          right: 0,
+          child: Center(
+            child: Obx(() => Text(
+                  'Zoom: ${controller.currentZoom.value.toStringAsFixed(1)}x',
+                  style: const TextStyle(color: Colors.white, fontSize: 18),
+                )),
           ),
         ),
         const _CenterMarker(),
@@ -198,12 +211,6 @@ class _CameraPreview extends GetView<CameraViewController> {
   void _onTapFocus(TapDownDetails details, Size size) {
     final offset = details.localPosition;
     controller.setFocusPoint(offset, size);
-    Get.showSnackbar(
-      const GetSnackBar(
-        message: 'Focus point set',
-        duration: Duration(seconds: 1),
-      ),
-    );
   }
 }
 

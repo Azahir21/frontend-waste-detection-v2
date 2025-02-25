@@ -29,12 +29,19 @@ class CameraViewController extends GetxController {
   // Aspect ratio for the preview (1:1, 3:4, 16:9, or full screen)
   final RxDouble _currentAspectRatio = (9 / 16).obs;
 
+  // Zoom variables
+  RxDouble _currentZoom = 1.0.obs;
+  double _minZoom = 1.0;
+  double _maxZoom = 1.0;
+  double _baseZoom = 1.0; // To store zoom at the start of pinch
+
   // Getters
   CameraController get cameraController => _cameraController;
   bool get isLoading => _isLoading.value;
   String? get filePath => _filePath.value;
   Position? get position => _position.value;
   double get currentAspectRatio => _currentAspectRatio.value;
+  RxDouble get currentZoom => _currentZoom;
 
   @override
   Future<void> onInit() async {
@@ -59,14 +66,6 @@ class CameraViewController extends GetxController {
     _isLoading.value = false;
   }
 
-  Future<void> _initLocation() async {
-    try {
-      _position.value = await Geolocator.getCurrentPosition();
-    } catch (e) {
-      Get.snackbar('Error', 'Failed to get location: $e');
-    }
-  }
-
   Future<void> _initCameraController(CameraDescription description) async {
     _cameraController = CameraController(
       description,
@@ -78,8 +77,31 @@ class CameraViewController extends GetxController {
       await _cameraController.initialize();
       await _cameraController.setFlashMode(_flashMode);
       await _cameraController.setFocusMode(FocusMode.auto);
+
+      // Initialize zoom parameters after the controller is ready
+      _currentZoom.value = 1.0;
+      _minZoom = await _cameraController.getMinZoomLevel();
+      _maxZoom = await _cameraController.getMaxZoomLevel();
     } catch (e) {
       Get.snackbar('Error', 'Camera initialization failed: $e');
+    }
+  }
+
+  /// Called when the user starts a pinch gesture.
+  void onScaleStart(ScaleStartDetails details) {
+    _baseZoom = _currentZoom.value;
+  }
+
+  /// Called when the user updates the pinch gesture.
+  Future<void> onScaleUpdate(ScaleUpdateDetails details) async {
+    double newZoom = _baseZoom * details.scale;
+    // Clamp the new zoom level between min and max values.
+    newZoom = newZoom.clamp(_minZoom, _maxZoom);
+    _currentZoom.value = newZoom;
+    try {
+      await _cameraController.setZoomLevel(_currentZoom.value);
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to set zoom level: $e');
     }
   }
 
@@ -144,6 +166,14 @@ class CameraViewController extends GetxController {
         await ImagePicker().pickImage(source: ImageSource.gallery);
     if (image != null) {
       _filePath.value = image.path;
+    }
+  }
+
+  Future<void> _initLocation() async {
+    try {
+      _position.value = await Geolocator.getCurrentPosition();
+    } catch (e) {
+      Get.snackbar('Error', 'Failed to get location: $e');
     }
   }
 

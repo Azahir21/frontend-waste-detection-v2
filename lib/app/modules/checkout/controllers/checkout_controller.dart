@@ -60,10 +60,12 @@ class CheckoutController extends GetxController {
         return;
       }
       buttonEnable.value = false;
+      print(address.value);
       final response = await ApiServices().post(
         UrlConstants.userSampah,
         {
-          "address": predict.address,
+          // "address": predict.address,
+          "address": address.value,
           "longitude": fixedLocation!.longitude,
           "latitude": fixedLocation!.latitude,
           "point": predict.subtotalpoint,

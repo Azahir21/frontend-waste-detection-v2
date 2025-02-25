@@ -159,7 +159,7 @@ class CheckoutView extends GetView<CheckoutController> {
                                         child: AppText.labelSmallDefault(
                                           controller.address.value ?? "",
                                           textOverflow: TextOverflow.ellipsis,
-                                          maxLines: 4,
+                                          maxLines: 5,
                                           context: context,
                                         ),
                                       ),

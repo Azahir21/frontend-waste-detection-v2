@@ -44,7 +44,19 @@ Future<String> getAddressFromLatLng(LatLng position) async {
     List<Placemark> placemarks =
         await placemarkFromCoordinates(position.latitude, position.longitude);
     Placemark place = placemarks[0];
-    return '${place.street}, ${place.subLocality}, ${place.subAdministrativeArea}, ${place.postalCode}';
+    // print(place.name);
+    print(place.street);
+    // print(place.isoCountryCode);
+    print(place.country);
+    print(place.postalCode);
+    print(place.administrativeArea);
+    print(place.subAdministrativeArea);
+    print(place.locality);
+    print(place.subLocality);
+    print(place.thoroughfare);
+    print(place.subThoroughfare);
+
+    return '${place.street}, ${place.locality}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.postalCode}, ${place.country}';
   } catch (e) {
     debugPrint(e.toString());
     throw Exception('Failed to get address from coordinates');

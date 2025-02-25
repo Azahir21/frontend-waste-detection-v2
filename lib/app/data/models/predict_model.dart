@@ -122,7 +122,7 @@ class DetectedObject {
 
   factory DetectedObject.fromJson(Map<String, dynamic> json) => DetectedObject(
         name: json["name"],
-        detectedObjectClass: json["class"],
+        detectedObjectClass: json["class"].toInt(),
         point: json["point"],
       );
 

@@ -1,6 +1,5 @@
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
-import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:get/get.dart';
 import '../controllers/camera_controller.dart';
 
@@ -257,10 +256,13 @@ class _ControlsOverlay extends GetView<CameraViewController> {
             onPressed: controller.switchCamera,
           ),
           // Flashlight toggle
-          IconButton(
-            icon: const Icon(Icons.flash_on, color: Colors.white),
-            onPressed: controller.toggleFlash,
-          ),
+          Obx(() => IconButton(
+                icon: Icon(controller.flashMode.value == FlashMode.off
+                    ? Icons.flash_on
+                    : Icons.flash_off),
+                color: Colors.white,
+                onPressed: controller.toggleFlash,
+              )),
         ],
       ),
     );

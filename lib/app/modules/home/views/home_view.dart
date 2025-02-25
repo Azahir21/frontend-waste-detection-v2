@@ -6,6 +6,7 @@ import 'package:frontend_waste_management/app/widgets/app_icon.dart';
 import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/horizontal_gap.dart';
 import 'package:frontend_waste_management/app/widgets/icon_button.dart';
+import 'package:frontend_waste_management/app/widgets/text_button.dart';
 import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
@@ -56,7 +57,8 @@ class HomeView extends GetView<HomeController> {
                               ),
                             ),
                             child: Padding(
-                              padding: const EdgeInsets.only(left: 32),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 32),
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -99,109 +101,40 @@ class HomeView extends GetView<HomeController> {
                                     ),
                                   ),
                                   VerticalGap.formHuge(),
-                                  AppText.labelDefaultEmphasis(
-                                      controller.username,
-                                      context: context)
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      AppText.labelDefaultEmphasis(
+                                          controller.username,
+                                          context: context),
+                                      IconButton(
+                                          onPressed: () {
+                                            Get.toNamed('/leaderboard');
+                                          },
+                                          icon: AppIcon.custom(
+                                              appIconName:
+                                                  AppIconName.leaderboard,
+                                              context: context)),
+                                    ],
+                                  ),
                                 ],
                               ),
                             ),
                           ),
                           VerticalGap.formBig(),
                           Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Column(
-                                children: [
-                                  CustomIconButton.primary(
-                                    iconName: AppIconName.map,
-                                    onTap: () {
-                                      Get.toNamed('/maps');
-                                    },
-                                    context: context,
-                                    height: 60,
-                                    width: 60,
-                                  ),
-                                  VerticalGap.formSmall(),
-                                  AppText.labelSmallEmphasis(
-                                      AppLocalizations.of(context)!.maps,
-                                      context: context),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  CustomIconButton.primary(
-                                    iconName: AppIconName.camera,
-                                    onTap: () async {
-                                      Get.dialog(
-                                        chooseTypeWaste(
-                                          context,
-                                          AppLocalizations.of(context)!.camera,
-                                          () async {
-                                            await controller
-                                                .getImageFromCamera();
-                                          },
-                                        ),
-                                      );
-                                    },
-                                    context: context,
-                                    height: 60,
-                                    width: 60,
-                                  ),
-                                  VerticalGap.formSmall(),
-                                  AppText.labelSmallEmphasis(
-                                      AppLocalizations.of(context)!.camera,
-                                      context: context),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  CustomIconButton.primary(
-                                    iconName: AppIconName.gallery,
-                                    onTap: () async {
-                                      Get.dialog(
-                                        chooseTypeWaste(
-                                          context,
-                                          AppLocalizations.of(context)!.gallery,
-                                          () async {
-                                            await controller
-                                                .getImageFromGallery();
-                                          },
-                                        ),
-                                      );
-                                    },
-                                    context: context,
-                                    height: 60,
-                                    width: 60,
-                                  ),
-                                  VerticalGap.formSmall(),
-                                  AppText.labelSmallEmphasis(
-                                      AppLocalizations.of(context)!.gallery,
-                                      context: context),
-                                ],
-                              ),
-                              Column(
-                                children: [
-                                  CustomIconButton.primary(
-                                    iconName: AppIconName.leaderboard,
-                                    onTap: () async {
-                                      Get.toNamed('/leaderboard');
-                                    },
-                                    context: context,
-                                    height: 60,
-                                    width: 60,
-                                  ),
-                                  VerticalGap.formSmall(),
-                                  AppText.labelSmallEmphasis(
-                                      AppLocalizations.of(context)!.leaderboard,
-                                      context: context),
-                                ],
-                              ),
+                              AppText.labelDefaultEmphasis(
+                                  AppLocalizations.of(context)!.article,
+                                  context: context),
+                              const Spacer(),
+                              CustomTextButton.primary(
+                                  text: "More",
+                                  onPressed: () => Get.toNamed('/article'),
+                                  context: context)
                             ],
                           ),
-                          VerticalGap.formBig(),
-                          AppText.labelDefaultEmphasis(
-                              AppLocalizations.of(context)!.article,
-                              context: context),
                           VerticalGap.formMedium(),
                           ListView.builder(
                             itemCount: controller.articles.length,

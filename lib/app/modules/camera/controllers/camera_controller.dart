@@ -1,14 +1,24 @@
 import 'dart:async';
+import 'dart:convert';
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:frontend_waste_management/app/data/models/predict_model.dart';
+import 'package:frontend_waste_management/app/data/services/api_service.dart';
+import 'package:frontend_waste_management/app/data/services/location_handler.dart';
+import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
+import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' as path;
-import 'package:path_provider/path_provider.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:overlay_kit/overlay_kit.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class CameraViewController extends GetxController {
+  Predict predict = Predict();
+  bool isPile = Get.arguments;
   // Available cameras (front and back)
   List<CameraDescription> _cameras = [];
 
@@ -24,7 +34,8 @@ class CameraViewController extends GetxController {
   int _currentCameraIndex = 0;
 
   // Flash mode (toggle between off and torch)
-  FlashMode _flashMode = FlashMode.off;
+  final Rx<FlashMode> _flashMode = FlashMode.off.obs;
+  Rx<FlashMode> get flashMode => _flashMode;
 
   // Aspect ratio for the preview (1:1, 3:4, 16:9, or full screen)
   final RxDouble _currentAspectRatio = (9 / 16).obs;
@@ -75,7 +86,7 @@ class CameraViewController extends GetxController {
 
     try {
       await _cameraController.initialize();
-      await _cameraController.setFlashMode(_flashMode);
+      await _cameraController.setFlashMode(_flashMode.value);
       await _cameraController.setFocusMode(FocusMode.auto);
 
       // Initialize zoom parameters after the controller is ready
@@ -118,12 +129,9 @@ class CameraViewController extends GetxController {
     if (_cameraController.value.isTakingPicture) return;
     try {
       final XFile file = await _cameraController.takePicture();
-      final Directory appDir = await getApplicationDocumentsDirectory();
-      final String fileName = path.basename(file.path);
-      final String savedPath = path.join(appDir.path, fileName);
-      await File(file.path).copy(savedPath);
-      _filePath.value = savedPath;
-      await _initLocation(); // Update location after capturing
+      if (file == null) return;
+      await postImage(file, true);
+      // Update location after capturing
     } catch (e) {
       Get.snackbar('Error', 'Failed to take picture: $e');
     }
@@ -139,9 +147,9 @@ class CameraViewController extends GetxController {
   /// Toggle the flashlight (flash mode) between off and torch.
   Future<void> toggleFlash() async {
     try {
-      _flashMode =
-          _flashMode == FlashMode.off ? FlashMode.torch : FlashMode.off;
-      await _cameraController.setFlashMode(_flashMode);
+      _flashMode.value =
+          _flashMode.value == FlashMode.off ? FlashMode.torch : FlashMode.off;
+      await _cameraController.setFlashMode(_flashMode.value);
     } catch (e) {
       Get.snackbar('Error', 'Failed to toggle flashlight: $e');
     }
@@ -164,9 +172,11 @@ class CameraViewController extends GetxController {
   Future<void> pickImage() async {
     final XFile? image =
         await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image != null) {
-      _filePath.value = image.path;
+
+    if (image == null) {
+      return;
     }
+    await postImage(image, false);
   }
 
   Future<void> _initLocation() async {
@@ -174,6 +184,58 @@ class CameraViewController extends GetxController {
       _position.value = await Geolocator.getCurrentPosition();
     } catch (e) {
       Get.snackbar('Error', 'Failed to get location: $e');
+    }
+  }
+
+  Future<LatLng?> getCurrentPosition() async {
+    final hasPermission = await handleLocationPermission();
+    if (!hasPermission) return const LatLng(0, 0);
+    try {
+      final position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      return LatLng(position.latitude, position.longitude);
+    } catch (e) {
+      debugPrint('Error getting location: $e');
+      return null;
+    }
+  }
+
+  Future<void> postImage(XFile picture, bool fromCamera) async {
+    try {
+      OverlayLoadingProgress.start();
+      LatLng? position = await getCurrentPosition();
+      var response = await ApiServices().uploadFile(
+        UrlConstants.predict,
+        GetStorage().read("username"),
+        position!.longitude,
+        position.latitude,
+        fromCamera,
+        isPile,
+        File(picture.path),
+      );
+      var responseData = jsonDecode(response);
+      print(responseData);
+      if (responseData.containsKey('detail')) {
+        showFailedSnackbar(
+            AppLocalizations.of(Get.context!)!.action_not_continue,
+            responseData['detail']);
+        OverlayLoadingProgress.stop();
+        return;
+      }
+      predict = Predict.fromJson(responseData);
+      int point = GetStorage().read("point");
+      predict.totalpoint =
+          point + (predict.subtotalpoint != null ? predict.subtotalpoint! : 0);
+      predict.address = await getAddressFromLatLng(position);
+      // for (var countedObject in predict.countedObjects!) {
+      //   countedObject.name = await translate(countedObject.name!);
+      // }
+      OverlayLoadingProgress.stop();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        Get.toNamed("/checkout", arguments: predict);
+      });
+    } catch (e) {
+      debugPrint('Error occurred while posting image: $e');
     }
   }
 

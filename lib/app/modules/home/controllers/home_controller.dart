@@ -63,6 +63,7 @@ class HomeController extends GetxController {
       }
       Point pointData = Point.fromRawJson(response.body);
       point.value = pointData.point!;
+      GetStorage().write('point', pointData.point);
       badgeName.value = convertBadgeIdtoBadgeName(pointData.badgeId!);
     } catch (e) {
       print('Point error: $e');

@@ -5,6 +5,9 @@ import 'package:frontend_waste_management/app/modules/history/views/history_view
 import 'package:frontend_waste_management/app/modules/home/views/home_view.dart';
 import 'package:frontend_waste_management/app/modules/profile/views/profile_view.dart';
 import 'package:frontend_waste_management/app/widgets/app_icon.dart';
+import 'package:frontend_waste_management/app/widgets/app_text.dart';
+import 'package:frontend_waste_management/app/widgets/icon_button.dart';
+import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -21,6 +24,7 @@ class _BottomNavViewState extends State<BottomNavView> {
   int _selectedIndex = 0;
   final PageStorageBucket bucket = PageStorageBucket();
 
+  // Note: The second screen is not used since tapping its nav item navigates to '/maps'.
   static const List<Widget> _screens = <Widget>[
     HomeView(),
     ArticleView(),
@@ -29,9 +33,14 @@ class _BottomNavViewState extends State<BottomNavView> {
   ];
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    // If the Maps nav item (index 1) is tapped, navigate using Get.toNamed.
+    if (index == 1) {
+      Get.toNamed('/maps');
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   Widget _buildNavItem({
@@ -44,7 +53,6 @@ class _BottomNavViewState extends State<BottomNavView> {
       child: InkWell(
         onTap: () => _onItemTapped(index),
         child: Padding(
-          // Reduced vertical padding to help fit within the fixed height
           padding: const EdgeInsets.symmetric(vertical: 4.0),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -88,10 +96,77 @@ class _BottomNavViewState extends State<BottomNavView> {
           child: FloatingActionButton(
             foregroundColor: color.iconActivate,
             onPressed: () {
-              Get.toNamed('/camera');
+              showModalBottomSheet(
+                context: context,
+                backgroundColor: Colors.transparent,
+                builder: (BuildContext context) {
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(20),
+                        topRight: Radius.circular(20),
+                      ),
+                    ),
+                    padding: const EdgeInsets.all(20),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        AppText.labelSmallEmphasis("Garbage Type",
+                            context: context),
+                        VerticalGap.formMedium(),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Column(
+                              children: [
+                                CustomIconButton.primary(
+                                  iconName: AppIconName.pile,
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    Get.toNamed('/camera', arguments: true);
+                                  },
+                                  context: context,
+                                  height: 75,
+                                  width: 75,
+                                ),
+                                VerticalGap.formSmall(),
+                                AppText.labelSmallEmphasis(
+                                  AppLocalizations.of(context)!
+                                      .illegal_dumping_site,
+                                  context: context,
+                                ),
+                              ],
+                            ),
+                            Column(
+                              children: [
+                                CustomIconButton.primary(
+                                  iconName: AppIconName.pcs,
+                                  onTap: () {
+                                    Navigator.pop(context);
+                                    Get.toNamed('/camera', arguments: false);
+                                  },
+                                  context: context,
+                                  height: 75,
+                                  width: 75,
+                                ),
+                                VerticalGap.formSmall(),
+                                AppText.labelSmallEmphasis(
+                                  AppLocalizations.of(context)!.illegal_trash,
+                                  context: context,
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  );
+                },
+              );
             },
             backgroundColor: color.iconDefault,
-            shape: CircleBorder(), // Enforces a circular shape explicitly
+            shape: const CircleBorder(),
             child: AppIcon.custom(
               appIconName: AppIconName.camera,
               color: Theme.of(context).appColors.iconActivate,
@@ -106,11 +181,9 @@ class _BottomNavViewState extends State<BottomNavView> {
         notchMargin: 8.0,
         elevation: 5,
         child: Container(
-          // Set a fixed height to avoid overflow
           height: 60.0,
           child: Row(
             children: <Widget>[
-              // Left side navigation items
               _buildNavItem(
                 index: 0,
                 iconName: AppIconName.home,
@@ -118,12 +191,10 @@ class _BottomNavViewState extends State<BottomNavView> {
               ),
               _buildNavItem(
                 index: 1,
-                iconName: AppIconName.article,
-                label: AppLocalizations.of(context)!.article,
+                iconName: AppIconName.map,
+                label: AppLocalizations.of(context)!.maps,
               ),
-              // Middle gap for the FAB
               const SizedBox(width: 48.0),
-              // Right side navigation items
               _buildNavItem(
                 index: 2,
                 iconName: AppIconName.history,

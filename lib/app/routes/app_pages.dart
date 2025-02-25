@@ -1,12 +1,13 @@
-import 'package:frontend_waste_management/app/data/services/network_middleware.dart';
-import 'package:frontend_waste_management/app/modules/login/views/forget_password_view.dart';
 import 'package:get/get.dart';
 
+import '../data/services/network_middleware.dart';
 import '../modules/account_setting/bindings/account_setting_binding.dart';
 import '../modules/account_setting/views/account_setting_view.dart';
 import '../modules/account_setting/views/widgets/smallscreem_edit_view.dart';
 import '../modules/article/bindings/article_binding.dart';
 import '../modules/article/views/article_view.dart';
+import '../modules/camera/bindings/camera_binding.dart';
+import '../modules/camera/views/camera_view.dart';
 import '../modules/checkout/bindings/checkout_binding.dart';
 import '../modules/checkout/views/checkout_view.dart';
 import '../modules/history/bindings/history_binding.dart';
@@ -16,6 +17,7 @@ import '../modules/home/views/home_view.dart';
 import '../modules/leaderboard/bindings/leaderboard_binding.dart';
 import '../modules/leaderboard/views/leaderboard_view.dart';
 import '../modules/login/bindings/login_binding.dart';
+import '../modules/login/views/forget_password_view.dart';
 import '../modules/login/views/login_view.dart';
 import '../modules/maps/bindings/maps_binding.dart';
 import '../modules/maps/views/maps_view.dart';
@@ -132,6 +134,11 @@ class AppPages {
       name: _Paths.FORGET_PASSWORD,
       page: () => const ForgetPasswordView(),
       binding: LoginBinding(),
+    ),
+    GetPage(
+      name: _Paths.CAMERA,
+      page: () => const CameraView(),
+      binding: CameraBinding(),
     ),
   ];
 }

@@ -20,6 +20,7 @@ abstract class Routes {
   static const REPORT_DETAIL = _Paths.REPORT_DETAIL;
   static const LEADERBOARD = _Paths.LEADERBOARD;
   static const FORGET_PASSWORD = _Paths.FORGET_PASSWORD;
+  static const CAMERA = _Paths.CAMERA;
 }
 
 abstract class _Paths {
@@ -41,4 +42,5 @@ abstract class _Paths {
   static const REPORT_DETAIL = '/report-detail';
   static const LEADERBOARD = '/leaderboard';
   static const FORGET_PASSWORD = '/forget-password';
+  static const CAMERA = '/camera';
 }

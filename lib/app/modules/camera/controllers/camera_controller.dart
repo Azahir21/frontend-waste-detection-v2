@@ -201,6 +201,7 @@ class CameraViewController extends GetxController {
   }
 
   Future<void> postImage(XFile picture, bool fromCamera) async {
+    _isLoading.value = true;
     try {
       OverlayLoadingProgress.start();
       LatLng? position = await getCurrentPosition();
@@ -236,6 +237,8 @@ class CameraViewController extends GetxController {
       });
     } catch (e) {
       debugPrint('Error occurred while posting image: $e');
+    } finally {
+      _isLoading.value = false;
     }
   }
 

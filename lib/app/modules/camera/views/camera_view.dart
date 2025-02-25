@@ -15,7 +15,12 @@ class CameraView extends GetView<CameraViewController> {
         }
         return _CameraPreview();
       }),
-      floatingActionButton: _CaptureButton(),
+      floatingActionButton: Obx(
+        () => Visibility(
+          visible: !controller.isLoading,
+          child: _CaptureButton(),
+        ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }

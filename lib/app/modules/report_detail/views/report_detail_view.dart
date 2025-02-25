@@ -82,10 +82,35 @@ class ReportDetailView extends GetView<ReportDetailController> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   GestureDetector(
-                                    onTap: () => Get.to(() => PreviewPage(
-                                          image: controller
-                                              .reportDetail.value.image!,
-                                        )),
+                                    onTap: () {
+                                      Get.dialog(
+                                        Dialog(
+                                          child: Stack(
+                                            children: [
+                                              InteractiveViewer(
+                                                child: Image.network(
+                                                  controller.reportDetail.value
+                                                      .image!,
+                                                ),
+                                              ),
+                                              Positioned(
+                                                top: 8,
+                                                right: 8,
+                                                child: GestureDetector(
+                                                  onTap: () {
+                                                    Get.back();
+                                                  },
+                                                  child: const Icon(
+                                                    Icons.close,
+                                                    color: Colors.white,
+                                                  ),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      );
+                                    },
                                     child: Container(
                                       height: size.width * 0.35,
                                       width: size.width * 0.35,

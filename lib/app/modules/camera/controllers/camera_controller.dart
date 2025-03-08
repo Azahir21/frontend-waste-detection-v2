@@ -17,7 +17,9 @@ import 'package:latlong2/latlong.dart';
 import 'package:overlay_kit/overlay_kit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image/image.dart' as img;
+import 'package:path_provider/path_provider.dart';
 import 'package:sensors_plus/sensors_plus.dart';
+import 'package:flutter_image_compress/flutter_image_compress.dart';
 
 class CameraViewController extends GetxController {
   Predict predict = Predict();
@@ -132,6 +134,7 @@ class CameraViewController extends GetxController {
     if (_cameraController.value.isTakingPicture) return;
     try {
       final XFile file = await _cameraController.takePicture();
+      toggleFlash();
       if (file == null) return;
 
       // Get device orientation directly from sensors rather than UI
@@ -293,15 +296,108 @@ class CameraViewController extends GetxController {
     }
   }
 
+  Future<XFile> compressImage(XFile image) async {
+    try {
+      final tempDir = await getTemporaryDirectory();
+      final targetPath = '${tempDir.path}/compressed.jpg';
+      final result = await FlutterImageCompress.compressAndGetFile(
+        image.path,
+        targetPath,
+        keepExif: true,
+        quality: 10,
+      );
+      return XFile(result!.path);
+    } catch (e) {
+      debugPrint('Error compressing image: $e');
+      return image;
+    }
+  }
+
   Future<void> postImage(XFile picture, bool fromCamera) async {
-    var startTime = DateTime.now();
+    final startTime = DateTime.now();
     _isLoading.value = true;
+
     try {
       OverlayLoadingProgress.start();
-      debugPrint('File size: ${File(picture.path).lengthSync()} bytes');
 
-      LatLng? position = await getCurrentPosition();
-      var response = await ApiServices().uploadFile(
+      // Log original file size
+      debugPrint('File size Before: ${File(picture.path).lengthSync()} bytes');
+
+      // Read image bytes and try to extract capture time from EXIF data.
+      final bytes = await picture.readAsBytes();
+      final decodedImage = img.decodeJpg(Uint8List.fromList(bytes));
+      DateTime? captureTime;
+
+      if (decodedImage?.exif != null) {
+        try {
+          final exifData = decodedImage!.exif.exifIfd;
+          if (exifData.containsKey(36867)) {
+            final dateTimeStr = exifData[36867]?.toString();
+            if (dateTimeStr != null) {
+              final parts = dateTimeStr.split(' ');
+              if (parts.length == 2) {
+                final dateParts = parts[0].split(':');
+                final timeParts = parts[1].split(':');
+                if (dateParts.length == 3 && timeParts.length == 3) {
+                  captureTime = DateTime(
+                    int.parse(dateParts[0]),
+                    int.parse(dateParts[1]),
+                    int.parse(dateParts[2]),
+                    int.parse(timeParts[0]),
+                    int.parse(timeParts[1]),
+                    int.parse(timeParts[2]),
+                  );
+                  debugPrint('Image capture time from EXIF: $captureTime');
+                }
+              }
+            }
+          }
+        } catch (e) {
+          debugPrint('Error reading EXIF capture time: $e');
+        }
+      }
+
+      // Use current time if EXIF capture time not available
+      captureTime ??= DateTime.now();
+
+      // Compress image and log compression details.
+      final compressedImage = await compressImage(picture);
+      debugPrint(
+          'File size After: ${File(compressedImage.path).lengthSync()} bytes');
+      debugPrint(
+          'File Compression Time: ${DateTime.now().difference(startTime).inSeconds} s');
+
+      // Reload the compressed image to preserve the EXIF capture time.
+      final tempDir = await getTemporaryDirectory();
+      final originalFile = File(compressedImage.path);
+      final originalBytes = await originalFile.readAsBytes();
+      final decodedCompressedImage = img.decodeImage(originalBytes);
+
+      if (decodedCompressedImage != null) {
+        // Create a new image instance with modifiable EXIF data.
+        final imageWithExif = img.Image.from(decodedCompressedImage);
+
+        // Format the capture time to EXIF datetime format: YYYY:MM:DD HH:MM:SS.
+        final formattedDate =
+            '${captureTime.year}:${captureTime.month.toString().padLeft(2, '0')}:${captureTime.day.toString().padLeft(2, '0')} '
+            '${captureTime.hour.toString().padLeft(2, '0')}:${captureTime.minute.toString().padLeft(2, '0')}:${captureTime.second.toString().padLeft(2, '0')}';
+
+        // 36867 is the tag ID for dateTimeOriginal in EXIF IFD.
+        imageWithExif.exif.exifIfd[36867] = formattedDate;
+        final tempPath = '${tempDir.path}/with_exif.jpg';
+
+        // Write the modified image back to a temporary file.
+        await File(tempPath).writeAsBytes(img.encodeJpg(imageWithExif));
+        picture = XFile(tempPath);
+
+        debugPrint('Successfully preserved EXIF capture time: $formattedDate');
+      }
+
+      // Get current position.
+      final position = await getCurrentPosition();
+
+      // Upload the compressed image file.
+      final response = await ApiServices().uploadFile(
         UrlConstants.predict,
         GetStorage().read("username"),
         position!.longitude,
@@ -310,23 +406,25 @@ class CameraViewController extends GetxController {
         isPile,
         File(picture.path),
       );
-      var responseData = jsonDecode(response);
+
+      final responseData = jsonDecode(response);
       print(responseData);
+
       if (responseData.containsKey('detail')) {
         showFailedSnackbar(
-            AppLocalizations.of(Get.context!)!.action_not_continue,
-            responseData['detail']);
+          AppLocalizations.of(Get.context!)!.action_not_continue,
+          responseData['detail'],
+        );
         OverlayLoadingProgress.stop();
         return;
       }
+
+      // Parse prediction response.
       predict = Predict.fromJson(responseData);
-      int point = GetStorage().read("point");
-      predict.totalpoint =
-          point + (predict.subtotalpoint != null ? predict.subtotalpoint! : 0);
+      final point = GetStorage().read("point");
+      predict.totalpoint = point + (predict.subtotalpoint ?? 0);
       predict.address = await getAddressFromLatLng(position);
-      // for (var countedObject in predict.countedObjects!) {
-      //   countedObject.name = await translate(countedObject.name!);
-      // }
+
       OverlayLoadingProgress.stop();
       WidgetsBinding.instance.addPostFrameCallback((_) {
         Get.toNamed("/checkout", arguments: predict);
@@ -335,7 +433,8 @@ class CameraViewController extends GetxController {
       debugPrint('Error occurred while posting image: $e');
     } finally {
       _isLoading.value = false;
-      print('Time taken: ${DateTime.now().difference(startTime).inSeconds} s');
+      debugPrint(
+          'Upload File Time: ${DateTime.now().difference(startTime).inSeconds} s');
     }
   }
 

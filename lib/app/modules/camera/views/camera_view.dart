@@ -8,6 +8,7 @@ class CameraView extends GetView<CameraViewController> {
 
   @override
   Widget build(BuildContext context) {
+    OrientationHelper.initialize(context);
     return Scaffold(
       body: Obx(() {
         if (controller.isLoading) {
@@ -283,5 +284,17 @@ class _CaptureButton extends GetView<CameraViewController> {
       foregroundColor: Colors.black,
       child: const Icon(Icons.camera_alt),
     );
+  }
+}
+
+class OrientationHelper {
+  static Orientation? currentOrientation;
+
+  static void initialize(BuildContext context) {
+    final newOrientation = MediaQuery.of(context).orientation;
+    if (currentOrientation != newOrientation) {
+      currentOrientation = newOrientation;
+      // You can notify the controller here if needed
+    }
   }
 }

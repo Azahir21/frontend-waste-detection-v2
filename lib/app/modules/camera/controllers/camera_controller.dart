@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:frontend_waste_management/app/data/models/predict_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/location_handler.dart';
@@ -15,6 +16,8 @@ import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:overlay_kit/overlay_kit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:image/image.dart' as img;
+import 'package:sensors_plus/sensors_plus.dart';
 
 class CameraViewController extends GetxController {
   Predict predict = Predict();
@@ -80,7 +83,7 @@ class CameraViewController extends GetxController {
   Future<void> _initCameraController(CameraDescription description) async {
     _cameraController = CameraController(
       description,
-      ResolutionPreset.high,
+      ResolutionPreset.ultraHigh,
       enableAudio: false,
     );
 
@@ -130,10 +133,100 @@ class CameraViewController extends GetxController {
     try {
       final XFile file = await _cameraController.takePicture();
       if (file == null) return;
+
+      // Get device orientation directly from sensors rather than UI
+      DeviceOrientation deviceOrientation =
+          await _getPhysicalDeviceOrientation();
+      debugPrint('Device orientation: $deviceOrientation');
+
+      // Get camera sensor orientation
+      int sensorOrientation = _cameras[_currentCameraIndex].sensorOrientation;
+      debugPrint('Camera sensor orientation: $sensorOrientation');
+
+      // Determine if rotation is needed
+      if (deviceOrientation == DeviceOrientation.landscapeLeft ||
+          deviceOrientation == DeviceOrientation.landscapeRight ||
+          deviceOrientation == DeviceOrientation.portraitDown) {
+        await _rotateImageBasedOnSensor(
+            File(file.path), deviceOrientation, sensorOrientation);
+      }
+
       await postImage(file, true);
-      // Update location after capturing
     } catch (e) {
       Get.snackbar('Error', 'Failed to take picture: $e');
+    }
+  }
+
+  /// Get the physical device orientation using accelerometer data
+  Future<DeviceOrientation> _getPhysicalDeviceOrientation() async {
+    try {
+      // Import: import 'package:sensors_plus/sensors_plus.dart';
+      final accelerometerValues = await accelerometerEvents.first;
+      final x = accelerometerValues.x;
+      final y = accelerometerValues.y;
+
+      // Determine orientation based on accelerometer values
+      if (x.abs() > y.abs()) {
+        // Device is in landscape
+        return x > 0
+            ? DeviceOrientation.landscapeLeft
+            : DeviceOrientation.landscapeRight;
+      } else {
+        // Device is in portrait
+        return y > 0
+            ? DeviceOrientation.portraitUp
+            : DeviceOrientation.portraitDown;
+      }
+    } catch (e) {
+      debugPrint('Error getting physical orientation: $e');
+      // Default to portrait if can't determine
+      return DeviceOrientation.portraitUp;
+    }
+  }
+
+  /// Rotate the image based on device and sensor orientation
+  Future<void> _rotateImageBasedOnSensor(File imageFile,
+      DeviceOrientation deviceOrientation, int sensorOrientation) async {
+    try {
+      // Import: import 'package:image/image.dart' as img;
+      final bytes = await imageFile.readAsBytes();
+      final img.Image? originalImage = img.decodeImage(bytes);
+
+      if (originalImage != null) {
+        // Calculate required rotation
+        int rotationAngle = 0;
+
+        // First, adjust for the device orientation
+        switch (deviceOrientation) {
+          case DeviceOrientation.portraitUp:
+            rotationAngle = 0;
+            break;
+          case DeviceOrientation.landscapeLeft:
+            rotationAngle = 180;
+            break;
+          case DeviceOrientation.portraitDown:
+            rotationAngle = 90;
+            break;
+          case DeviceOrientation.landscapeRight:
+            rotationAngle = 360;
+            break;
+        }
+
+        // Then adjust for sensor orientation
+        // The sensor orientation is the angle that the sensor is rotated relative
+        // to the natural orientation of the device
+        print('Applying Sensor orientation: $sensorOrientation');
+        print('Applying Rotation angle: $rotationAngle');
+        rotationAngle = (rotationAngle + sensorOrientation) % 360;
+
+        debugPrint('Applying rotation of $rotationAngle degrees');
+
+        final rotatedImage =
+            img.copyRotate(originalImage, angle: rotationAngle);
+        await imageFile.writeAsBytes(img.encodeJpg(rotatedImage));
+      }
+    } catch (e) {
+      debugPrint('Error rotating image: $e');
     }
   }
 
@@ -170,8 +263,8 @@ class CameraViewController extends GetxController {
 
   /// Pick an image from the gallery.
   Future<void> pickImage() async {
-    final XFile? image =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
+    final XFile? image = await ImagePicker()
+        .pickImage(source: ImageSource.gallery, requestFullMetadata: true);
 
     if (image == null) {
       return;
@@ -201,9 +294,12 @@ class CameraViewController extends GetxController {
   }
 
   Future<void> postImage(XFile picture, bool fromCamera) async {
+    var startTime = DateTime.now();
     _isLoading.value = true;
     try {
       OverlayLoadingProgress.start();
+      debugPrint('File size: ${File(picture.path).lengthSync()} bytes');
+
       LatLng? position = await getCurrentPosition();
       var response = await ApiServices().uploadFile(
         UrlConstants.predict,
@@ -239,6 +335,7 @@ class CameraViewController extends GetxController {
       debugPrint('Error occurred while posting image: $e');
     } finally {
       _isLoading.value = false;
+      print('Time taken: ${DateTime.now().difference(startTime).inSeconds} s');
     }
   }
 

@@ -56,7 +56,7 @@ Future<String> getAddressFromLatLng(LatLng position) async {
     print(place.thoroughfare);
     print(place.subThoroughfare);
 
-    return '${place.street}, ${place.locality}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.postalCode}, ${place.country}';
+    return '${place.street}, ${place.subLocality}, ${place.locality}, ${place.subAdministrativeArea}, ${place.administrativeArea}, ${place.postalCode}, ${place.country}';
   } catch (e) {
     debugPrint(e.toString());
     throw Exception('Failed to get address from coordinates');

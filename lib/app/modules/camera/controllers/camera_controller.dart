@@ -5,6 +5,7 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend_waste_management/app/data/models/predict_model.dart';
+import 'package:frontend_waste_management/app/data/models/review_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/location_handler.dart';
 import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
@@ -314,129 +315,207 @@ class CameraViewController extends GetxController {
   }
 
   Future<void> postImage(XFile picture, bool fromCamera) async {
-    final startTime = DateTime.now();
-    _isLoading.value = true;
-
+    var start_time = DateTime.now();
     try {
-      OverlayLoadingProgress.start();
+      _isLoading.value = true;
 
-      // Log original file size
-      debugPrint('File size Before: ${File(picture.path).lengthSync()} bytes');
+      // Run these operations in parallel since they don't depend on each other
+      final futures = await Future.wait([
+        _getImageCaptureTime(picture),
+        compressImage(picture),
+        getCurrentPosition(),
+      ]);
 
-      // Read image bytes and try to extract capture time from EXIF data.
-      final bytes = await picture.readAsBytes();
-      final decodedImage = img.decodeJpg(Uint8List.fromList(bytes));
-      DateTime? captureTime;
+      final DateTime captureTime = futures[0] as DateTime;
+      final XFile compressedImage = futures[1] as XFile;
+      final LatLng? position = futures[2] as LatLng?;
 
-      if (decodedImage?.exif != null) {
-        try {
-          final exifData = decodedImage!.exif.exifIfd;
-          if (exifData.containsKey(36867)) {
-            final dateTimeStr = exifData[36867]?.toString();
-            if (dateTimeStr != null) {
-              final parts = dateTimeStr.split(' ');
-              if (parts.length == 2) {
-                final dateParts = parts[0].split(':');
-                final timeParts = parts[1].split(':');
-                if (dateParts.length == 3 && timeParts.length == 3) {
-                  captureTime = DateTime(
-                    int.parse(dateParts[0]),
-                    int.parse(dateParts[1]),
-                    int.parse(dateParts[2]),
-                    int.parse(timeParts[0]),
-                    int.parse(timeParts[1]),
-                    int.parse(timeParts[2]),
-                  );
-                  debugPrint('Image capture time from EXIF: $captureTime');
-                }
-              }
-            }
-          }
-        } catch (e) {
-          debugPrint('Error reading EXIF capture time: $e');
-        }
+      if (position == null) {
+        throw Exception('Failed to get location');
       }
 
-      // Use current time if EXIF capture time not available
-      captureTime ??= DateTime.now();
+      // Get address after we have position
+      final address = await getAddressFromLatLng(position);
 
-      // Compress image and log compression details.
-      final compressedImage = await compressImage(picture);
-      debugPrint(
-          'File size After: ${File(compressedImage.path).lengthSync()} bytes');
-      debugPrint(
-          'File Compression Time: ${DateTime.now().difference(startTime).inSeconds} s');
-
-      // Reload the compressed image to preserve the EXIF capture time.
-      final tempDir = await getTemporaryDirectory();
-      final originalFile = File(compressedImage.path);
-      final originalBytes = await originalFile.readAsBytes();
-      final decodedCompressedImage = img.decodeImage(originalBytes);
-
-      if (decodedCompressedImage != null) {
-        // Create a new image instance with modifiable EXIF data.
-        final imageWithExif = img.Image.from(decodedCompressedImage);
-
-        // Format the capture time to EXIF datetime format: YYYY:MM:DD HH:MM:SS.
-        final formattedDate =
-            '${captureTime.year}:${captureTime.month.toString().padLeft(2, '0')}:${captureTime.day.toString().padLeft(2, '0')} '
-            '${captureTime.hour.toString().padLeft(2, '0')}:${captureTime.minute.toString().padLeft(2, '0')}:${captureTime.second.toString().padLeft(2, '0')}';
-
-        // 36867 is the tag ID for dateTimeOriginal in EXIF IFD.
-        imageWithExif.exif.exifIfd[36867] = formattedDate;
-        final tempPath = '${tempDir.path}/with_exif.jpg';
-
-        // Write the modified image back to a temporary file.
-        await File(tempPath).writeAsBytes(img.encodeJpg(imageWithExif));
-        picture = XFile(tempPath);
-
-        debugPrint('Successfully preserved EXIF capture time: $formattedDate');
-      }
-
-      // Get current position.
-      final position = await getCurrentPosition();
-
-      // Upload the compressed image file.
-      final response = await ApiServices().uploadFile(
-        UrlConstants.predict,
-        GetStorage().read("username"),
-        position!.longitude,
-        position.latitude,
-        fromCamera,
-        isPile,
-        File(picture.path),
+      final ReviewModel data = ReviewModel(
+        lang: Get.locale!.languageCode,
+        image: compressedImage,
+        longitude: position.longitude,
+        latitude: position.latitude,
+        address: address,
+        useGarbagePileModel: isPile,
+        captureDate: captureTime,
+        fromCamera: fromCamera,
       );
 
-      final responseData = jsonDecode(response);
-      print(responseData);
+      print(data.address);
 
-      if (responseData.containsKey('detail')) {
-        showFailedSnackbar(
-          AppLocalizations.of(Get.context!)!.action_not_continue,
-          responseData['detail'],
-        );
-        OverlayLoadingProgress.stop();
-        return;
-      }
-
-      // Parse prediction response.
-      predict = Predict.fromJson(responseData);
-      final point = GetStorage().read("point");
-      predict.totalpoint = point + (predict.subtotalpoint ?? 0);
-      predict.address = await getAddressFromLatLng(position);
-
-      OverlayLoadingProgress.stop();
       WidgetsBinding.instance.addPostFrameCallback((_) {
-        Get.toNamed("/checkout", arguments: predict);
+        Get.toNamed("/review-page", arguments: data);
       });
     } catch (e) {
       debugPrint('Error occurred while posting image: $e');
     } finally {
       _isLoading.value = false;
       debugPrint(
-          'Upload File Time: ${DateTime.now().difference(startTime).inSeconds} s');
+          'Upload File Time: ${DateTime.now().difference(start_time).inSeconds} s');
     }
   }
+
+// Helper method to extract EXIF time
+  Future<DateTime> _getImageCaptureTime(XFile picture) async {
+    try {
+      final bytes = await picture.readAsBytes();
+      final decodedImage = img.decodeJpg(Uint8List.fromList(bytes));
+      final exifData = decodedImage?.exif.exifIfd;
+
+      if (exifData != null && exifData.containsKey(36867)) {
+        final dateTimeStr = exifData[36867]?.toString();
+        if (dateTimeStr != null) {
+          final parts = dateTimeStr.split(' ');
+          if (parts.length == 2) {
+            final dateParts = parts[0].split(':');
+            final timeParts = parts[1].split(':');
+
+            if (dateParts.length == 3 && timeParts.length == 3) {
+              return DateTime(
+                int.parse(dateParts[0]),
+                int.parse(dateParts[1]),
+                int.parse(dateParts[2]),
+                int.parse(timeParts[0]),
+                int.parse(timeParts[1]),
+                int.parse(timeParts[2]),
+              );
+            }
+          }
+        }
+      }
+    } catch (e) {
+      debugPrint('Error reading EXIF: $e');
+    }
+    return DateTime.now();
+  }
+
+  // Future<void> postImage(XFile picture, bool fromCamera) async {
+  //   final startTime = DateTime.now();
+  //   _isLoading.value = true;
+
+  //   try {
+  //     // Log original file size
+  //     debugPrint('File size Before: ${File(picture.path).lengthSync()} bytes');
+
+  //     // Read image bytes and try to extract capture time from EXIF data.
+  //     final bytes = await picture.readAsBytes();
+  //     final decodedImage = img.decodeJpg(Uint8List.fromList(bytes));
+  //     DateTime? captureTime;
+
+  //     if (decodedImage?.exif != null) {
+  //       try {
+  //         final exifData = decodedImage!.exif.exifIfd;
+  //         if (exifData.containsKey(36867)) {
+  //           final dateTimeStr = exifData[36867]?.toString();
+  //           if (dateTimeStr != null) {
+  //             final parts = dateTimeStr.split(' ');
+  //             if (parts.length == 2) {
+  //               final dateParts = parts[0].split(':');
+  //               final timeParts = parts[1].split(':');
+  //               if (dateParts.length == 3 && timeParts.length == 3) {
+  //                 captureTime = DateTime(
+  //                   int.parse(dateParts[0]),
+  //                   int.parse(dateParts[1]),
+  //                   int.parse(dateParts[2]),
+  //                   int.parse(timeParts[0]),
+  //                   int.parse(timeParts[1]),
+  //                   int.parse(timeParts[2]),
+  //                 );
+  //                 debugPrint('Image capture time from EXIF: $captureTime');
+  //               }
+  //             }
+  //           }
+  //         }
+  //       } catch (e) {
+  //         debugPrint('Error reading EXIF capture time: $e');
+  //       }
+  //     }
+
+  //     // Use current time if EXIF capture time not available
+  //     captureTime ??= DateTime.now();
+
+  //     // Compress image and log compression details.
+  //     final compressedImage = await compressImage(picture);
+  //     debugPrint(
+  //         'File size After: ${File(compressedImage.path).lengthSync()} bytes');
+  //     debugPrint(
+  //         'File Compression Time: ${DateTime.now().difference(startTime).inSeconds} s');
+
+  //     // Reload the compressed image to preserve the EXIF capture time.
+  //     final tempDir = await getTemporaryDirectory();
+  //     final originalFile = File(compressedImage.path);
+  //     final originalBytes = await originalFile.readAsBytes();
+  //     final decodedCompressedImage = img.decodeImage(originalBytes);
+
+  //     if (decodedCompressedImage != null) {
+  //       // Create a new image instance with modifiable EXIF data.
+  //       final imageWithExif = img.Image.from(decodedCompressedImage);
+
+  //       // Format the capture time to EXIF datetime format: YYYY:MM:DD HH:MM:SS.
+  //       final formattedDate =
+  //           '${captureTime.year}:${captureTime.month.toString().padLeft(2, '0')}:${captureTime.day.toString().padLeft(2, '0')} '
+  //           '${captureTime.hour.toString().padLeft(2, '0')}:${captureTime.minute.toString().padLeft(2, '0')}:${captureTime.second.toString().padLeft(2, '0')}';
+
+  //       // 36867 is the tag ID for dateTimeOriginal in EXIF IFD.
+  //       imageWithExif.exif.exifIfd[36867] = formattedDate;
+  //       final tempPath = '${tempDir.path}/with_exif.jpg';
+
+  //       // Write the modified image back to a temporary file.
+  //       await File(tempPath).writeAsBytes(img.encodeJpg(imageWithExif));
+  //       picture = XFile(tempPath);
+
+  //       debugPrint('Successfully preserved EXIF capture time: $formattedDate');
+  //     }
+
+  //     // Get current position.
+  //     final position = await getCurrentPosition();
+
+  //     // Upload the compressed image file.
+  //     final response = await ApiServices().uploadFile(
+  //       UrlConstants.predict,
+  //       GetStorage().read("username"),
+  //       position!.longitude,
+  //       position.latitude,
+  //       fromCamera,
+  //       isPile,
+  //       File(picture.path),
+  //     );
+
+  //     final responseData = jsonDecode(response);
+  //     print(responseData);
+
+  //     if (responseData.containsKey('detail')) {
+  //       showFailedSnackbar(
+  //         AppLocalizations.of(Get.context!)!.action_not_continue,
+  //         responseData['detail'],
+  //       );
+  //       OverlayLoadingProgress.stop();
+  //       return;
+  //     }
+
+  //     // Parse prediction response.
+  //     predict = Predict.fromJson(responseData);
+  //     final point = GetStorage().read("point");
+  //     predict.totalpoint = point + (predict.subtotalpoint ?? 0);
+  //     predict.address = await getAddressFromLatLng(position);
+  //     WidgetsBinding.instance.addPostFrameCallback((_) {
+  //       Get.toNamed("/checkout", arguments: predict);
+  //     });
+  //   } catch (e) {
+  //     debugPrint('Error occurred while posting image: $e');
+  //   } finally {
+  //     _isLoading.value = false;
+  //     debugPrint(
+  //         'Upload File Time: ${DateTime.now().difference(startTime).inSeconds} s');
+  //   }
+  // }
 
   @override
   void onClose() {

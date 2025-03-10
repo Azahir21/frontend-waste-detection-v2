@@ -1,4 +1,3 @@
-import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:frontend_waste_management/app/data/services/location_handler.dart';
@@ -10,13 +9,11 @@ import 'package:frontend_waste_management/app/widgets/centered_text_button.dart'
 import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
 import 'package:frontend_waste_management/app/widgets/horizontal_gap.dart';
 import 'package:frontend_waste_management/app/widgets/icon_button.dart';
-import 'package:frontend_waste_management/app/widgets/preview_page.dart';
 import 'package:frontend_waste_management/app/widgets/text_button.dart';
 import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:latlng_picker/latlng_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

@@ -92,7 +92,7 @@
   "@information": {
     "description": "Ditampilkan di dialog informasi."
   },
-  "checkout_information": "1. Ketuk gambar untuk melihat pratinjau hasil AI \n\n2. Ketuk lokasi untuk melihatnya di peta \n\n3. Ketuk item untuk melihat rekomendasi daur ulang \n\n4. Ketuk kirim untuk mengirim data sampah Anda \n\nPenting: Pastikan data lokasi dan item sampah Anda benar sebelum mengirim.",
+  "checkout_information": "1. Ketuk gambar untuk melihatnya secara detail. \n\n2. Ketuk lokasi untuk melihatnya di peta. Anda juga dapat mengubah lokasi jika dirasa kurang tepat. \n\n3. Ketuk 'Kirim' untuk mengirim data sampah Anda. \n\n4. Ketuk kirim untuk mengirim data sampah Anda \n\nPenting: Pastikan gambar dan data lokasi anda benar sebelum mengirim.",
   "@checkout_information": {
     "description": "Ditampilkan di dialog informasi pembayaran."
   },
@@ -638,7 +638,7 @@
   "@please_input_start_date_first": {
     "description": "Ditampilkan saat meminta pengguna untuk memilih tanggal mulai terlebih dahulu."
   },
-  "capture_time": "Waktu Penangkapan:",
+  "capture_time": "Waktu Pengambilan Gambar:",
   "@capture_time": {
     "description": "Label untuk informasi waktu penangkapan."
   },

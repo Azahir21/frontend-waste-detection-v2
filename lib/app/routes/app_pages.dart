@@ -31,6 +31,8 @@ import '../modules/register/bindings/register_binding.dart';
 import '../modules/register/views/register_view.dart';
 import '../modules/report_detail/bindings/report_detail_binding.dart';
 import '../modules/report_detail/views/report_detail_view.dart';
+import '../modules/review_page/bindings/review_page_binding.dart';
+import '../modules/review_page/views/review_page_view.dart';
 import '../modules/splash/bindings/splash_binding.dart';
 import '../modules/splash/views/splash_view.dart';
 import '../widgets/bottomnav.dart';
@@ -139,6 +141,11 @@ class AppPages {
       name: _Paths.CAMERA,
       page: () => const CameraView(),
       binding: CameraBinding(),
+    ),
+    GetPage(
+      name: _Paths.REVIEW_PAGE,
+      page: () => const ReviewPageView(),
+      binding: ReviewPageBinding(),
     ),
   ];
 }

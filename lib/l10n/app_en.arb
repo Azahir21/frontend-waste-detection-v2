@@ -92,7 +92,7 @@
   "@information": {
     "description": "Shown on the information dialog."
   },
-  "checkout_information": "1. Tap the image to preview the AI result \n\n2. Tap the location to view it on the map \n\n3. Tap the item to see recycling recommendations \n\n4. Tap submit to send your waste data \n\nImportant: Make sure your location and waste item data are correct before submitting.",
+  "checkout_information": "1. Tap the image to view it in detail. \n\n2. Tap the location to see it on the map. You can also change the location if it seems inaccurate. \n\n3. Tap 'Send' to submit your waste data. \n\nImportant: Make sure your image and location data are correct before submitting.",
   "@checkout_information": {
     "description": "Shown on the checkout information dialog."
   },

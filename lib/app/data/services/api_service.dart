@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'package:frontend_waste_management/app/data/models/review_model.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:http/http.dart';
 
@@ -51,6 +52,22 @@ class ApiServices {
         '$url?username=$username&longitude=$longitude&latitude=$latitude&from_camera=$fromCamera&use_garbage_pile_model=$isPile');
     var request = MultipartRequest('POST', uri)
       ..files.add(await MultipartFile.fromPath('file', file.path))
+      ..headers.addAll({
+        "Access-Control-Allow-Origin": "*",
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${GetStorage().read('token')}',
+      });
+    var response = await request.send();
+    var responseBody = await response.stream.bytesToString();
+    return responseBody;
+  }
+
+  Future<String> postSampahV2(String url, ReviewModel data) async {
+    Uri uri = Uri.parse(
+        '$url-v2?lang=${Uri.encodeComponent(data.lang!)}&longitude=${data.longitude}&latitude=${data.latitude}&address=${Uri.encodeComponent(data.address!)}&capture_date=${data.captureDate}&use_garbage_pile_model=${data.useGarbagePileModel}');
+    print(uri);
+    var request = MultipartRequest('POST', uri)
+      ..files.add(await MultipartFile.fromPath('file', data.image!.path))
       ..headers.addAll({
         "Access-Control-Allow-Origin": "*",
         'Accept': 'application/json',

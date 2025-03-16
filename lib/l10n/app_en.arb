@@ -721,5 +721,53 @@
   "illegal_dumping_recycle_error": "Waste pile cannot be recycled",
   "@illegal_dumping_recycle_error": {
     "description": "Label for waste pile recycle error"
+  },
+  "forget_password": "Forget Password",
+  "@forget_password": {
+    "description": "Label for forget password"
+  },
+  "see_all": "See All",
+  "@see_all": {
+    "description": "Label for see all"
+  },
+  "send": "Send",
+  "@send": {
+    "description": "Label for send"
+  },
+  "time_series_reset": "Time Series Reset",
+  "@time_series_reset": {
+    "description": "Label for time series reset"
+  },
+  "all_data_displayed": "All data is now displayed without any date filter.",
+  "@all_data_displayed": {
+    "description": "Message shown when all data is displayed without any date filter."
+  },
+  "reset_password_error": "Reset password error",
+  "@reset_password_error": {
+    "description": "Shown on the reset password error dialog."
+  },
+  "reset_password_success": "Reset password success",
+  "@reset_password_success": {
+    "description": "Shown on the reset password success dialog."
+  },
+  "please_login_new_password": "Please login with your new password",
+  "@please_login_new_password": {
+    "description": "Shown on the reset password success dialog."
+  },
+  "report_failed": "Report failed",
+  "@report_failed": {
+    "description": "Shown on the report failed dialog."
+  },
+  "report_success": "Report success",
+  "@report_success": {
+    "description": "Shown on the report success dialog."
+  },
+  "we_will_be_back_soon": "We will be back soon",
+  "@we_will_be_back_soon": {
+    "description": "Shown on the report success dialog."
+  },
+  "report_reviewed_by_system": "The report will be reviewed by the system",
+  "@report_reviewed_by_system": {
+    "description": "Shown on the report success dialog."
   }
 }

@@ -1,21 +1,16 @@
 import 'dart:async';
-import 'dart:convert';
 import 'dart:io';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:frontend_waste_management/app/data/models/predict_model.dart';
 import 'package:frontend_waste_management/app/data/models/review_model.dart';
-import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/location_handler.dart';
 import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
-import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:get/get.dart';
-import 'package:get_storage/get_storage.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:overlay_kit/overlay_kit.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:image/image.dart' as img;
 import 'package:path_provider/path_provider.dart';
@@ -100,7 +95,7 @@ class CameraViewController extends GetxController {
       _minZoom = await _cameraController.getMinZoomLevel();
       _maxZoom = await _cameraController.getMaxZoomLevel();
     } catch (e) {
-      Get.snackbar('Error', 'Camera initialization failed: $e');
+      debugPrint('Camera initialization failed: $e');
     }
   }
 
@@ -118,7 +113,7 @@ class CameraViewController extends GetxController {
     try {
       await _cameraController.setZoomLevel(_currentZoom.value);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to set zoom level: $e');
+      debugPrint('Failed to set zoom level: $e');
     }
   }
 
@@ -135,7 +130,9 @@ class CameraViewController extends GetxController {
     if (_cameraController.value.isTakingPicture) return;
     try {
       final XFile file = await _cameraController.takePicture();
-      toggleFlash();
+      if (flashMode.value == FlashMode.torch) {
+        await _cameraController.setFlashMode(FlashMode.off);
+      }
       if (file == null) return;
 
       // Get device orientation directly from sensors rather than UI
@@ -157,7 +154,7 @@ class CameraViewController extends GetxController {
 
       await postImage(file, true);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to take picture: $e');
+      debugPrint('Failed to take picture: $e');
     }
   }
 
@@ -248,7 +245,7 @@ class CameraViewController extends GetxController {
           _flashMode.value == FlashMode.off ? FlashMode.torch : FlashMode.off;
       await _cameraController.setFlashMode(_flashMode.value);
     } catch (e) {
-      Get.snackbar('Error', 'Failed to toggle flashlight: $e');
+      debugPrint('Error toggling flash: $e');
     }
   }
 
@@ -261,7 +258,7 @@ class CameraViewController extends GetxController {
       await _cameraController.setFocusPoint(Offset(x, y));
       await _cameraController.setExposurePoint(Offset(x, y));
     } catch (e) {
-      Get.snackbar('Error', 'Focus failed: $e');
+      debugPrint('Focus failed: $e');
     }
   }
 
@@ -280,7 +277,7 @@ class CameraViewController extends GetxController {
     try {
       _position.value = await Geolocator.getCurrentPosition();
     } catch (e) {
-      Get.snackbar('Error', 'Failed to get location: $e');
+      debugPrint('Failed to get location: $e');
     }
   }
 
@@ -300,7 +297,9 @@ class CameraViewController extends GetxController {
   Future<XFile> compressImage(XFile image) async {
     try {
       final tempDir = await getTemporaryDirectory();
-      final targetPath = '${tempDir.path}/compressed.jpg';
+      // Create a unique target path using timestamp
+      final targetPath =
+          '${tempDir.path}/compressed_${DateTime.now().millisecondsSinceEpoch}.jpg';
       final result = await FlutterImageCompress.compressAndGetFile(
         image.path,
         targetPath,
@@ -330,6 +329,15 @@ class CameraViewController extends GetxController {
       final XFile compressedImage = futures[1] as XFile;
       final LatLng? position = futures[2] as LatLng?;
 
+      // if the capture time on the image is taken 3 days from now it will return an error
+
+      if (DateTime.now().difference(captureTime).inDays > 3) {
+        showFailedSnackbar(
+          AppLocalizations.of(Get.context!)!.action_not_continue,
+          "The image is too old, please take a new one",
+        );
+        return;
+      }
       if (position == null) {
         throw Exception('Failed to get location');
       }
@@ -339,13 +347,14 @@ class CameraViewController extends GetxController {
 
       final ReviewModel data = ReviewModel(
         lang: Get.locale!.languageCode,
-        image: compressedImage,
+        imagePath: compressedImage.path,
         longitude: position.longitude,
         latitude: position.latitude,
         address: address,
         useGarbagePileModel: isPile,
         captureDate: captureTime,
         fromCamera: fromCamera,
+        xfile: compressedImage,
       );
 
       print(data.address);

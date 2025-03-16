@@ -77,11 +77,13 @@ class LoginController extends GetxController {
         // var message = await translate(jsonDecode(response.body)['detail']);
         var message = jsonDecode(response.body)['detail'];
 
-        showFailedSnackbar("Reset password error", message);
+        showFailedSnackbar(
+            AppLocalizations.of(Get.context!)!.reset_password_error, message);
         throw ('Reset password error: ${response.body}');
       }
       showSuccessSnackbar(
-          "Reset password success", "Please login with your new password");
+          AppLocalizations.of(Get.context!)!.reset_password_success,
+          AppLocalizations.of(Get.context!)!.please_login_new_password);
       Get.offAllNamed("/login");
     } catch (e) {
       print('Reset password error: $e');

@@ -14,11 +14,15 @@ class HistoryView extends GetView<HistoryController> {
   @override
   Widget build(BuildContext context) {
     var color = Theme.of(context).appColors;
+    final homeController = Get.find<HistoryController>();
 
     return Scaffold(
       body: SafeArea(
         child: RefreshIndicator(
-          onRefresh: () => controller.fetchData(),
+          onRefresh: () async {
+            await controller.fetchData();
+            await homeController.fetchData();
+          },
           child: Container(
             height: double.infinity,
             width: double.infinity,

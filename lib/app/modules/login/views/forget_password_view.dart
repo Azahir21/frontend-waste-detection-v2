@@ -54,7 +54,9 @@ class ForgetPasswordView extends GetView<LoginController> {
   }
 
   Widget _buildHeaderText(BuildContext context) {
-    return AppText.labelDefaultEmphasis("Forget Password", context: context);
+    return AppText.labelDefaultEmphasis(
+        AppLocalizations.of(context)!.forget_password,
+        context: context);
   }
 
   Widget _buildEmailField() {
@@ -90,7 +92,7 @@ class ForgetPasswordView extends GetView<LoginController> {
   Widget _buildSendButton(BuildContext context) {
     return CenteredTextButton.primary(
       width: double.infinity,
-      label: "Send",
+      label: AppLocalizations.of(context)!.send,
       onTap: () {
         if (controller.resetEmail.isEmpty ||
             controller.resetPassword.isEmpty ||

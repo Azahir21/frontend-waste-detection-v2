@@ -46,8 +46,13 @@ android {
     // compileSdk flutter.compileSdkVersion
     compileSdkVersion 34
     ndkVersion flutter.ndkVersion
+    defaultConfig {
+        multiDexEnabled true
+    }
+
 
     compileOptions {
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -96,5 +101,6 @@ flutter {
 
 
 dependencies {
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.2.2'
     implementation("com.google.android.material:material:1.12.0")
 }

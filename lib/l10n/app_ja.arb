@@ -721,5 +721,53 @@
   "illegal_dumping_recycle_error": "ゴミ集積所はリサイクル不可",
   "@illegal_dumping_recycle_error": {
     "description": "Label for waste pile recycle error"
+  },
+  "forget_password": "パスワードを忘れました",
+  "@forget_password": {
+    "description": "Forget password label"
+  },
+  "see_all": "すべて見る",
+  "@see_all": {
+    "description": "See all label"
+  },
+  "send": "送信",
+  "@send": {
+    "description": "Send label"
+  },
+  "time_series_reset": "時系列リセット",
+  "@time_series_reset": {
+    "description": "Time series reset label"
+  },
+  "all_data_displayed": "すべてのデータが日付フィルターなしで表示されます。",
+  "@all_data_displayed": {
+    "description": "All data displayed without date filter"
+  },
+  "reset_password_error": "パスワードリセットエラー",
+  "@reset_password_error": {
+    "description": "Reset password error message"
+  },
+  "reset_password_success": "パスワードのリセットに成功しました",
+  "@reset_password_success": {
+    "description": "Reset password success message"
+  },
+  "please_login_new_password": "新しいパスワードでログインしてください",
+  "@please_login_new_password": {
+    "description": "Please login with new password message"
+  },
+  "report_failed": "レポートに失敗しました",
+  "@report_failed": {
+    "description": "Report failed message"
+  },
+  "report_success": "レポートが成功しました",
+  "@report_success": {
+    "description": "Report success message"
+  },
+  "we_will_be_back_soon": "まもなく戻ります",
+  "@we_will_be_back_soon": {
+    "description": "We will be back soon message"
+  },
+  "report_reviewed_by_system": "レポートはシステムによって確認されます",
+  "@report_reviewed_by_system": {
+    "description": "Report reviewed by system message"
   }
 }

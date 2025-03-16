@@ -65,9 +65,8 @@ class ApiServices {
   Future<String> postSampahV2(String url, ReviewModel data) async {
     Uri uri = Uri.parse(
         '$url-v2?lang=${Uri.encodeComponent(data.lang!)}&longitude=${data.longitude}&latitude=${data.latitude}&address=${Uri.encodeComponent(data.address!)}&capture_date=${data.captureDate}&use_garbage_pile_model=${data.useGarbagePileModel}');
-    print(uri);
     var request = MultipartRequest('POST', uri)
-      ..files.add(await MultipartFile.fromPath('file', data.image!.path))
+      ..files.add(await MultipartFile.fromPath('file', data.imagePath!))
       ..headers.addAll({
         "Access-Control-Allow-Origin": "*",
         'Accept': 'application/json',

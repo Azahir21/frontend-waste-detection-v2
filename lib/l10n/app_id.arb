@@ -721,5 +721,53 @@
   "illegal_dumping_recycle_error": "TPS ilegal tidak dapat di daur ulang",
   "@illegal_dumping_recycle_error": {
     "description": "Label for illegal dumping recycle error"
+  },
+  "forget_password": "Lupa Kata Sandi",
+  "@forget_password": {
+    "description": "Ditampilkan di layar lupa kata sandi."
+  },
+  "see_all": "Lihat Semua",
+  "@see_all": {
+    "description": "Ditampilkan di tombol lihat semua."
+  },
+  "send": "Kirim",
+  "@send": {
+    "description": "Ditampilkan di tombol kirim."
+  },
+  "time_series_reset": "Reset Seri Waktu",
+  "@time_series_reset": {
+    "description": "Ditampilkan di tombol reset seri waktu."
+  },
+  "all_data_displayed": "Semua data sekarang ditampilkan tanpa filter tanggal.",
+  "@all_data_displayed": {
+    "description": "Ditampilkan di dialog semua data ditampilkan."
+  },
+  "reset_password_error": "Kesalahan reset kata sandi",
+  "@reset_password_error": {
+    "description": "Ditampilkan pada dialog kesalahan reset kata sandi."
+  },
+  "reset_password_success": "Berhasil mereset kata sandi",
+  "@reset_password_success": {
+    "description": "Ditampilkan pada dialog berhasil mereset kata sandi."
+  },
+  "please_login_new_password": "Silakan masuk dengan kata sandi baru Anda",
+  "@please_login_new_password": {
+    "description": "Ditampilkan pada dialog silakan masuk dengan kata sandi baru."
+  },
+  "report_failed": "Laporan gagal",
+  "@report_failed": {
+    "description": "Ditampilkan pada dialog laporan gagal."
+  },
+  "report_success": "Laporan berhasil",
+  "@report_success": {
+    "description": "Ditampilkan pada dialog laporan berhasil."
+  },
+  "we_will_be_back_soon": "Kami akan segera kembali",
+  "@we_will_be_back_soon": {
+    "description": "Ditampilkan pada dialog kami akan segera kembali."
+  },
+  "report_reviewed_by_system": "Laporan akan ditinjau oleh sistem",
+  "@report_reviewed_by_system": {
+    "description": "Ditampilkan pada dialog laporan akan ditinjau oleh sistem."
   }
 }

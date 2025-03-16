@@ -81,7 +81,7 @@ class ReviewPageView extends GetView<ReviewPageController> {
                           children: [
                             InteractiveViewer(
                               child: Image.file(
-                                File(controller.data.image!.path),
+                                File(controller.data.xfile!.path),
                               ),
                             ),
                             Positioned(
@@ -111,7 +111,7 @@ class ReviewPageView extends GetView<ReviewPageController> {
                       image: DecorationImage(
                         image:
                             // AssetImage('assets/images/onboarding3.png'),
-                            FileImage(File(controller.data.image!.path)),
+                            FileImage(File(controller.data.xfile!.path)),
                         fit: BoxFit.cover,
                       ),
                     ),

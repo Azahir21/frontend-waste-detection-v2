@@ -192,8 +192,8 @@ class MapsController extends GetxController {
     timeseriesData.clear();
     getAllSampah();
     showSuccessSnackbar(
-      "Time Series Reset",
-      "All data is now displayed without any date filter.",
+      AppLocalizations.of(Get.context!)!.time_series_reset,
+      AppLocalizations.of(Get.context!)!.all_data_displayed,
     );
     superclusterController.value.replaceAll(markers.value);
   }

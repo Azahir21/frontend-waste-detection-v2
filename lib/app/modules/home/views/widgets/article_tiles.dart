@@ -5,6 +5,7 @@ import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/horizontal_gap.dart';
 import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
+import 'package:get/get.dart';
 
 class ArticleTiles extends StatelessWidget {
   ArticleTiles({Key? key, required this.article}) : super(key: key);
@@ -13,52 +14,55 @@ class ArticleTiles extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var color = Theme.of(context).appColors;
-    return Column(
-      children: [
-        Row(
-          children: [
-            Container(
-              height: 100,
-              width: 130,
-              decoration: BoxDecoration(
-                color: Colors.grey,
-                borderRadius: BorderRadius.circular(23.0),
-                image: DecorationImage(
-                  // image: Image.memory(base64Decode(article.image!)).image,
-                  image: NetworkImage(article.image!),
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-            HorizontalGap.formBig(),
-            Expanded(
-              child: SizedBox(
+    return GestureDetector(
+      onTap: () => Get.toNamed('/article-detail', arguments: article),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              Container(
                 height: 100,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    AppText.labelDefaultEmphasis(
-                      article.title!,
-                      textOverflow: TextOverflow.ellipsis,
-                      context: context,
-                      maxLines: 2,
-                    ),
-                    AppText.labelSmallEmphasis(
-                      formatTanggal(article.createdAt!.toString()),
-                      textOverflow: TextOverflow.ellipsis,
-                      context: context,
-                      color: color.textSecondary,
-                      maxLines: 2,
-                    ),
-                  ],
+                width: 130,
+                decoration: BoxDecoration(
+                  color: Colors.grey,
+                  borderRadius: BorderRadius.circular(23.0),
+                  image: DecorationImage(
+                    // image: Image.memory(base64Decode(article.image!)).image,
+                    image: NetworkImage(article.image!),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
-            ),
-          ],
-        ),
-        VerticalGap.formMedium(),
-      ],
+              HorizontalGap.formBig(),
+              Expanded(
+                child: SizedBox(
+                  height: 100,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      AppText.labelDefaultEmphasis(
+                        article.title!,
+                        textOverflow: TextOverflow.ellipsis,
+                        context: context,
+                        maxLines: 2,
+                      ),
+                      AppText.labelSmallEmphasis(
+                        formatTanggal(article.createdAt!.toString()),
+                        textOverflow: TextOverflow.ellipsis,
+                        context: context,
+                        color: color.textSecondary,
+                        maxLines: 2,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          VerticalGap.formMedium(),
+        ],
+      ),
     );
   }
 }

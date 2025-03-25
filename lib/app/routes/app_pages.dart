@@ -6,6 +6,8 @@ import '../modules/account_setting/views/account_setting_view.dart';
 import '../modules/account_setting/views/widgets/smallscreem_edit_view.dart';
 import '../modules/article/bindings/article_binding.dart';
 import '../modules/article/views/article_view.dart';
+import '../modules/article_detail/bindings/article_detail_binding.dart';
+import '../modules/article_detail/views/article_detail_view.dart';
 import '../modules/camera/bindings/camera_binding.dart';
 import '../modules/camera/views/camera_view.dart';
 import '../modules/checkout/bindings/checkout_binding.dart';
@@ -146,6 +148,11 @@ class AppPages {
       name: _Paths.REVIEW_PAGE,
       page: () => const ReviewPageView(),
       binding: ReviewPageBinding(),
+    ),
+    GetPage(
+      name: _Paths.ARTICLE_DETAIL,
+      page: () => const ArticleDetailView(),
+      binding: ArticleDetailBinding(),
     ),
   ];
 }

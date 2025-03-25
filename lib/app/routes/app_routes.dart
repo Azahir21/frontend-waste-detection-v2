@@ -22,6 +22,7 @@ abstract class Routes {
   static const FORGET_PASSWORD = _Paths.FORGET_PASSWORD;
   static const CAMERA = _Paths.CAMERA;
   static const REVIEW_PAGE = _Paths.REVIEW_PAGE;
+  static const ARTICLE_DETAIL = _Paths.ARTICLE_DETAIL;
 }
 
 abstract class _Paths {
@@ -45,4 +46,5 @@ abstract class _Paths {
   static const FORGET_PASSWORD = '/forget-password';
   static const CAMERA = '/camera';
   static const REVIEW_PAGE = '/review-page';
+  static const ARTICLE_DETAIL = '/article-detail';
 }

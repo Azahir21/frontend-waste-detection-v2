@@ -7,7 +7,6 @@ import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
 import 'package:frontend_waste_management/app/widgets/horizontal_gap.dart';
 import 'package:frontend_waste_management/app/widgets/icon_button.dart';
-import 'package:frontend_waste_management/app/widgets/preview_page.dart';
 import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:frontend_waste_management/core/values/app_icon_name.dart';
@@ -62,12 +61,12 @@ class ReportDetailView extends GetView<ReportDetailController> {
                                   child: Center(
                                     child: AppText.labelDefaultEmphasis(
                                       controller.reportDetail.value
-                                                  .captureTime !=
-                                              null
-                                          ? DateFormat('yyyy-MM-dd HH:mm:ss')
-                                              .format(controller.reportDetail
-                                                  .value.captureTime!)
-                                          : "",
+                                                  .isWastePile ??
+                                              false
+                                          ? AppLocalizations.of(context)!
+                                              .illegal_dumping_site
+                                          : AppLocalizations.of(context)!
+                                              .illegal_trash,
                                       context: context,
                                     ),
                                   ),
@@ -166,6 +165,18 @@ class ReportDetailView extends GetView<ReportDetailController> {
                                     ),
                                   )
                                 ],
+                              ),
+                            VerticalGap.formMedium(),
+                            AppText.labelDefaultEmphasis(
+                                AppLocalizations.of(context)!.capture_time,
+                                context: context),
+                            VerticalGap.formSmall(),
+                            if (controller.reportDetail.value.captureTime !=
+                                null)
+                              AppText.labelSmallDefault(
+                                DateFormat('yyyy-MM-dd HH:mm:ss').format(
+                                    controller.reportDetail.value.captureTime!),
+                                context: context,
                               ),
                             VerticalGap.formMedium(),
                             AppText.labelDefaultEmphasis(
@@ -287,7 +298,71 @@ class ReportDetailView extends GetView<ReportDetailController> {
                                         ),
                                       ),
                                     ],
-                                  )
+                                  ),
+                                  VerticalGap.formSmall(),
+                                  if (controller.reportDetail.value.evidence !=
+                                      null)
+                                    Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        AppText.labelSmallEmphasis(
+                                            "${AppLocalizations.of(context)!.evidence_image}:",
+                                            context: context),
+                                        VerticalGap.formSmall(),
+                                        GestureDetector(
+                                          onTap: () {
+                                            Get.dialog(
+                                              Dialog(
+                                                child: Stack(
+                                                  children: [
+                                                    InteractiveViewer(
+                                                      child: Image.network(
+                                                          controller
+                                                              .reportDetail
+                                                              .value
+                                                              .evidence!),
+                                                    ),
+                                                    Positioned(
+                                                      top: 8,
+                                                      right: 8,
+                                                      child: GestureDetector(
+                                                        onTap: () {
+                                                          Get.back();
+                                                        },
+                                                        child: const Icon(
+                                                          Icons.close,
+                                                          color: Colors.white,
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            );
+                                          },
+                                          child: Container(
+                                            height: 200,
+                                            width: double.infinity,
+                                            decoration: BoxDecoration(
+                                              color: Colors.grey,
+                                              borderRadius:
+                                                  BorderRadius.circular(23.0),
+                                              image: DecorationImage(
+                                                image: NetworkImage(
+                                                  controller.reportDetail.value
+                                                      .evidence!,
+                                                ),
+                                                fit: BoxFit.cover,
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  VerticalGap.formMedium(),
                                 ],
                               ),
                             )

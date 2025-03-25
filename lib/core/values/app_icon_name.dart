@@ -43,4 +43,19 @@ class AppIconName {
       const AppIconName("${_iconsPath}tps3r_pinlocation.png");
   static get wasteBankPinlocation =>
       const AppIconName("${_iconsPath}waste_bank_pinlocation.png");
+
+  static get pcsCollected =>
+      const AppIconName("${_iconsPath}pcs-collected.png");
+  static get pcsUncollected =>
+      const AppIconName("${_iconsPath}pcs-uncollected.png");
+  static get pileCollected =>
+      const AppIconName("${_iconsPath}pile-collected.png");
+  static get pileUncollected =>
+      const AppIconName("${_iconsPath}pile-uncollected.png");
+  static get pcsSelected => const AppIconName("${_iconsPath}pcs-selected.png");
+  static get pileSelected =>
+      const AppIconName("${_iconsPath}pile-selected.png");
+
+  static get myLocation => const AppIconName("${_iconsPath}my_location.png");
+  static get timeseries => const AppIconName("${_iconsPath}timeseries.png");
 }

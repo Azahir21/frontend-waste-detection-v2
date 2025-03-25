@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import 'package:flutter_map_compass/flutter_map_compass.dart';
@@ -7,7 +6,10 @@ import 'package:flutter_map_heatmap/flutter_map_heatmap.dart';
 import 'package:flutter_map_location_marker/flutter_map_location_marker.dart';
 import 'package:flutter_map_supercluster/flutter_map_supercluster.dart';
 import 'package:frontend_waste_management/app/modules/maps/controllers/maps_controller.dart';
-import 'package:frontend_waste_management/app/modules/maps/views/popup.dart';
+import 'package:frontend_waste_management/app/modules/maps/views/widgets/maps_type_dialog.dart';
+import 'package:frontend_waste_management/app/modules/maps/views/widgets/popup.dart';
+import 'package:frontend_waste_management/app/modules/maps/views/widgets/timeseries_filter_widget.dart';
+import 'package:frontend_waste_management/app/modules/maps/views/widgets/waste_type_filter_widget.dart';
 import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
 import 'package:frontend_waste_management/app/widgets/icon_button.dart';
@@ -25,12 +27,17 @@ class MapsView extends StatefulWidget {
   State<MapsView> createState() => _MapsViewState();
 }
 
-class _MapsViewState extends State<MapsView> {
+class _MapsViewState extends State<MapsView> with TickerProviderStateMixin {
   final controller = Get.find<MapsController>();
-  final mapMode = 'marker'.obs;
   List<Map<double, MaterialColor>> gradients = [
     HeatMapOptions.defaultGradient,
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    controller.tickerProvider = this;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,6 +54,7 @@ class _MapsViewState extends State<MapsView> {
                 ),
                 child: Obx(
                   () => FlutterMap(
+                    mapController: controller.mapController,
                     options: MapOptions(
                       initialCenter: controller.curruntPosition.value,
                       initialZoom: 10,
@@ -84,7 +92,7 @@ class _MapsViewState extends State<MapsView> {
                       Obx(
                         () {
                           // Show layer based on the selected mode
-                          if (mapMode.value == 'heatmap') {
+                          if (controller.mapsMode.value == 'heatmap') {
                             return controller.weightedLatLng.isNotEmpty
                                 ? HeatMapLayer(
                                     heatMapDataSource:
@@ -105,7 +113,7 @@ class _MapsViewState extends State<MapsView> {
                                       context: context,
                                     ),
                                   );
-                          } else if (mapMode.value == 'cluster') {
+                          } else if (controller.mapsMode.value == 'cluster') {
                             return controller.markers.isNotEmpty
                                 ? SuperclusterLayer.mutable(
                                     initialMarkers: controller.markers.toList(),
@@ -141,7 +149,7 @@ class _MapsViewState extends State<MapsView> {
                                       context: context,
                                     ),
                                   );
-                          } else if (mapMode.value == 'marker') {
+                          } else if (controller.mapsMode.value == 'marker') {
                             return controller.markers.isNotEmpty
                                 ? MarkerLayer(
                                     markers: controller.markers.toList())
@@ -159,7 +167,7 @@ class _MapsViewState extends State<MapsView> {
                       ),
                       const MapCompass.cupertino(
                           hideIfRotatedNorth: true,
-                          padding: EdgeInsets.fromLTRB(32, 230, 35, 32)),
+                          padding: EdgeInsets.fromLTRB(32, 304, 35, 32)),
                       CurrentLocationLayer(
                         alignPositionStream: controller
                             .alignPositionStreamController.value.stream,
@@ -184,72 +192,121 @@ class _MapsViewState extends State<MapsView> {
               ),
             ),
 
-            // filter button jangan dihapus
-            Padding(
-              padding: const EdgeInsets.all(32.0),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: CustomIconButton.secondary(
-                    iconName: AppIconName.filter,
-                    onTap: () {
-                      Get.dialog(
-                        barrierDismissible: false,
-                        filterDialog(),
-                      );
-                    },
-                    context: context),
+            Positioned(
+              top: 32,
+              right: 32,
+              child: CustomIconButton.secondary(
+                iconName: AppIconName.filter,
+                onTap: () {
+                  controller.showFilter.value = !controller.showFilter.value;
+                  if (controller.showFilter.value == true &&
+                      (controller.filterDataType.value !=
+                              controller.previousFilterDataType ||
+                          controller.filterStatus.value !=
+                              controller.previousFilterStatus)) {
+                    controller.filterDataType.value =
+                        controller.previousFilterDataType;
+                    controller.filterStatus.value =
+                        controller.previousFilterStatus;
+                  }
+                  if (controller.showTimeSeries.value == true ||
+                      controller.showMapsType.value == true) {
+                    controller.showTimeSeries.value = false;
+                    controller.showMapsType.value = false;
+                  }
+                },
+                context: context,
               ),
             ),
-
-            // heatmap button jangan dihapus
-            Padding(
-              padding: const EdgeInsets.fromLTRB(32, 100, 32, 32),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: Obx(
-                  () => Column(
-                    children: [
-                      CustomIconButton.secondary(
-                        iconName: mapMode.value == 'marker'
-                            ? AppIconName.markermap
-                            : mapMode.value == 'cluster'
-                                ? AppIconName.cluster
-                                : AppIconName.heatmap,
-                        onTap: () {
-                          // Toggle map modes
-                          if (mapMode.value == 'marker') {
-                            mapMode.value = 'cluster';
-                          } else if (mapMode.value == 'cluster') {
-                            mapMode.value = 'heatmap';
-                          } else {
-                            mapMode.value = 'marker';
-                          }
-                        },
-                        context: context,
-                      ),
-                    ],
+            // WasteTypeFilterWidget.
+            const WasteTypeFilterWidget(),
+            // Timeseries Filter Button.
+            Positioned(
+              top: 100,
+              right: 32,
+              child: CustomIconButton.secondary(
+                iconName: AppIconName.timeseries,
+                onTap: () {
+                  controller.showTimeSeries.value =
+                      !controller.showTimeSeries.value;
+                  if (controller.showFilter.value == true ||
+                      controller.showMapsType.value == true) {
+                    controller.showFilter.value = false;
+                    controller.showMapsType.value = false;
+                    controller.filterDataType.value =
+                        controller.previousFilterDataType;
+                    controller.filterStatus.value =
+                        controller.previousFilterStatus;
+                  }
+                },
+                context: context,
+              ),
+            ),
+            // Timeseries Filter Widget.
+            const TimeSeriesFilterWidget(),
+            // Maps Type switcher button.
+            Positioned(
+              top: 168,
+              right: 32,
+              child: Obx(
+                () => CustomIconButton.activeBordered(
+                  iconName: controller.mapsMode.value == 'marker'
+                      ? AppIconName.markermap
+                      : controller.mapsMode.value == 'cluster'
+                          ? AppIconName.cluster
+                          : AppIconName.heatmap,
+                  onTap: () {
+                    controller.showMapsType.value =
+                        !controller.showMapsType.value;
+                    if (controller.showFilter.value == true ||
+                        controller.showTimeSeries.value == true) {
+                      controller.showFilter.value = false;
+                      controller.showTimeSeries.value = false;
+                      controller.filterDataType.value =
+                          controller.previousFilterDataType;
+                      controller.filterStatus.value =
+                          controller.previousFilterStatus;
+                    }
+                  },
+                  context: context,
+                ),
+              ),
+            ),
+            Obx(
+              () => Visibility(
+                visible: controller.showMapsType.value,
+                child: Padding(
+                  padding: const EdgeInsets.fromLTRB(32, 168, 100, 32),
+                  child: Align(
+                    alignment: Alignment.topRight,
+                    child: MapsTypeDialog(),
                   ),
                 ),
               ),
             ),
 
-            // centered camera button jangan dihapus
-            Padding(
-              padding: const EdgeInsets.fromLTRB(32, 168, 32, 32),
-              child: Align(
-                alignment: Alignment.topRight,
-                child: CustomIconButton.secondary(
-                  iconSize: 24,
-                  iconName: AppIconName.cursor,
-                  onTap: () {
-                    setState(
-                      () => controller.alignPositionOnUpdate.value =
-                          AlignOnUpdate.always,
-                    );
-                    controller.alignPositionStreamController.value.add(18);
-                  },
-                  context: context,
-                ),
+            // Maps Type Dialog.
+            if (controller.showMapsType.value)
+              Positioned(
+                top: 168,
+                right: 100,
+                child: MapsTypeDialog(),
+              ),
+            // My Location Button.
+            Positioned(
+              top: 236,
+              right: 32,
+              child: CustomIconButton.secondary(
+                iconSize: 24,
+                iconName: AppIconName.myLocation,
+                onTap: () {
+                  setState(
+                    () => controller.alignPositionOnUpdate.value =
+                        AlignOnUpdate.always,
+                  );
+                  controller.alignPositionStreamController.value.add(18);
+                },
+                context: context,
               ),
             ),
 

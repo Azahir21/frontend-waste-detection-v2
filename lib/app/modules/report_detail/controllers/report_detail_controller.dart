@@ -39,6 +39,7 @@ class ReportDetailController extends GetxController {
       throw ('Report Detail error: ${response.body}');
     }
     reportDetail.value = parseSampahDetailSingle(response.body);
+    print(reportDetail.value.pickupAt);
     // for (var detectedObject in reportDetail.value.countedObjects!) {
     //   detectedObject.name = await translate(detectedObject.name!);
     // }

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_waste_management/app/modules/article/controllers/article_controller.dart';
 import 'package:frontend_waste_management/app/modules/home/controllers/home_controller.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
@@ -9,7 +8,6 @@ class ProfileController extends GetxController {
   final String username = GetStorage().read('username');
   final box = GetStorage();
   final homeController = Get.find<HomeController>();
-  final articleController = Get.find<ArticleController>();
 
   @override
   void onInit() {
@@ -35,7 +33,6 @@ class ProfileController extends GetxController {
         break;
     }
     homeController.fetchData();
-    articleController.fetchData();
     Get.updateLocale(newLocale);
     box.write('language', languageCode);
   }

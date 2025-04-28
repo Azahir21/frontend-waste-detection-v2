@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:frontend_waste_management/app/widgets/app_icon.dart';
-import 'package:frontend_waste_management/app/widgets/app_text.dart';
 import 'package:frontend_waste_management/app/widgets/icon_button.dart';
 import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
@@ -8,6 +6,7 @@ import 'package:frontend_waste_management/core/values/app_icon_name.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import '../controllers/article_detail_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ArticleDetailView extends GetView<ArticleDetailController> {
   const ArticleDetailView({super.key});
@@ -178,7 +177,7 @@ class ArticleDetailView extends GetView<ArticleDetailController> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          'Thank you for reading!',
+                          AppLocalizations.of(context)!.thank_you_message,
                           style:
                               Theme.of(context).textTheme.titleMedium?.copyWith(
                                     fontWeight: FontWeight.bold,
@@ -186,7 +185,7 @@ class ArticleDetailView extends GetView<ArticleDetailController> {
                         ),
                         const SizedBox(height: 8),
                         Text(
-                          'Want to learn more about waste management? Check out other articles in the app.',
+                          AppLocalizations.of(context)!.learn_more_prompt,
                           style: Theme.of(context).textTheme.bodyMedium,
                         ),
                       ],

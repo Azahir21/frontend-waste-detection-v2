@@ -19,7 +19,6 @@ class RecycleController extends GetxController {
     // await fetchRecommendation(arguments);
     WidgetsBinding.instance.addPostFrameCallback((_) async {
       await fetchRecommendation(arguments);
-      checkAndShowSnackbar();
     });
   }
 
@@ -30,7 +29,7 @@ class RecycleController extends GetxController {
       if (language == "id") {
         language = "Indonesian";
       } else if (language == "ja") {
-        language = "English";
+        language = "Japanese";
       } else {
         language = "English";
       }
@@ -56,7 +55,8 @@ class RecycleController extends GetxController {
       if (response.statusCode == 200) {
         var data = jsonDecode(response.body);
         String reply = data['choices'][0]['message']['content'];
-        recommendation.value = reply;
+
+        recommendation.value = utf8.decode(reply.codeUnits);
       } else {
         recommendation.value = "Failed to fetch recommendations.";
       }
@@ -65,20 +65,6 @@ class RecycleController extends GetxController {
     } catch (e) {
       isLoading.value = false;
       recommendation.value = "Error occurred: $e";
-    }
-  }
-
-  void checkAndShowSnackbar() {
-    if (GetStorage().read("language") == 'ja') {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (Get.overlayContext != null) {
-          showFailedSnackbar(
-              AppLocalizations.of(Get.context!)!.feature_under_development,
-              AppLocalizations.of(Get.context!)!.recycle_feature_message);
-        } else {
-          print("Overlay context is not available");
-        }
-      });
     }
   }
 }

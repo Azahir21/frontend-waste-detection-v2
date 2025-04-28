@@ -334,7 +334,7 @@ class CameraViewController extends GetxController {
       if (DateTime.now().difference(captureTime).inDays > 3) {
         showFailedSnackbar(
           AppLocalizations.of(Get.context!)!.action_not_continue,
-          "The image is too old, please take a new one",
+          AppLocalizations.of(Get.context!)!.image_too_old,
         );
         return;
       }

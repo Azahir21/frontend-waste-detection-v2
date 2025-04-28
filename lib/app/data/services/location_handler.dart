@@ -56,8 +56,17 @@ Future<String> getAddressFromLatLng(LatLng position) async {
     // print(place.thoroughfare);
     // print(place.subThoroughfare);
 
+    // Pattern to detect plus codes like "WGF7+VGJ"
+    RegExp plusCodePattern = RegExp(r'[A-Z0-9]{4}\+[A-Z0-9]{3}');
+
+    String? street = place.street;
+    if (street != null && plusCodePattern.hasMatch(street)) {
+      print('Street contains a plus code: $street');
+      street = null; // Drop the street if it contains a plus code
+    }
+
     return [
-      place.street,
+      street,
       place.subLocality,
       place.locality,
       place.subAdministrativeArea,

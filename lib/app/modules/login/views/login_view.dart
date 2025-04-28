@@ -84,22 +84,58 @@ class LoginView extends GetView<LoginController> {
   }
 
   Widget _buildEmailField() {
-    return CustomForm.email(
-      width: double.infinity,
-      labelText: AppLocalizations.of(Get.context!)!.email,
-      onChanged: (value) {
-        controller.email = value;
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomForm.email(
+          width: double.infinity,
+          labelText: AppLocalizations.of(Get.context!)!.email,
+          onChanged: (value) {
+            controller.email = value;
+            if (controller.emailError.value != null) {
+              controller.emailError.value = null;
+            }
+          },
+        ),
+        Obx(() => Visibility(
+              visible: controller.emailError.value != null,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: Text(
+                  controller.emailError.value ?? '',
+                  style: TextStyle(color: Colors.red, fontSize: 12),
+                ),
+              ),
+            )),
+      ],
     );
   }
 
   Widget _buildPasswordField() {
-    return CustomForm.password(
-      width: double.infinity,
-      labelText: AppLocalizations.of(Get.context!)!.password,
-      onChanged: (value) {
-        controller.password = value;
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomForm.password(
+          width: double.infinity,
+          labelText: AppLocalizations.of(Get.context!)!.password,
+          onChanged: (value) {
+            controller.password = value;
+            if (controller.passwordError.value != null) {
+              controller.passwordError.value = null;
+            }
+          },
+        ),
+        Obx(() => Visibility(
+              visible: controller.passwordError.value != null,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: Text(
+                  controller.passwordError.value ?? '',
+                  style: TextStyle(color: Colors.red, fontSize: 12),
+                ),
+              ),
+            )),
+      ],
     );
   }
 
@@ -123,12 +159,9 @@ class LoginView extends GetView<LoginController> {
       width: double.infinity,
       label: AppLocalizations.of(context)!.login,
       onTap: () {
-        if (controller.email.isEmpty || controller.password.isEmpty) {
-          showFailedSnackbar(AppLocalizations.of(context)!.input_error,
-              AppLocalizations.of(context)!.email_pass_cant_empty);
-          return;
+        if (controller.validateInputs()) {
+          controller.login();
         }
-        controller.login();
       },
       context: context,
     );

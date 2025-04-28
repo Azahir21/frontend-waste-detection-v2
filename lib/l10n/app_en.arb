@@ -492,6 +492,26 @@
   "@email_not_valid": {
     "description": "Shown on the email not valid dialog."
   },
+  "email_required": "Email is required",
+  "@email_required": {
+    "description": "Shown on the email required dialog."
+  },
+  "password_required": "Password is required",
+  "@password_required": {
+    "description": "Shown on the password required dialog."
+  },
+  "name_required": "Name is required",
+  "@name_required": {
+    "description": "Shown on the name required dialog."
+  },
+  "username_required": "Username is required",
+  "@username_required": {
+    "description": "Shown on the username required dialog."
+  },
+  "gender_required": "Gender is required",
+  "@gender_required": {
+    "description": "Shown on the gender required dialog."
+  },
   "password_has_8_characters": "Password must have at least 8 characters",
   "@password_has_8_characters": {
     "description": "Shown on the password has 8 characters dialog."
@@ -805,5 +825,17 @@
   "evidence_image": "Evidence Image",
   "@evidence_image": {
     "description": "Shown on the evidence image."
+  },
+  "thank_you_message": "Thank you for reading!",
+  "@thank_you_message": {
+    "description": "Shown on the thank you message."
+  },
+  "learn_more_prompt": "Want to learn more about waste management? Check out other articles in the app.",
+  "@learn_more_prompt": {
+    "description": "Shown on the learn more prompt."
+  },
+  "image_too_old": "The image is too old, please take a new one",
+  "@image_too_old": {
+    "description": "Shown on the image too old dialog."
   }
 }

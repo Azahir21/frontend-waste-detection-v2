@@ -74,6 +74,15 @@ class ReviewPageController extends GetxController {
     buttonEnable.value = false;
     isLoading.value = true;
 
+    if (fixedLocation.value == null) {
+      showFailedSnackbar(
+        AppLocalizations.of(Get.context!)!.some_things_wrong,
+        AppLocalizations.of(Get.context!)!.location_not_found,
+      );
+      buttonEnable.value = true;
+      isLoading.value = false;
+      return;
+    }
     // Update coordinates in the data
     data = ReviewModel.fromJson({
       ...data.toJson(),

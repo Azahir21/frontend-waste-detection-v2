@@ -492,6 +492,26 @@
   "@email_not_valid": {
     "description": "メールアドレス無効ダイアログに表示されます。"
   },
+  "email_required": "メールアドレスは必須です",
+  "@email_required": {
+    "description": "メールアドレス必須ダイアログに表示されます。"
+  },
+  "password_required": "パスワードは必須です",
+  "@password_required": {
+    "description": "パスワード必須ダイアログに表示されます。"
+  },
+  "name_required": "名前は必須です",
+  "@name_required": {
+    "description": "名前必須ダイアログに表示されます。"
+  },
+  "username_required": "ユーザー名は必須です",
+  "@username_required": {
+    "description": "ユーザー名必須ダイアログに表示されます。"
+  },
+  "gender_required": "性別は必須です",
+  "@gender_required": {
+    "description": "性別必須ダイアログに表示されます。"
+  },
   "password_has_8_characters": "パスワードは8文字以上である必要があります",
   "@password_has_8_characters": {
     "description": "パスワード文字数エラーダイアログに表示されます。"
@@ -805,5 +825,17 @@
   "evidence_image": "証拠画像",
   "@evidence_image": {
     "description": "証拠画像のラベルです。"
+  },
+  "thank_you_message": "お読みいただきありがとうございます！",
+  "@thank_you_message": {
+    "description": "Thank you message"
+  },
+  "learn_more_prompt": "ごみ管理について詳しく知りたいですか？アプリ内の他の記事をチェックしてください。",
+  "@learn_more_prompt": {
+    "description": "Learn more prompt message"
+  },
+  "image_too_old": "画像が古すぎます。新しい画像を撮影してください。",
+  "@image_too_old": {
+    "description": "画像が古すぎるダイアログに表示されます。"
   }
 }

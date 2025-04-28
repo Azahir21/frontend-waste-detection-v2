@@ -16,6 +16,8 @@ class LoginController extends GetxController {
   String _resetEmail = '';
   String _resetUsername = '';
   String _resetPassword = '';
+  final emailError = Rxn<String>();
+  final passwordError = Rxn<String>();
   final RxBool validPassword = true.obs;
   final massage = "".obs;
   get email => _email;
@@ -32,6 +34,31 @@ class LoginController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+  }
+
+  bool validateInputs() {
+    // Reset errors
+    emailError.value = null;
+    passwordError.value = null;
+
+    // Validate email
+    if (_email.isEmpty) {
+      emailError.value = AppLocalizations.of(Get.context!)!.email_required;
+      return false;
+    }
+    if (!GetUtils.isEmail(_email)) {
+      emailError.value = AppLocalizations.of(Get.context!)!.email_not_valid;
+      return false;
+    }
+
+    // Validate password
+    if (_password.isEmpty) {
+      passwordError.value =
+          AppLocalizations.of(Get.context!)!.password_required;
+      return false;
+    }
+
+    return true;
   }
 
   Future<void> login() async {
@@ -53,7 +80,8 @@ class LoginController extends GetxController {
       }
       Login loginData = Login.fromRawJson(response.body);
       GetStorage().write('token', loginData.accessToken);
-      GetStorage().write('username', loginData.username);
+      GetStorage()
+          .write('username', utf8.decode(loginData.username!.codeUnits));
       Get.offAllNamed("/bottomnav");
     } catch (e) {
       print('Login error: $e');

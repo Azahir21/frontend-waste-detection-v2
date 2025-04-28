@@ -492,6 +492,26 @@
   "@email_not_valid": {
     "description": "Ditampilkan pada dialog email tidak valid."
   },
+  "email_required": "Email diperlukan",
+  "@email_required": {
+    "description": "Ditampilkan pada dialog email diperlukan."
+  },
+  "password_required": "Kata sandi diperlukan",
+  "@password_required": {
+    "description": "Ditampilkan pada dialog kata sandi diperlukan."
+  },
+  "name_required": "Nama diperlukan",
+  "@name_required": {
+    "description": "Ditampilkan pada dialog nama diperlukan."
+  },
+  "username_required": "Nama pengguna diperlukan",
+  "@username_required": {
+    "description": "Ditampilkan pada dialog nama pengguna diperlukan."
+  },
+  "gender_required": "Jenis Kelamin diperlukan",
+  "@gender_required": {
+    "description": "Ditampilkan pada dialog nama pengguna diperlukan."
+  },
   "password_has_8_characters": "Kata sandi harus memiliki setidaknya 8 karakter",
   "@password_has_8_characters": {
     "description": "Ditampilkan pada dialog kata sandi harus memiliki 8 karakter."
@@ -805,5 +825,17 @@
   "evidence_image": "Gambar Bukti",
   "@evidence_image": {
     "description": "Ditampilkan di gambar bukti."
+  },
+  "thank_you_message": "Terima kasih sudah membaca!",
+  "@thank_you_message": {
+    "description": "Ditampilkan di pesan terima kasih."
+  },
+  "learn_more_prompt": "Ingin mempelajari lebih lanjut tentang pengelolaan sampah? Lihat artikel lain di aplikasi.",
+  "@learn_more_prompt": {
+    "description": "Ditampilkan di pesan ingin mempelajari lebih lanjut."
+  },
+  "image_too_old": "Gambar terlalu lama, silakan ambil yang baru",
+  "@image_too_old": {
+    "description": "Ditampilkan saat gambar terlalu lama dan pengguna diminta untuk mengambil gambar baru."
   }
 }

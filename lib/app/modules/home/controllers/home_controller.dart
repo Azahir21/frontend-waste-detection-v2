@@ -72,16 +72,17 @@ class HomeController extends GetxController {
 
   Future<List<Article>> getArticle() async {
     try {
-      final response = await ApiServices()
-          .get('${UrlConstants.article}s?page=1&page_size=5');
+      final response = await ApiServices().get(
+          '${UrlConstants.article}s?lang=${Get.locale!.languageCode}&page=${1}&page_size=${5}');
       if (response.statusCode != 200) {
         // var message = await translate(jsonDecode(response.body)['detail']);
         var message = jsonDecode(response.body)['detail'];
         showFailedSnackbar(
             AppLocalizations.of(Get.context!)!.article_error, message);
-        throw ('Article error: ${response.body}');
+        throw ('${AppLocalizations.of(Get.context!)!.article_error}: ${response.body}');
       }
-      ArticleList articleList = ArticleList.fromJson(jsonDecode(response.body));
+      final responseBody = utf8.decode(response.bodyBytes);
+      ArticleList articleList = ArticleList.fromJson(jsonDecode(responseBody));
       articles.value = articleList.data!;
       return articles;
     } catch (e) {

@@ -43,6 +43,7 @@ class CheckoutController extends GetxController {
       if (!await _tokenService.checkToken()) {
         return;
       }
+      print(fixedLocation);
       if (fixedLocation == null) {
         showFailedSnackbar(
           AppLocalizations.of(Get.context!)!.some_things_wrong,

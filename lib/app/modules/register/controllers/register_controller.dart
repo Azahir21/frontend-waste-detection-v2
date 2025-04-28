@@ -20,6 +20,12 @@ class RegisterController extends GetxController {
   String password = "";
   final RxBool validPassword = true.obs;
   final massage = "".obs;
+  // Add to RegisterController class
+  final fullNameError = Rxn<String>();
+  final genderError = Rxn<String>();
+  final usernameError = Rxn<String>();
+  final emailError = Rxn<String>();
+  final passwordError = Rxn<String>();
 
   @override
   void onInit() {
@@ -34,6 +40,54 @@ class RegisterController extends GetxController {
   @override
   void onClose() {
     super.onClose();
+  }
+
+  bool validateInputs() {
+    // Reset all errors
+    fullNameError.value = null;
+    genderError.value = null;
+    usernameError.value = null;
+    emailError.value = null;
+    passwordError.value = null;
+
+    bool isValid = true;
+
+    // Validate fullName
+    if (fullName.isEmpty) {
+      fullNameError.value = AppLocalizations.of(Get.context!)!.name_required;
+      isValid = false;
+    }
+
+    // Validate gender
+    if (gender.isEmpty) {
+      genderError.value = AppLocalizations.of(Get.context!)!.gender_required;
+      isValid = false;
+    }
+
+    // Validate username
+    if (username.isEmpty) {
+      usernameError.value =
+          AppLocalizations.of(Get.context!)!.username_required;
+      isValid = false;
+    }
+
+    // Validate email
+    if (email.isEmpty) {
+      emailError.value = AppLocalizations.of(Get.context!)!.email_required;
+      isValid = false;
+    } else if (!GetUtils.isEmail(email)) {
+      emailError.value = AppLocalizations.of(Get.context!)!.email_not_valid;
+      isValid = false;
+    }
+
+    // Validate password
+    validatePassword(password);
+    if (!validPassword.value) {
+      passwordError.value = massage.value;
+      isValid = false;
+    }
+
+    return isValid;
   }
 
   Future<void> register() async {

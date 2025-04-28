@@ -45,13 +45,6 @@ class RegisterView extends GetView<RegisterController> {
                   VerticalGap.formMedium(),
                   _buildPasswordField(),
                   VerticalGap.formSmall(),
-                  Obx(() {
-                    return Visibility(
-                      visible: !controller.validPassword.value,
-                      child: AppText.textPrimary(controller.massage.value,
-                          context: context),
-                    );
-                  }),
                   VerticalGap.formMedium(),
                   _buildAgreementCheckbox(context),
                   VerticalGap.formMedium(),
@@ -99,57 +92,135 @@ class RegisterView extends GetView<RegisterController> {
   }
 
   Widget _buildNameField() {
-    return CustomForm.text(
-      width: double.infinity,
-      labelText: AppLocalizations.of(Get.context!)!.full_name,
-      onChanged: (value) {
-        controller.fullName = value;
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomForm.text(
+          width: double.infinity,
+          labelText: AppLocalizations.of(Get.context!)!.full_name,
+          onChanged: (value) {
+            controller.fullName = value;
+            if (controller.fullNameError.value != null) {
+              controller.fullNameError.value = null;
+            }
+          },
+        ),
+        Obx(() => Visibility(
+              visible: controller.fullNameError.value != null,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: Text(
+                  controller.fullNameError.value ?? '',
+                  style: TextStyle(color: Colors.red, fontSize: 12),
+                ),
+              ),
+            )),
+      ],
     );
   }
 
   Widget _buildGenderDropdown() {
-    return CustomDropdown(
-      onChanged: (value) {
-        controller.gender = value;
-      },
-      dropDownItems: [
-        AppLocalizations.of(Get.context!)!.male,
-        AppLocalizations.of(Get.context!)!.female
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomDropdown(
+          onChanged: (value) {
+            controller.gender = value;
+          },
+          dropDownItems: [
+            AppLocalizations.of(Get.context!)!.male,
+            AppLocalizations.of(Get.context!)!.female
+          ],
+          labelText: AppLocalizations.of(Get.context!)!.gender,
+          width: double.infinity,
+          height: 70,
+        ),
+        Obx(() => Visibility(
+              visible: controller.genderError.value != null,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: Text(
+                  controller.genderError.value ?? '',
+                  style: TextStyle(color: Colors.red, fontSize: 12),
+                ),
+              ),
+            )),
       ],
-      labelText: AppLocalizations.of(Get.context!)!.gender,
-      width: double.infinity,
-      height: 70,
     );
   }
 
   Widget _buildUsernameField() {
-    return CustomForm.text(
-      width: double.infinity,
-      labelText: AppLocalizations.of(Get.context!)!.username,
-      onChanged: (value) {
-        controller.username = value;
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomForm.text(
+          width: double.infinity,
+          labelText: AppLocalizations.of(Get.context!)!.username,
+          onChanged: (value) {
+            controller.username = value;
+          },
+        ),
+        Obx(() => Visibility(
+              visible: controller.usernameError.value != null,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: Text(
+                  controller.usernameError.value ?? '',
+                  style: TextStyle(color: Colors.red, fontSize: 12),
+                ),
+              ),
+            )),
+      ],
     );
   }
 
   Widget _buildEmailField() {
-    return CustomForm.email(
-      width: double.infinity,
-      labelText: AppLocalizations.of(Get.context!)!.email,
-      onChanged: (value) {
-        controller.email = value;
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomForm.email(
+          width: double.infinity,
+          labelText: AppLocalizations.of(Get.context!)!.email,
+          onChanged: (value) {
+            controller.email = value;
+          },
+        ),
+        Obx(() => Visibility(
+              visible: controller.emailError.value != null,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: Text(
+                  controller.emailError.value ?? '',
+                  style: TextStyle(color: Colors.red, fontSize: 12),
+                ),
+              ),
+            )),
+      ],
     );
   }
 
   Widget _buildPasswordField() {
-    return CustomForm.password(
-      width: double.infinity,
-      labelText: AppLocalizations.of(Get.context!)!.password,
-      onChanged: (value) {
-        controller.password = value;
-      },
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        CustomForm.password(
+          width: double.infinity,
+          labelText: AppLocalizations.of(Get.context!)!.password,
+          onChanged: (value) {
+            controller.password = value;
+          },
+        ),
+        Obx(() => Visibility(
+              visible: controller.passwordError.value != null,
+              child: Padding(
+                padding: const EdgeInsets.only(left: 16.0),
+                child: Text(
+                  controller.passwordError.value ?? '',
+                  style: TextStyle(color: Colors.red, fontSize: 12),
+                ),
+              ),
+            )),
+      ],
     );
   }
 
@@ -180,22 +251,8 @@ class RegisterView extends GetView<RegisterController> {
       label: AppLocalizations.of(context)!.register,
       context: context,
       onTap: () {
-        if (controller.fullName.isEmpty ||
-            controller.gender.isEmpty ||
-            controller.username.isEmpty ||
-            controller.email.isEmpty ||
-            controller.password.isEmpty) {
-          showFailedSnackbar(AppLocalizations.of(context)!.attention,
-              AppLocalizations.of(context)!.all_fields_must_be_filled);
-          return;
-        }
-        if (!controller.validateEmail(controller.email)) {
-          return;
-        }
-        controller.validatePassword(controller.password);
-        if (controller.validPassword.value) {
+        if (controller.validateInputs()) {
           controller.register();
-          // Get.back();
         }
       },
     );

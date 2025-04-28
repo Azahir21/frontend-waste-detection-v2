@@ -58,7 +58,7 @@ class ArticleController extends GetxController {
   Future getArticle() async {
     try {
       final response = await ApiServices().get(
-          '${UrlConstants.article}s?page=${currentPage.value}&page_size=${pageSize.value}');
+          '${UrlConstants.article}s?lang=${Get.locale!.languageCode}&page=${currentPage.value}&page_size=${pageSize.value}');
       if (response.statusCode != 200) {
         // var message = await translate(jsonDecode(response.body)['detail']);
         var message = jsonDecode(response.body)['detail'];
@@ -66,7 +66,9 @@ class ArticleController extends GetxController {
             AppLocalizations.of(Get.context!)!.article_error, message);
         throw ('${AppLocalizations.of(Get.context!)!.article_error}: ${response.body}');
       }
-      ArticleList articleList = ArticleList.fromJson(jsonDecode(response.body));
+      final responseBody = utf8.decode(response.bodyBytes);
+      ArticleList articleList = ArticleList.fromJson(jsonDecode(responseBody));
+      print(articleList.data![0].title);
       articles.value = articleList.data!;
       currentPage.value = articleList.page!;
       pageSize.value = articleList.pageSize!;

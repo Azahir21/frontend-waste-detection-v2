@@ -43,7 +43,9 @@ class Leaderboard {
 
   factory Leaderboard.fromJson(Map<String, dynamic> json) => Leaderboard(
         userId: json["user_id"],
-        username: json["username"],
+        username: json["username"] != null
+            ? utf8.decode(utf8.encode(json["username"]))
+            : null,
         totalPoints: json["total_points"],
         ranking: json["ranking"],
         isQueryingUser: json["is_querying_user"],

@@ -72,6 +72,7 @@ class HomeController extends GetxController {
 
   Future<List<Article>> getArticle() async {
     try {
+      //
       final response = await ApiServices().get(
           '${UrlConstants.article}s?lang=${Get.locale!.languageCode}&page=${1}&page_size=${5}');
       if (response.statusCode != 200) {

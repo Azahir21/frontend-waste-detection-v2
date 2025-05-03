@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:frontend_waste_management/app/data/models/leaderboard_model.dart';
 import 'package:frontend_waste_management/app/widgets/app_icon.dart';
@@ -32,7 +34,11 @@ class LeaderboardListTile extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                AppText.labelDefaultEmphasis(data.username!, context: context),
+                AppText.labelDefaultEmphasis(
+                  // data.username!,
+                  utf8.decode(data.username!.codeUnits),
+                  context: context,
+                ),
                 AppText.labelSmallDefault(
                     "${data.totalPoints!.toString()} ${AppLocalizations.of(context)!.point}",
                     context: context)

@@ -86,6 +86,7 @@ class ReviewPageController extends GetxController {
     // Update coordinates in the data
     data = ReviewModel.fromJson({
       ...data.toJson(),
+      'address': address.value,
       'latitude': fixedLocation.value!.latitude,
       'longitude': fixedLocation.value!.longitude,
     });

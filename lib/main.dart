@@ -62,7 +62,7 @@ void callbackDispatcher() {
         // On success, extract the report id and message.
         final reportId = responseData['report-id'].toString();
         final message = responseData['message'];
-        var title;
+        String title;
         if (GetStorage().read('language') == 'id') {
           title = "Laporan Berhasil";
         } else if (GetStorage().read('language') == 'ja') {

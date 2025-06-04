@@ -321,13 +321,13 @@ class CameraViewController extends GetxController {
       // Run these operations in parallel since they don't depend on each other
       final futures = await Future.wait([
         _getImageCaptureTime(picture),
-        compressImage(picture),
+        // compressImage(picture),
         getCurrentPosition(),
       ]);
 
       final DateTime captureTime = futures[0] as DateTime;
-      final XFile compressedImage = futures[1] as XFile;
-      final LatLng? position = futures[2] as LatLng?;
+      // final XFile compressedImage = futures[1] as XFile;
+      final LatLng? position = futures[1] as LatLng?;
 
       // if the capture time on the image is taken 3 days from now it will return an error
 
@@ -347,14 +347,14 @@ class CameraViewController extends GetxController {
 
       final ReviewModel data = ReviewModel(
         lang: Get.locale!.languageCode,
-        imagePath: compressedImage.path,
+        imagePath: picture.path,
         longitude: position.longitude,
         latitude: position.latitude,
         address: address,
         useGarbagePileModel: isPile,
         captureDate: captureTime,
         fromCamera: fromCamera,
-        xfile: compressedImage,
+        xfile: picture,
       );
 
       print(data.address);

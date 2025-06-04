@@ -250,9 +250,11 @@ class RegisterView extends GetView<RegisterController> {
       width: double.infinity,
       label: AppLocalizations.of(context)!.register,
       context: context,
-      onTap: () {
+      onTap: () async {
+        print("Register button tapped, validating inputs.");
         if (controller.validateInputs()) {
-          controller.register();
+          print("Inputs are valid, proceeding with registration.");
+          await controller.register();
         }
       },
     );

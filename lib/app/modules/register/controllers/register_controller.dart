@@ -110,6 +110,7 @@ class RegisterController extends GetxController {
         },
       );
       if (response.statusCode != 200) {
+        print('Registration failed: ${response.body}');
         // var message = await translate(jsonDecode(response.body)['detail']);
         var message = jsonDecode(response.body)['detail'];
 
@@ -121,6 +122,7 @@ class RegisterController extends GetxController {
         AppLocalizations.of(Get.context!)!.register_success,
         AppLocalizations.of(Get.context!)!.register_success_message,
       );
+      print('Registration successful: ${response.body}');
       Get.offAllNamed("/onboarding", arguments: 3);
     } catch (e) {
       print('Registration error: $e');

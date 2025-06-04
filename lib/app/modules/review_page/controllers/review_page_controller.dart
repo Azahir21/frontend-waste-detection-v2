@@ -1,18 +1,14 @@
+import 'dart:async';
 import 'dart:convert';
-import 'package:flutter/material.dart';
 import 'package:frontend_waste_management/app/data/models/review_model.dart';
 import 'package:frontend_waste_management/app/data/services/api_service.dart';
 import 'package:frontend_waste_management/app/data/services/local_notifications.dart';
-import 'package:frontend_waste_management/app/data/services/token_chacker.dart';
-import 'package:frontend_waste_management/app/modules/history/controllers/history_controller.dart';
-import 'package:frontend_waste_management/app/modules/home/controllers/home_controller.dart';
 import 'package:frontend_waste_management/app/widgets/custom_snackbar.dart';
 import 'package:frontend_waste_management/core/values/const.dart';
 import 'package:get/get.dart';
 import 'package:get_storage/get_storage.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:workmanager/workmanager.dart';
 
 class ReviewPageController extends GetxController {
   late ReviewModel data;
@@ -20,7 +16,6 @@ class ReviewPageController extends GetxController {
   late LatLng initial;
   final fixedLocation = Rxn<LatLng>();
   final isLoading = false.obs;
-  final _tokenService = TokenService();
   final buttonEnable = true.obs;
 
   @override
@@ -35,55 +30,16 @@ class ReviewPageController extends GetxController {
     }
   }
 
-  // /// Instead of directly calling the API,
-  // /// we schedule a background task using Workmanager.
-  // Future<void> postImageData() async {
-  //   // Optionally disable the button to prevent multiple scheduling.
-  //   buttonEnable.value = false;
-  //   isLoading.value = true;
-
-  //   // Create a new instance or copy of the data with updated coordinates
-  //   data = ReviewModel.fromJson({
-  //     ...data.toJson(),
-  //     'latitude': fixedLocation.value!.latitude,
-  //     'longitude': fixedLocation.value!.longitude,
-  //   });
-
-  //   showSuccessSnackbar(AppLocalizations.of(Get.context!)!.we_will_be_back_soon,
-  //       AppLocalizations.of(Get.context!)!.report_reviewed_by_system);
-
-  //   print("Posting image data... : ${data.toJson()}");
-  //   // Schedule the background task. Here we assume that ReviewModel has a toJson() method.
-  //   Workmanager().registerOneOffTask(
-  //     "postImageDataTask", // Unique task name
-  //     "postImageDataTask", // Task identifier used in callbackDispatcher
-  //     inputData: data.toJson(),
-  //     constraints: Constraints(
-  //       networkType: NetworkType.connected, // Ensure network connectivity.
-  //     ),
-  //   );
-
-  //   // Since the API call is now handled in the background,
-  //   // immediately reset the loading indicator.
-  //   isLoading.value = false;
-  //   Get.offAllNamed('/bottomnav');
-  // }
-
   Future<void> postImageData() async {
-    var startTime = DateTime.now();
-    buttonEnable.value = false;
-    isLoading.value = true;
-
     if (fixedLocation.value == null) {
       showFailedSnackbar(
         AppLocalizations.of(Get.context!)!.some_things_wrong,
         AppLocalizations.of(Get.context!)!.location_not_found,
       );
-      buttonEnable.value = true;
-      isLoading.value = false;
       return;
     }
-    // Update coordinates in the data
+
+    // Fill the model once
     data = ReviewModel.fromJson({
       ...data.toJson(),
       'address': address.value,
@@ -91,55 +47,72 @@ class ReviewPageController extends GetxController {
       'longitude': fixedLocation.value!.longitude,
     });
 
+    // Tell the user we’re on it
     showSuccessSnackbar(
       AppLocalizations.of(Get.context!)!.we_will_be_back_soon,
       AppLocalizations.of(Get.context!)!.report_reviewed_by_system,
     );
 
-    print("Posting image data... : ${data.toJson()}");
+    // Kick off the upload **without** awaiting
+    unawaited(_uploadInBackground(data));
 
+    // Immediately go to the main screen
+    Get.offAllNamed('/bottomnav');
+  }
+
+  /// Actual upload runs silently in the background.
+  Future<void> _uploadInBackground(ReviewModel payload) async {
     try {
-      // Directly call the API
-      final response =
-          await ApiServices().postSampahV2(UrlConstants.userSampah, data);
-      final responseData = jsonDecode(response);
+      final raw =
+          await ApiServices().postSampahV2(UrlConstants.userSampah, payload);
+      final res = jsonDecode(raw);
 
-      if (responseData.containsKey('detail')) {
-        // Error response
-        final message = responseData['detail'];
-        var title = (GetStorage().read('language') == 'id')
-            ? "Laporan Gagal"
-            : (GetStorage().read('language') == 'ja')
-                ? "報告に失敗しました"
-                : "Report Failed";
-        await LocalNotifications.showSimpleNotification(
-          title: title,
-          body: message,
-          payload: "error",
+      if (res.containsKey('detail')) {
+        await _notify(
+          success: false,
+          message: res['detail'],
         );
-        debugPrint("API call failed: $message");
       } else {
-        // Success response
-        final reportId = responseData['report-id'].toString();
-        final message = responseData['message'];
-        var title = (GetStorage().read('language') == 'id')
-            ? "Laporan Berhasil"
-            : (GetStorage().read('language') == 'ja')
-                ? "報告が成功しました"
-                : "Report Success";
-        await LocalNotifications.showSimpleNotification(
-          title: title,
-          body: message,
-          payload: reportId,
+        await _notify(
+          success: true,
+          message: res['message'],
+          payload: res['report-id'].toString(),
         );
       }
     } catch (e) {
-      debugPrint("Error posting image data: $e");
-      // Optionally handle error notifications here.
-    } finally {
-      isLoading.value = false;
-      Get.offAllNamed('/bottomnav');
-      print("API call completed in: ${DateTime.now().difference(startTime)}");
+      await _notify(
+        success: false,
+        message: e.toString(),
+      );
     }
+  }
+
+  /// Centralised notification helper so we only build the text once.
+  Future<void> _notify({
+    required bool success,
+    required String message,
+    String payload = 'error',
+  }) async {
+    final lang = GetStorage().read('language');
+    final id = lang == 'id';
+    final ja = lang == 'ja';
+
+    final title = success
+        ? (id
+            ? 'Laporan Berhasil'
+            : ja
+                ? '報告が成功しました'
+                : 'Report Success')
+        : (id
+            ? 'Laporan Gagal'
+            : ja
+                ? '報告に失敗しました'
+                : 'Report Failed');
+
+    await LocalNotifications.showSimpleNotification(
+      title: title,
+      body: message,
+      payload: payload,
+    );
   }
 }

@@ -837,5 +837,9 @@
   "image_too_old": "Gambar terlalu lama, silakan ambil yang baru",
   "@image_too_old": {
     "description": "Ditampilkan saat gambar terlalu lama dan pengguna diminta untuk mengambil gambar baru."
+  },
+  "image_missing_metadata": "Gambar tidak memiliki informasi waktu pengambilan. Silakan gunakan gambar lain.",
+  "@image_missing_metadata": {
+    "description": "Ditampilkan saat gambar tidak memiliki informasi waktu pengambilan."
   }
 }

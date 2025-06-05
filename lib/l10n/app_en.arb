@@ -837,5 +837,9 @@
   "image_too_old": "The image is too old, please take a new one",
   "@image_too_old": {
     "description": "Shown on the image too old dialog."
+  },
+  "image_missing_metadata": "Image is missing capture time information. Please use a different image.",
+  "@image_missing_metadata": {
+    "description": "Shown when the image is missing capture time metadata."
   }
 }

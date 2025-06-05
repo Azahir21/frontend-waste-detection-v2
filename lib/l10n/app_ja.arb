@@ -837,5 +837,9 @@
   "image_too_old": "画像が古すぎます。新しい画像を撮影してください。",
   "@image_too_old": {
     "description": "画像が古すぎるダイアログに表示されます。"
+  },
+  "image_missing_metadata": "画像にキャプチャ時間情報がありません。別の画像を使用してください。",
+  "@image_missing_metadata": {
+    "description": "画像にキャプチャ時間情報がない場合に表示されるダイアログです。"
   }
 }

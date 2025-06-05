@@ -318,16 +318,18 @@ class CameraViewController extends GetxController {
     try {
       _isLoading.value = true;
 
-      // Run these operations in parallel since they don't depend on each other
-      final futures = await Future.wait([
-        _getImageCaptureTime(picture),
-        // compressImage(picture),
-        getCurrentPosition(),
-      ]);
+      final DateTime? captureTime = await _getImageCaptureTime(picture);
+      // final XFile compressedImage = await compressImage(picture);
+      final LatLng? position = await getCurrentPosition();
 
-      final DateTime captureTime = futures[0] as DateTime;
-      // final XFile compressedImage = futures[1] as XFile;
-      final LatLng? position = futures[1] as LatLng?;
+      // If no capture time, show error and return
+      if (captureTime == null) {
+        showFailedSnackbar(
+          AppLocalizations.of(Get.context!)!.action_not_continue,
+          AppLocalizations.of(Get.context!)!.image_missing_metadata,
+        );
+        return;
+      }
 
       // if the capture time on the image is taken 3 days from now it will return an error
 
@@ -371,8 +373,8 @@ class CameraViewController extends GetxController {
     }
   }
 
-// Helper method to extract EXIF time
-  Future<DateTime> _getImageCaptureTime(XFile picture) async {
+// Helper method to extract EXIF time, returns null if capture time is not available
+  Future<DateTime?> _getImageCaptureTime(XFile picture) async {
     try {
       final bytes = await picture.readAsBytes();
       final decodedImage = img.decodeJpg(Uint8List.fromList(bytes));
@@ -399,10 +401,14 @@ class CameraViewController extends GetxController {
           }
         }
       }
+
+      // Return null if no valid EXIF capture time found
+      debugPrint('No EXIF capture time found in image');
+      return null;
     } catch (e) {
       debugPrint('Error reading EXIF: $e');
+      return null;
     }
-    return DateTime.now();
   }
 
   // Future<void> postImage(XFile picture, bool fromCamera) async {

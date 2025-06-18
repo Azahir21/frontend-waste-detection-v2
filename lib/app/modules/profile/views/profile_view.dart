@@ -50,7 +50,9 @@ class ProfileView extends GetView<ProfileController> {
                       AppText.labelDefaultEmphasis(
                         controller.username,
                         context: context,
-                      )
+                      ),
+                      const Spacer(),
+                      _buildLanguageButton(context, languages, initialLanguage),
                     ],
                   ),
                   VerticalGap.formHuge(),
@@ -82,21 +84,21 @@ class ProfileView extends GetView<ProfileController> {
                     () {},
                   ),
                   VerticalGap.formMedium(),
-                  VerticalGap.formHuge(),
-                  CustomDropdown(
-                    // initialValue: languages[initialLanguage],
-                    onChanged: (value) async {
-                      String? languageCode = languages.keys.firstWhere(
-                        (code) => languages[code] == value,
-                        orElse: () => 'en',
-                      );
-                      controller.updateLocale(languageCode);
-                    },
-                    dropDownItems: languages.values.toList(),
-                    hintText: languages[initialLanguage],
-                    width: double.infinity,
-                    height: 70,
-                  ),
+                  // VerticalGap.formHuge(),
+                  // CustomDropdown(
+                  //   // initialValue: languages[initialLanguage],
+                  //   onChanged: (value) async {
+                  //     String? languageCode = languages.keys.firstWhere(
+                  //       (code) => languages[code] == value,
+                  //       orElse: () => 'en',
+                  //     );
+                  //     controller.updateLocale(languageCode);
+                  //   },
+                  //   dropDownItems: languages.values.toList(),
+                  //   hintText: languages[initialLanguage],
+                  //   width: double.infinity,
+                  //   height: 70,
+                  // ),
                   VerticalGap.formHuge(),
                   CenteredTextButton.secondary(
                     label: AppLocalizations.of(context)!.logout,
@@ -126,5 +128,91 @@ class ProfileView extends GetView<ProfileController> {
         ],
       ),
     );
+  }
+
+  Widget _buildLanguageButton(BuildContext context,
+      Map<String, String> languages, String initialLanguage) {
+    return PopupMenuButton<String>(
+      offset: const Offset(0, 40),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(15)),
+      child: Container(
+        width: 75,
+        height: 50,
+        decoration: BoxDecoration(
+          color: Theme.of(context).appColors.backgroundActionIconSecondary,
+          borderRadius: BorderRadius.circular(23.0),
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            AppText.labelSmallDefault(
+              initialLanguage.toUpperCase(),
+              context: context,
+            ),
+            HorizontalGap.formSmall(),
+            Center(
+              child: Image.asset(
+                _getFlagAssetPath(initialLanguage),
+                width: 32,
+                height: 32,
+              ),
+            ),
+          ],
+        ),
+      ),
+      onSelected: (value) {
+        String? languageCode = languages.keys.firstWhere(
+          (code) => languages[code] == value,
+          orElse: () => 'en',
+        );
+        controller.updateLocale(languageCode);
+      },
+      itemBuilder: (context) => languages.entries
+          .map((entry) => PopupMenuItem<String>(
+                value: entry.value,
+                child: Row(
+                  children: [
+                    // Show flag icon for each language in the menu
+                    Container(
+                      width: 24,
+                      height: 24,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: entry.key == initialLanguage
+                            ? Colors.blue.withOpacity(0.1)
+                            : Colors.transparent,
+                      ),
+                      child: entry.key == initialLanguage
+                          ? const Icon(Icons.check,
+                              size: 16, color: Colors.blue)
+                          : null,
+                    ),
+                    HorizontalGap.formSmall(),
+                    Image.asset(
+                      _getFlagAssetPath(entry.key),
+                      width: 20,
+                      height: 20,
+                    ),
+                    HorizontalGap.formSmall(),
+                    Text(entry.value),
+                  ],
+                ),
+              ))
+          .toList(),
+    );
+  }
+
+// Helper method to get the flag asset path based on language code
+  String _getFlagAssetPath(String languageCode) {
+    switch (languageCode) {
+      case 'en':
+        return 'assets/icons/flag_en.png'; // Path to English flag
+      case 'id':
+        return 'assets/icons/flag_id.png'; // Path to Indonesian flag
+      case 'ja':
+        return 'assets/icons/flag_ja.png'; // Path to Japanese flag
+      default:
+        return 'assets/icons/flag_en.png'; // Default to English flag
+    }
   }
 }

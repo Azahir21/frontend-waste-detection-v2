@@ -8,6 +8,7 @@ import 'package:frontend_waste_management/app/widgets/vertical_gap.dart';
 import 'package:frontend_waste_management/core/theme/theme_data.dart';
 import 'package:get/get.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 class TimeSeriesFilterWidget extends StatefulWidget {
   const TimeSeriesFilterWidget({
@@ -175,7 +176,10 @@ class _TimeSeriesFilterWidgetState extends State<TimeSeriesFilterWidget> {
           if (pickedDate != null) {
             setState(() {
               controller.firstDate.value = pickedDate;
-              controller.firstDateController.value.text = pickedDate.toString();
+              final DateFormat formatter =
+                  DateFormat.yMMMMd(Get.locale?.languageCode ?? 'en');
+              controller.firstDateController.value.text =
+                  formatter.format(pickedDate);
             });
           }
         },
@@ -210,8 +214,13 @@ class _TimeSeriesFilterWidgetState extends State<TimeSeriesFilterWidget> {
 
           if (pickedDate != null) {
             setState(() {
-              controller.lastDate.value = pickedDate;
-              controller.lastDateController.value.text = pickedDate.toString();
+              DateTime endOfDay = DateTime(pickedDate.year, pickedDate.month,
+                  pickedDate.day, 23, 59, 59);
+              controller.lastDate.value = endOfDay;
+              final DateFormat formatter =
+                  DateFormat.yMMMMd(Get.locale?.languageCode ?? 'en');
+              controller.lastDateController.value.text =
+                  formatter.format(pickedDate);
             });
           }
         },

@@ -321,7 +321,7 @@ class _MapsViewState extends State<MapsView> with TickerProviderStateMixin {
                         .isNotEmpty, // Show only if timeseries data exists
                     child: Container(
                       width: double.infinity,
-                      height: 138,
+                      height: 150,
                       decoration: BoxDecoration(
                         color: Colors.white,
                         borderRadius: BorderRadius.circular(15),
@@ -371,6 +371,24 @@ class _MapsViewState extends State<MapsView> with TickerProviderStateMixin {
                                 AppText.labelSmallEmphasis(
                                   AppLocalizations.of(context)!
                                       .day_count(controller.selectedDay.value),
+                                  context: context,
+                                ),
+                              ],
+                            ),
+                          ),
+                          // Add date range display here
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 18.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                AppText.labelTinyDefault(
+                                  "${controller.firstDate.value.day}/${controller.firstDate.value.month}/${controller.firstDate.value.year}",
+                                  context: context,
+                                ),
+                                AppText.labelTinyDefault(
+                                  "${controller.lastDate.value.day}/${controller.lastDate.value.month}/${controller.lastDate.value.year}",
                                   context: context,
                                 ),
                               ],
@@ -445,101 +463,6 @@ class _MapsViewState extends State<MapsView> with TickerProviderStateMixin {
           ],
         ),
       ),
-    );
-  }
-
-  Widget filterDialog() {
-    return AlertDialog(
-      title: AppText.labelDefaultEmphasis(
-          AppLocalizations.of(context)!.filter_timeseries,
-          context: context),
-      content: IntrinsicHeight(
-        child: Column(
-          children: [
-            Obx(
-              () => TextFormField(
-                controller: controller.firstDateController.value,
-                decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context)!.start_date,
-                  suffixIcon: const Icon(Icons.calendar_today),
-                ),
-                readOnly: true,
-                onTap: () async {
-                  DateTime? pickedDate = await showDatePicker(
-                    context: context,
-                    initialDate: DateTime.now(), // Default to current date
-                    firstDate: DateTime(2024, 5), // Start from May 2024
-                    lastDate: DateTime.now(),
-                  );
-
-                  if (pickedDate != null) {
-                    setState(() {
-                      controller.firstDate.value = pickedDate;
-                      controller.firstDateController.value.text =
-                          pickedDate.toString();
-                    });
-                  }
-                },
-              ),
-            ),
-            Obx(
-              () => TextFormField(
-                controller: controller.lastDateController.value,
-                decoration: InputDecoration(
-                  labelText: AppLocalizations.of(context)!.end_date,
-                  suffixIcon: const Icon(Icons.calendar_today),
-                ),
-                readOnly: true,
-                onTap: () async {
-                  // Open the date picker for the "End Date"
-                  if (controller.firstDateController.value.text.isNotEmpty) {
-                    DateTime? pickedDate = await showDatePicker(
-                      context: context,
-                      initialDate:
-                          controller.firstDate.value, // Start from Start Date
-                      firstDate: controller
-                          .firstDate.value, // End date must be after Start Date
-                      lastDate: DateTime.now(),
-                    );
-
-                    // If a date is picked, update the end date controller
-                    if (pickedDate != null) {
-                      setState(() {
-                        controller.lastDate.value = pickedDate;
-                        controller.lastDateController.value.text =
-                            pickedDate.toString();
-                      });
-                    }
-                  } else {
-                    showFailedSnackbar(
-                      AppLocalizations.of(context)!.failed_to_pick_end_date,
-                      AppLocalizations.of(context)!
-                          .please_input_start_date_first,
-                    );
-                  }
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            controller.firstDateController.value.text = "";
-            controller.lastDateController.value.text = "";
-            Get.back();
-          },
-          child: Text(AppLocalizations.of(context)!.cancel),
-        ),
-        TextButton(
-          onPressed: () {
-            controller.getTimeseriesData();
-            Get.back();
-          },
-          child: Text(AppLocalizations.of(context)!.ok),
-        ),
-      ],
     );
   }
 }
